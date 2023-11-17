@@ -7,13 +7,16 @@ metadata = MetaData()
 db = SQLAlchemy(metadata=metadata)
 
 class Post(db.Model, SerializerMixin):
-    pass
+    __tablename__ = 'posts'
 
 class User(db.Model, SerializerMixin):
-    pass
+    __tablename__ = 'users'
 
 class Comment(db.Model, SerializerMixin):
-    pass
+    __tablename__ = 'comments'
+
+class Like(db.Model, SerializerMixin):
+    __tablename__ = 'likes'
 
 #? class Message(db.Model, SerializerMixin):
 #?  pass

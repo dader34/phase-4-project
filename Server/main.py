@@ -93,7 +93,7 @@
 ###     FOREIGN KEY (following_id) REFERENCES Users(user_id)
 ### );
 
-###*Post Likes Table
+###* Likes Table [Posts, ]
 ### CREATE TABLE Likes (
 ###     like_id INT PRIMARY KEY,
 ###     user_id INT,
