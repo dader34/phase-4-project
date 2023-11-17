@@ -1,3 +1,18 @@
+//! Client Requirements !//
+
+
+//!End Of Client Requirements !//
+//-----------------------------//
+//!Views
+//* /home // <-- Shows a user a feed of posts, Random from Followers?
+//* /profile // <-- Displays Current Users Top/Newest Posts
+//* /users/<int:UserId> // <-- Displays a view of a users account, including all posts
+//! Strech goals for views !#
+//? /trending // <-- Sort by top posts in last 24h, check if post was created in last 24h
+//? /messages/inbox/<int:UserId> // <-- Displays a users inbox
+//? /chat/<int:ChatId> // <-- Displays a chat session with a certain id
+//! End of views !//
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
