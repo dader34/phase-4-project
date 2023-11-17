@@ -1,6 +1,11 @@
 //! Client Requirements !//
-
-
+//
+// Use forms and validation through Formik on all input.
+// At least one data type validation.
+// At least one string/number format validation.
+// Have at least three different client-side routes using React Router. Be sure to include a nav bar or other UI element that allows users to navigate between routes.
+// Connect the client and server using fetch().
+//
 //!End Of Client Requirements !//
 //-----------------------------//
 //!Views
