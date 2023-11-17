@@ -46,6 +46,13 @@
 #! End Of Api Routes !#
 #-----------------#
 #! SQL Tables !#
+#? TODO ?#
+#? Figure out how to keep track of liked posts and comments, sql table for both? ?#
+#? Maybe have table for both with post/comment id, and user id that liked it? ?#
+#? When loading post from get, check if user has liked the post, and if they have backend should add "Liked" json attribute to body of return as true else false ?#
+#? Same with comments ^^^^^^^ #?
+#* Current implementation, use one table for both types of likes. Query this table and check type to see if user has liked a post/comment on every get request *#
+#? End TODO #? 
 ###*Users table schema
 ### CREATE TABLE Users (
 ###    user_id INT PRIMARY KEY,
@@ -84,6 +91,17 @@
 ###     PRIMARY KEY (follower_id, following_id),
 ###     FOREIGN KEY (follower_id) REFERENCES Users(user_id),
 ###     FOREIGN KEY (following_id) REFERENCES Users(user_id)
+### );
+
+###*Post Likes Table
+### CREATE TABLE Likes (
+###     like_id INT PRIMARY KEY,
+###     user_id INT,
+###     target_id INT,
+###     target_type VARCHAR(20),
+###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
+###     CHECK (target_type IN ('post', 'comment'))
 ### );
 
 #? Stretch Goal SQL Tables
