@@ -7,8 +7,7 @@
 #Minimum of create and read actions for EACH resource. <-- 
 #! End of server requirements !#
 #------------------------------#
-#!Routes ideas !#
-#TODO Api routes
+#! Api Routes!#
 #* /posts # <-- [Post: Create A Post, Get: View A Post, Patch: Update A Post, Delete: Delete A Post]
 #* /posts/<int:id> # <-- Display one tweet in the middle of the page
 #? /users # <-- Get all users?
@@ -39,15 +38,8 @@
 ###    ]
 ### }
 
-# End api Routes
-#--------------#
-#TODO Display Routes/ Real Pages
-#* /home # <-- Shows a user a feed of posts, Random from Followers?
-#* /profile # <-- Displays Current Users Top/Newest Posts
-#! Strech goals for real pages !#
-#? /trending # <-- Sort by top posts in last 24h, check if post was created in last 24h
-#? /messages/inbox/<int:UserId> # <-- Displays a users inbox
-#! End of routes !#
+
+#! End Of Api Routes !#
 #-----------------#
 #! SQL Tables !#
 ###*Users table schema
