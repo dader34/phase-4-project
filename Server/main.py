@@ -8,15 +8,16 @@
 #! End of server requirements !#
 #------------------------------#
 #! Api Routes!#
-#* /posts # <-- [Post: Create A Post, Get: View A Post, Patch: Update A Post, Delete: Delete A Post]
+#* /posts # <-- || Requires auth || [Post: Create A Post, Get: View A Post, Patch: Update A Post, Delete: Delete A Post]
 #* /posts/<int:id> # <-- Display one tweet in the middle of the page
 #? /users # <-- Get all users?
 #* /users/<int:id> # <-- Get specific user [Get: Returns Users Info]
 #?     ^^^^  Could also do /username and have server convert to profile
-#* /comments # <-- [Post: Create a new comment]
+#* /comments # <-- || Requires auth || [Post: Create a new comment]
 #* /comments/<int:CommentId> # <-- [Get: Returns a comment from specified id]
-#* /login # <-- Post: Get json, and check db for user with same name and compare password then grant jwt
+#* /login # <-- || Requires auth || Post: Get json, and check db for user with same name and compare password then grant jwt
 #* /signup # <-- Post: Get json, validate user/pass fits limits, add user to db and grant jwt
+#* /like # <-- || Requires auth || Post: json:{type_post:"comment" or "post", type:{"Like" or "Unlike"} ,JWT}
 #* /followers/<int:UserId> #[Get: Get users followers from id,Post: Add follower to users followers from id]
 #* /unfollow/<int:UserId> # Post: Get json follower id. Remove uid/follower relation from db.
 #! Stretch goals for Api routes !#
