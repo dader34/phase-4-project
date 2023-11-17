@@ -15,6 +15,10 @@
 #?     ^^^^  Could also do /username and have server convert to profile
 #* /comments # <-- [Post: Create a new comment]
 #* /comments/<int:CommentId> # <-- [Get: Returns a comment from specified id]
+#* /login # <-- Post: Get json, and check db for user with same name and compare password then grant jwt
+#* /signup # <-- Post: Get json, validate user/pass fits limits, add user to db and grant jwt
+#* /followers/<int:UserId> #[Get: Get users followers from id,Post: Add follower to users followers from id]
+#* /unfollow/<int:UserId> # Post: Get json follower id. Remove uid/follower relation from db.
 #! Stretch goals for Api routes !#
 #? /messages # <-- [Post: Create a new Message]
 #? /messages/<int:MessageId> # <-- [Get: Returns a message from specified id, Delete: Deletes message, Patch?:Edit?]
@@ -55,6 +59,7 @@
 ###     post_id INT PRIMARY KEY,
 ###     user_id INT,
 ###     content TEXT,
+###     likes INT,
 ###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 ###     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 ### );
@@ -66,9 +71,19 @@
 ###     user_id INT,
 ###     post_id INT,
 ###     content TEXT,
+###     likes INT,
 ###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 ###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
 ###     FOREIGN KEY (post_id) REFERENCES Posts(post_id)
+### );
+
+###*Followers table schema
+### CREATE TABLE Followers (
+###     follower_id INT,
+###     following_id INT,
+###     PRIMARY KEY (follower_id, following_id),
+###     FOREIGN KEY (follower_id) REFERENCES Users(user_id),
+###     FOREIGN KEY (following_id) REFERENCES Users(user_id)
 ### );
 
 #? Stretch Goal SQL Tables
