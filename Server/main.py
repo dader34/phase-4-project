@@ -8,15 +8,16 @@
 #! End of server requirements !#
 #------------------------------#
 #! Api Routes!#
-#* /posts # <-- [Post: Create A Post, Get: View A Post, Patch: Update A Post, Delete: Delete A Post]
+#* /posts # <-- || Requires auth || [Post: Create A Post, Get: View A Post, Patch: Update A Post, Delete: Delete A Post]
 #* /posts/<int:id> # <-- Display one tweet in the middle of the page
 #? /users # <-- Get all users?
 #* /users/<int:id> # <-- Get specific user [Get: Returns Users Info]
 #?     ^^^^  Could also do /username and have server convert to profile
-#* /comments # <-- [Post: Create a new comment]
+#* /comments # <-- || Requires auth || [Post: Create a new comment]
 #* /comments/<int:CommentId> # <-- [Get: Returns a comment from specified id]
-#* /login # <-- Post: Get json, and check db for user with same name and compare password then grant jwt
+#* /login # <-- || Requires auth || Post: Get json, and check db for user with same name and compare password then grant jwt
 #* /signup # <-- Post: Get json, validate user/pass fits limits, add user to db and grant jwt
+#* /like # <-- || Requires auth || Post: json:{type_post:"comment" or "post", type:{"Like" or "Unlike"} ,JWT}
 #* /followers/<int:UserId> #[Get: Get users followers from id,Post: Add follower to users followers from id]
 #* /unfollow/<int:UserId> # Post: Get json follower id. Remove uid/follower relation from db.
 #! Stretch goals for Api routes !#
@@ -46,6 +47,13 @@
 #! End Of Api Routes !#
 #-----------------#
 #! SQL Tables !#
+#? TODO ?#
+#? Figure out how to keep track of liked posts and comments, sql table for both? ?#
+#? Maybe have table for both with post/comment id, and user id that liked it? ?#
+#? When loading post from get, check if user has liked the post, and if they have backend should add "Liked" json attribute to body of return as true else false ?#
+#? Same with comments ^^^^^^^ #?
+#* Current implementation, use one table for both types of likes. Query this table and check type to see if user has liked a post/comment on every get request *#
+#? End TODO #? 
 ###*Users table schema
 ### CREATE TABLE Users (
 ###    user_id INT PRIMARY KEY,
@@ -84,6 +92,17 @@
 ###     PRIMARY KEY (follower_id, following_id),
 ###     FOREIGN KEY (follower_id) REFERENCES Users(user_id),
 ###     FOREIGN KEY (following_id) REFERENCES Users(user_id)
+### );
+
+###* Likes Table [Posts, ]
+### CREATE TABLE Likes (
+###     like_id INT PRIMARY KEY,
+###     user_id INT,
+###     target_id INT,
+###     target_type VARCHAR(20),
+###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
+###     CHECK (target_type IN ('post', 'comment'))
 ### );
 
 #? Stretch Goal SQL Tables
