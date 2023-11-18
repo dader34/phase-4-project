@@ -21,9 +21,12 @@ class User(db.Model, SerializerMixin):
     post_likes = db.relationship('PostLike', back_populates='user')
     comment_likes = db.relationship('CommentLike', back_populates='user')
 
-    @classmethod
-    def get_likes_from_post_id(self,id):
-        return len([like for like in self.post_likes if like.post.id == id])
+    def has_liked_post(self,id):
+        return self.id in [like.user.id for like in db.session.get(Post, id).likes]
+
+    def has_liked_comment(self,id):
+        return self.id in [like.user.id for like in db.session.get(Comment, id).likes]
+
 
 class Post(db.Model, SerializerMixin):
     __tablename__ = 'posts'
@@ -36,7 +39,12 @@ class Post(db.Model, SerializerMixin):
     #* Relationships *#
     user = db.relationship('User', back_populates='posts')
     likes = db.relationship('PostLike', back_populates='post')
-
+    
+    @classmethod
+    def get_likes_from_post(cls,id):
+        return len([like for like in PostLike.query.all() if like.post.id == id])
+    
+    
 class Comment(db.Model, SerializerMixin):
     __tablename__ = 'comments'
 
@@ -49,6 +57,10 @@ class Comment(db.Model, SerializerMixin):
     #* Relationships *#
     user = db.relationship('User', back_populates='comments')
     likes = db.relationship('CommentLike', back_populates='comment')
+
+    @classmethod
+    def get_likes_from_comment(cls,id):
+        return len([like for like in CommentLike.query.all() if like.comment.id == id])
 
 class Follower(db.Model, SerializerMixin):
     __tablename__ = 'followers'
