@@ -94,15 +94,13 @@
 ###     FOREIGN KEY (following_id) REFERENCES Users(user_id)
 ### );
 
-###* Likes Table [Posts, ]
+###* Likes Table [Posts, Comments]
 ### CREATE TABLE Likes (
 ###     like_id INT PRIMARY KEY,
 ###     user_id INT,
-###     target_id INT,
-###     target_type VARCHAR(20),
+###     post/comment id INT,
 ###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 ###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
-###     CHECK (target_type IN ('post', 'comment'))
 ### );
 
 #? Stretch Goal SQL Tables
@@ -130,12 +128,20 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_restful import Api
+from flask_migrate import Migrate
+from models import db
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
+db.init_app(app)
+
+migrate = Migrate(app,db)
 
 @app.route('/')
 def landing():
     return '<h1>Hello World!</h1>'
 
-app.run(host='0.0.0.0',port=5555)
+if(__name__=="__main__"):
+    app.run(host='0.0.0.0',port=5555,debug=True)
