@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from main import app
 from models import db
 with app.app_context():

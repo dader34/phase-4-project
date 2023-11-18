@@ -2,8 +2,8 @@
 #! Server requirements !#
 #At least two one-to-many relationships. # <-- [User:Posts,User:Messages?/User:Followers]
 #* At least one reciprocal many-to-many relationship. # <-- User: friends
-#?The many-to-many association model/table must have a user submittable attribute, i.e. an attribute aside from the foreign keys. # <-- Username?
-#*Full CRUD actions for at least one resource. # <-- Posts, [Create Post,View Post, Edit Post, Delete Post]
+#* The many-to-many association model/table must have a user submittable attribute, i.e. an attribute aside from the foreign keys. # <-- Followers, close_friend: Bool
+#* Full CRUD actions for at least one resource. # <-- Posts, [Create Post,View Post, Edit Post, Delete Post]
 #Minimum of create and read actions for EACH resource. <-- 
 #! End of server requirements !#
 #------------------------------#

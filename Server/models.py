@@ -67,6 +67,7 @@ class Follower(db.Model, SerializerMixin):
 
     follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
     following_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+    close_friend = db.Column(db.Boolean, default=False)
 
     follower = db.relationship('User', back_populates='followers', foreign_keys=[follower_id])
     following = db.relationship('User', back_populates='following', foreign_keys=[following_id])
