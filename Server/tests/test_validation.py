@@ -1,6 +1,7 @@
 import pytest
 import sys
 sys.path.append('.')
+#! Make sure to run this file from one directory up, or move the file up one directory or else it wont work !#
 from models import User, Post, Comment, Follower, CommentLike, PostLike
 from main import app
 

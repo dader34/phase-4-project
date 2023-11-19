@@ -20,12 +20,12 @@ class User(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     #* Relationships *#
-    followers = db.relationship('Follower', back_populates='following', foreign_keys='Follower.following_id')
-    following = db.relationship('Follower', back_populates='follower', foreign_keys='Follower.follower_id')
-    comments = db.relationship('Comment', back_populates='user')
-    posts = db.relationship('Post', back_populates='user')
-    post_likes = db.relationship('PostLike', back_populates='user')
-    comment_likes = db.relationship('CommentLike', back_populates='user')
+    followers = db.relationship('Follower', back_populates='following', foreign_keys='Follower.following_id', cascade='all, delete-orphan')
+    following = db.relationship('Follower', back_populates='follower', foreign_keys='Follower.follower_id', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
+    posts = db.relationship('Post', back_populates='user', cascade='all, delete-orphan')
+    post_likes = db.relationship('PostLike', back_populates='user', cascade='all, delete-orphan')
+    comment_likes = db.relationship('CommentLike', back_populates='user', cascade='all, delete-orphan')
 
     #* Instance methods *#
     def has_liked_post(self,id):
@@ -67,7 +67,8 @@ class Post(db.Model, SerializerMixin):
 
     #* Relationships *#
     user = db.relationship('User', back_populates='posts')
-    likes = db.relationship('PostLike', back_populates='post')
+    comments = db.relationship('Comment',back_populates='post', cascade='all, delete-orphan')
+    likes = db.relationship('PostLike', back_populates='post', cascade='all, delete-orphan')
     
     #* Class methods *#
     @classmethod
@@ -103,7 +104,8 @@ class Comment(db.Model, SerializerMixin):
 
     #* Relationships *#
     user = db.relationship('User', back_populates='comments')
-    likes = db.relationship('CommentLike', back_populates='comment')
+    post = db.relationship('Post', back_populates='comments')
+    likes = db.relationship('CommentLike', back_populates='comment', cascade='all, delete-orphan')
 
     #* Class methods *#
     @classmethod
