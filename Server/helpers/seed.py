@@ -55,7 +55,7 @@ with app.app_context():
         # Ensure that the follower and following are different users
         other_user = users[(i + 1) % len(users)]
 
-        follower = Follower(follower_id=user.id, following_id=other_user.id)
+        follower = Follower(follower_id=user.id, following_id=other_user.id, close_friend=random.choice([True, False]))
         session.add(follower)
 
         post_like = PostLike(user_id=user.id, post_id=post.id)

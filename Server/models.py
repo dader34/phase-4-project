@@ -163,7 +163,7 @@ class Follower(db.Model, SerializerMixin):
     
     @validates('close_friend')
     def close_friend_validation(self, key, close_friend):
-        if close_friend and isinstance(close_friend, bool):
+        if (close_friend is not None) and isinstance(close_friend, bool):
             return close_friend
         else:
             raise ValueError("close_friend must be a boolean")
