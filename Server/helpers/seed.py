@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
 import random
-from sqlalchemy import create_engine
-from flask import Flask
 from faker import Faker
 import sys
 sys.path.append('.')
