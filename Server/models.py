@@ -18,6 +18,7 @@ class User(db.Model, SerializerMixin):
     #! Max Lenth of password should be around 15 but bcrypt may make it longer
     #! Solution: Just check if password is greater than 15 on signup rooute, and have database max be higher so it account for bcrypt
     password = db.Column(db.String(75))
+    profile_picture = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     #* Relationships *#
