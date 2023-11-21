@@ -5,29 +5,30 @@ const SignInModal = ({ onClose, onSignIn }) => {
   const [step, setStep] = useState(1);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleUsernameSubmit = (e) => {
     e.preventDefault();
-    // Here you would check if the user exists in your database
+    // TODO: Check if the user exists in your database
     const userExists = true; // Mock response
 
     if (userExists) {
       setStep(2);
     } else {
-      alert('Username does not exist');
+      setError('Username does not exist');
     }
   };
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    // Here you would check the user's credentials against your database
+    // TODO: Check the user's credentials against your database
     const isValidCredentials = true; // Mock response
 
     if (isValidCredentials) {
-      onSignIn(); // Set isAuthenticated to true in the parent component
+      onSignIn(); // Call the onSignIn function provided by the parent component
       onClose(); // Close the modal
     } else {
-      alert('Invalid username or password');
+      setError('Invalid username or password');
     }
   };
 
@@ -39,9 +40,10 @@ const SignInModal = ({ onClose, onSignIn }) => {
           <button onClick={onClose} className="closeButton">&times;</button>
         </div>
         <div className="modalBody">
-          <h2>Sign in to BirdNoise</h2>
           {step === 1 && (
             <form onSubmit={handleUsernameSubmit}>
+              <h2>Sign in to BirdNoise</h2>
+              <label htmlFor="username" className="helperText">Username</label>
               <input
                 id="username"
                 type="text"
@@ -49,14 +51,16 @@ const SignInModal = ({ onClose, onSignIn }) => {
                 onChange={(e) => setUsername(e.target.value)}
                 required
                 autoComplete="username"
-                className="modalInput"
-                placeholder="Username" // Placeholder text
+                className={`modalInput ${error ? 'inputError' : ''}`}
               />
+              {error && <div className="errorText">{error}</div>}
               <button type="submit" className="modalButton">Next</button>
             </form>
           )}
           {step === 2 && (
             <form onSubmit={handleSignIn}>
+              <h2>Welcome back!</h2>
+              <label htmlFor="password" className="helperText">Password</label>
               <input
                 id="password"
                 type="password"
@@ -64,9 +68,9 @@ const SignInModal = ({ onClose, onSignIn }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                className="modalInput"
-                placeholder="Password" // Placeholder text
+                className={`modalInput ${error ? 'inputError' : ''}`}
               />
+              {error && <div className="errorText">{error}</div>}
               <button type="submit" className="modalButton">Sign in</button>
             </form>
           )}
@@ -77,3 +81,4 @@ const SignInModal = ({ onClose, onSignIn }) => {
 };
 
 export default SignInModal;
+ 

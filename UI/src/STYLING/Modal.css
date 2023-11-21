@@ -55,11 +55,18 @@
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 1rem;
-  color: #0139f3; /* Blue text color for input */
+  color: #00020a; /* Blue text color for input */
+}
+
+.helperText {
+  display: block;
+  margin-bottom: 4px;
+  color: #6c8efd;
+  font-size: 0.75rem;
 }
 
 .modalInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #0139f3;
+  color: #5d82fd;
   opacity: 1; /* Firefox */
   font-size: 0.75rem; /* Smaller font size for placeholder */
 }
@@ -87,5 +94,19 @@
 .modalInput:focus,
 .modalButton:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(29, 161, 242, 0.25);
+  box-shadow: 0 0 0 0.2rem rgba(104, 253, 246, 0.849));
+}
+
+.inputError {
+  border: 1px solid #ff0000; /* Red border for error */
+}
+
+.errorText {
+  color: #ff0000; /* Red text for error */
+  margin-top: 8px;
+}
+
+.buttonDisabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
