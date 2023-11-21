@@ -1,93 +1,122 @@
+/* Overall styling for the page container */
 .page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: rgb(240, 240, 240);
-  }
-  
-  .logo-container {
-    text-align: center;
-    width: 100%;
-  }
-  
-  .logo {
-    max-width: 200px; /* Adjust size as needed */
-    height: auto;
-    margin-bottom: 20px;
-  }
-  
-  .header {
-    text-align: center;
-  }
-  
-  .header h1 {
-    color: #4c4af1;
-    margin-bottom: 20px;
-  }
-  
-  .upload-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .upload-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 300px;
-  }
-  
-  .file-input-container {
-    text-align: center;
-    width: 100%;
-  }
-  
-  .file-input-label, .bio-prompt {
-    display: block; 
-    margin: 10px 0;
-  }
-  
-  .custom-file-input {
-    display: none;
-  }
-  
-  .custom-file-input + label {
-    cursor: pointer;
-    padding: 10px 20px;
-    background-color: #ddd;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
- 
-  .custom-file-input + label:hover {
-    background-color: #367c74; 
-    color: #fff;
-    transition: background-color 0.3s ease;
-  }
-  
-  .image-preview {
-    width: 100%;
-    height: auto;
-    max-width: 300px;
-    margin-bottom: 10px;
-  }
-  
-  .submit-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    padding: 10px 20px;
-    margin-top: 10px;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #f5f8fa;
+  font-family: sans-serif;
+  color: #14171a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the logo container */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 15px;
+}
+
+/* Styling for the header */
+.header {
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* Styling for the upload section */
+.upload-section {
+  width: 30%;
+  margin: 0 auto;
+  padding: 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for the upload form */
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Styling for the image preview */
+.image-preview {
+  max-width: 100px;
+  max-height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Styling for the file input container */
+.file-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Styling the file upload input to look like a Twitter button */
+.custom-file-input {
+  background-color: #1da1f2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+/* 
+.file-input-label {
+  cursor: pointer;
+  color: #1da1f2;
+  text-decoration: none;
+} */
+
+.bio-prompt {
+  margin-bottom: 10px;
+}
+
+.bio-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  height: 100px;
+  resize: none;
+}
+
+/* Styling for the submit button */
+.submit-button {
+  background-color: #1da1f2;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 20px;
+}

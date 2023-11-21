@@ -22,7 +22,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './STYLING/index.css';
 import routes from './routes'
-import NavBar from "./Common/NavBar";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -31,8 +30,7 @@ import {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <NavBar />
-    <RouterProvider router={createBrowserRouter(routes)} />
+    <RouterProvider router={createBrowserRouter(routes)}/>
   </React.StrictMode>
 );
 

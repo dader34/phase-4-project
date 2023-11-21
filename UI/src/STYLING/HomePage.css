@@ -30,6 +30,7 @@
 .HomePage-logo img {
     max-width: 100%;
     height: auto;
+    border-radius: 45px;
 }
 
 .HomePage-create,

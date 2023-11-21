@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import {useNavigate} from 'react-router-dom';
 import '../STYLING/BioAndPfp.css';
 
 
 const BioAndPfp = () => {
   const [imagePreview, setImagePreview] = useState(null);
-
+  const nav = useNavigate()
   const formik = useFormik({
     initialValues: {
       file: null,
@@ -35,6 +36,7 @@ const BioAndPfp = () => {
       } catch (error) {
         console.error(error);
       }
+      nav('/home')
     },
   });
 
@@ -60,10 +62,10 @@ const BioAndPfp = () => {
   return (
     <div className="page-container">
       <div className="logo-container">
-        <img src="/Flatironschool.jpg" alt="Logo" className="logo" />
+        <img src="/birdnoise.png" alt="Logo" className="logo" />
       </div>
       <div className="header">
-        <h1>Welcome to BirdNoise! Please Upload a Profile Picture to Get Started!</h1>
+        <h1>Complete your profile</h1>
       </div>
       <div className="upload-section">
         <form onSubmit={handleSubmit} className="upload-form">
@@ -78,17 +80,18 @@ const BioAndPfp = () => {
               accept=".png, .heif, .jpg, .jpeg, .webp, .heic"
               onChange={handleImageChange}
             />
-            <label htmlFor="file" className="file-input-label">Choose a file</label>
-            <label htmlFor="bio" className="bio-prompt">Please add a bio for your profile!</label>
+            <label htmlFor="bio" className="bio-prompt">Tell us something about you! </label>
             <textarea 
               onChange={formik.handleChange} 
               onBlur={formik.handleBlur}
               value={formik.values.bio}
+              // placeholder='Tell us something about you!'
               name="bio" 
               className="bio-textarea"
             />
+            <button type="submit" className="submit-button">Submit</button>
           </div>
-          <button type="submit" className="submit-button">Submit</button>
+          
         </form>
       </div>
     </div>
