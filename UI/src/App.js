@@ -4,6 +4,7 @@ import SignUpModal from './auth/SignUpModal';
 import Feed from './feed/FISFeed'; // Assuming Feed component is FISFeed.js
 import NavBar from './Common/NavBar';
 import HomePage from './pages/HomePage';
+import AfterSignup from './auth/AfterSignup';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,13 +28,13 @@ const App = () => {
   return (
     <div className="App">
       <NavBar onSignOut={handleSignOut} />
-      {!isAuthenticated ? (
+      {isAuthenticated ? (
         <HomePage
           onSignIn={() => setShowSignInModal(true)} // This should trigger the modal
           onCreateAccount={() => setShowSignUpModal(true)}
         />
       ) : (
-        <Feed />
+        <AfterSignup />
       )}
 
       {/* Check if showSignInModal is true, then render the SignInModal */}
