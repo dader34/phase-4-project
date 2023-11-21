@@ -2,6 +2,7 @@ from sqlalchemy_serializer import SerializerMixin
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
+from sqlalchemy.ext.associationproxy import association_proxy
 import re
 
 metadata = MetaData()
@@ -41,16 +42,16 @@ class User(db.Model, SerializerMixin):
             if re.match('^[a-zA-Z0-9_]+$', str(username)):
                 return str(username)
             else:
-                raise ValueError("Name can only contain letters, numbers, and underscores")
+                raise ValueError('Name can only contain letters, numbers, and underscores')
         else:
-            raise ValueError("Username must be between 5 and 12 characters")
+            raise ValueError('Username must be between 5 and 12 characters')
         
     @validates('password')
     def password_validation(self, key, password):
         if password and  5<= len(str(password)) <= 75:
             return password
         else:
-            raise ValueError("Password must be longer than 5 characters and less than 75")
+            raise ValueError('Password must be longer than 5 characters and less than 75')
         
             
 
@@ -68,8 +69,10 @@ class Post(db.Model, SerializerMixin):
     #* Relationships *#
     user = db.relationship('User', back_populates='posts')
     comments = db.relationship('Comment',back_populates='post', cascade='all, delete-orphan')
-    likes = db.relationship('PostLike', back_populates='post', cascade='all, delete-orphan')
-    
+    #! post_likes represents all of the post likes, and likes represents the respective users !#
+    post_likes = db.relationship('PostLike', back_populates='post', cascade='all, delete-orphan')
+    likes = association_proxy("post_likes","user")
+
     #* Class methods *#
     @classmethod
     def get_likes_from_post(cls,id):
@@ -81,14 +84,14 @@ class Post(db.Model, SerializerMixin):
         if user_id and db.session.get(User, user_id):
             return user_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
         
     @validates('content')
     def content_validation(self, key, content):
         if content and (1 <= len(content) <= 300):
             return content
         else:
-            raise ValueError("Content must be between 1 and 300 chars and not empty")
+            raise ValueError('Content must be between 1 and 300 chars and not empty')
         
     
 class Comment(db.Model, SerializerMixin):
@@ -105,7 +108,9 @@ class Comment(db.Model, SerializerMixin):
     #* Relationships *#
     user = db.relationship('User', back_populates='comments')
     post = db.relationship('Post', back_populates='comments')
-    likes = db.relationship('CommentLike', back_populates='comment', cascade='all, delete-orphan')
+    #! comment_likes represents all of the comment likes, and likes represents the respective users !#
+    comment_likes = db.relationship('CommentLike', back_populates='comment', cascade='all, delete-orphan')
+    likes = association_proxy("comment_likes","user")
 
     #* Class methods *#
     @classmethod
@@ -118,21 +123,21 @@ class Comment(db.Model, SerializerMixin):
         if user_id and db.session.get(User, user_id):
             return user_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
         
     @validates('post_id')
     def post_id_validation(self, key, post_id):
         if post_id and db.session.get(Post, post_id):
             return post_id
         else:
-            raise ValueError("Post id must be a valid post")
+            raise ValueError('Post id must be a valid post')
         
     @validates('content')
     def content_validation(self, key, content):
         if content and (1 <= len(content) <= 300):
             return content
         else:
-            raise ValueError("Content must be between 1 and 300 chars and not empty")
+            raise ValueError('Content must be between 1 and 300 chars and not empty')
 
 class Follower(db.Model, SerializerMixin):
     #! Many to Many Relationship !#
@@ -154,21 +159,21 @@ class Follower(db.Model, SerializerMixin):
         if follower_id and db.session.get(User, follower_id):
             return follower_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
     
     @validates('following_id')
     def following_id_validation(self, key, following_id):
         if following_id and db.session.get(User, following_id):
             return following_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
     
     @validates('close_friend')
     def close_friend_validation(self, key, close_friend):
         if (close_friend is not None) and isinstance(close_friend, bool):
             return close_friend
         else:
-            raise ValueError("close_friend must be a boolean")
+            raise ValueError('close_friend must be a boolean')
 
 class CommentLike(db.Model, SerializerMixin):
     __tablename__ = 'comment_likes'
@@ -181,7 +186,7 @@ class CommentLike(db.Model, SerializerMixin):
 
     #* Relationships *#
     user = db.relationship('User', back_populates='comment_likes')
-    comment = db.relationship('Comment', back_populates='likes')
+    comment = db.relationship('Comment', back_populates='comment_likes')
 
     #* Validations *#
     @validates('user_id')
@@ -189,14 +194,14 @@ class CommentLike(db.Model, SerializerMixin):
         if user_id and db.session.get(User, user_id):
             return user_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
         
     @validates('comment_id')
     def comment_id_validation(self, key, comment_id):
         if comment_id and db.session.get(Comment, comment_id):
             return comment_id
         else:
-            raise ValueError("Comment id must be a valid comment")
+            raise ValueError('Comment id must be a valid comment')
 
 class PostLike(db.Model, SerializerMixin):
     __tablename__ = 'post_likes'
@@ -209,7 +214,7 @@ class PostLike(db.Model, SerializerMixin):
 
     #* Relationships *#
     user = db.relationship('User', back_populates='post_likes')
-    post = db.relationship('Post', back_populates='likes')
+    post = db.relationship('Post', back_populates='post_likes')
 
     #* Validations *#
     @validates('user_id')
@@ -217,11 +222,11 @@ class PostLike(db.Model, SerializerMixin):
         if user_id and db.session.get(User, user_id):
             return user_id
         else:
-            raise ValueError("User id must be a valid user")
+            raise ValueError('User id must be a valid user')
         
     @validates('post_id')
     def post_id_validation(self, key, post_id):
         if post_id and db.session.get(Post, post_id):
             return post_id
         else:
-            raise ValueError("Post id must be a valid post")
+            raise ValueError('Post id must be a valid post')
