@@ -1,45 +1,79 @@
-/* Modal Overlay */
 .modalOverlay {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Modal Content */
-  .modalContent {
-    background-color: #fff;
-    max-width: 400px; /* Adjust the maximum width as needed */
-    width: 100%;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-  }
-  
-  /* Modal Header */
-  .modalHeader {
-    display: flex;
-    justify-content: flex-end;
-    padding-bottom: 10px;
-  }
-  
-  .closeButton {
-    font-size: 1.5rem;
-    color: #333;
-    cursor: pointer;
-  }
-  
-  /* Modal Body */
-  .modalBody {
-    padding: 20px;
-  }
-  
-  /* Add more styles as needed to match the Twitter login modal design */
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalContainer {
+  background: #fff;
+  width: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.modalIcon {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+}
+
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.modalBody {
+  padding: 20px;
+  text-align: center;
+}
+
+.modalInput {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.modalButton {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #0139f3b4;
+  color: white;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.modalButton:hover {
+  background-color: #01090e;
+}
+
+.modalInput:focus,
+.modalButton:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(29, 161, 242, 0.25);
+}
