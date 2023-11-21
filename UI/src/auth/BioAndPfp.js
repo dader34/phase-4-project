@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+
 const BioAndPfp = () => {
   const handleSubmit = (e) =>{
     e.preventDefault()
@@ -18,29 +19,13 @@ const BioAndPfp = () => {
     },
     validationSchema: Yup.object({
       file: Yup.mixed()
-        .required('File is required')
-        .test(
-          'fileType',
-          'Invalid file type. Only images are allowed.',
-          (value) => {
-            if (!value || !value[0]) {
-              return true;
-            }
-
-            const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'];
-            const fileNameWithExtension = value.name;
-            const fileExtension = fileNameWithExtension.split('.').pop().toLowerCase();
-            console.log(fileExtension);
-            return allowedExtensions.includes(fileExtension);
-          }
-        ),
+        .required('File is required'),
       bio: Yup.string()
         .min(1, 'Bio must be at least 1 character long')
         .required('Bio is required'),
     }),
     onSubmit: async (values) => {
       // Handle form submission logic here
-      if(formik.errors)
       console.log('Form values:', values);
       const formData = new FormData();
       formData.append('file', values.file);
