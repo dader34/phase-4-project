@@ -20,7 +20,7 @@ const LogInSignUp = ({ onSignIn, onCreateAccount }) => {
           </button>
         </div>
         <div className="HomePage-logo">
-          <img src="/Flatironschool.jpg" alt="Logo" />
+          <img src="/birdnoise.png" alt="Logo" />
         </div>
       </div>
     </div>
