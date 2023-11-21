@@ -18,7 +18,8 @@ with app.app_context():
     users = []
 
     for _ in range(5):
-        user = User(username=fake.pystr(min_chars=5, max_chars=10), password=fake.password())
+        profile_picture_url = fake.image_url()
+        user = User(username=fake.pystr(min_chars=5, max_chars=10), password=fake.password(), profile_picture=profile_picture_url)
         db.session.add(user)
         users.append(user)
 

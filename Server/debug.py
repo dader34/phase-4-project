@@ -2,7 +2,6 @@ import ipdb
 from main import db, app
 from models import User, Post, Comment, Follower, PostLike, CommentLike
 
-# Set the SQLAlchemy database URI to an in-memory SQLite database
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///:memory:"
 
 with app.app_context():
@@ -15,7 +14,6 @@ with app.app_context():
         print(f"Error: {e.args}")
         db.session.rollback()
         
-    # Create the first set of instances
     u1 = User(username="TestName", password="securepassword")
     u2 = User(username="TestName2", password="securepassword2")
     db.session.add_all([u1, u2])
