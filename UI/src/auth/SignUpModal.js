@@ -1,24 +1,19 @@
 import React, { useState } from 'react';
 import '../STYLING/Modal.css';
 import {useNavigate} from 'react-router-dom'
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 const SignUpModal = ({ onClose }) => {
   const [step, setStep] = useState(1);
-  const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [detailsConfirmed, setDetailsConfirmed] = useState(false);
-  const [error, setError] = useState('');
   const nav = useNavigate()
 
   const handleSignUpDetails = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError('Passwords do not match. Please try again.');
-      return;
-    }
-    setError('');
-    setStep(2);
+    console.log("submit")
+    console.log(formik.errors)
+    formik.handleSubmit()
   };
 
   const handleSignUp = (e) => {
@@ -27,10 +22,25 @@ const SignUpModal = ({ onClose }) => {
       // Implement sign-up logic to store user in the database
       nav('/signup/complete')
       //Make Post req to backend, store tokens, and on after signup make patch to db for pfp and bio
-      console.log('Sign Up confirmed with: ', { name, password });
       // onClose(); // Uncomment this line to close the modal after sign up
     }
   };
+
+  const formik = useFormik({
+    initialValues:{
+      name: '',
+      password: '',
+      passwordConfirm: ''
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().min(5, "Username must be at least 5 characters").max(15, "Username has to be 15 characters or less").required("Username is required"),
+      password: Yup.string().min(5, "Password must be at least 5 characters").max(15, "Password has to be 15 characters or less").required("Password is required"),
+      passwordConfirm: Yup.string().test('passwords-match', 'Passwords must match',(value) => value === formik.values.password).required("Passwords must match")
+    }),
+    onSubmit: (values) =>{
+      setStep(2)
+    }
+  })
 
   return (
     <div className="modalOverlay">
@@ -47,8 +57,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 id="name"
                 type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => formik.setFieldValue('name',e.target.value)}
                 required
                 className="modalInput"
               />
@@ -56,8 +65,7 @@ const SignUpModal = ({ onClose }) => {
               <input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => formik.setFieldValue('password',e.target.value)}
                 required
                 className="modalInput"
               />
@@ -65,12 +73,11 @@ const SignUpModal = ({ onClose }) => {
               <input
                 id="confirmPassword"
                 type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => formik.setFieldValue('passwordConfirm',e.target.value)}
                 required
-                className={`modalInput ${error ? 'inputError' : ''}`}
+                className={`modalInput`}
               />
-              {error && <div className="errorText">{error}</div>}
+
               <button type="submit" className="modalButton">Next</button>
             </form>
           )}
@@ -79,7 +86,7 @@ const SignUpModal = ({ onClose }) => {
               <h2>Step 2 of 2</h2>
               <p>Please confirm your details and proceed to create your account.</p>
               <ul>
-                <li>Username: {name}</li>
+                <li>Username: {formik.values.name}</li>
                 {/* Do not display passwords for security reasons */}
               </ul>
               <label>
@@ -90,13 +97,12 @@ const SignUpModal = ({ onClose }) => {
                 />
                 Confirm Details
               </label>
-              <button 
+              <input 
                 onClick={handleSignUp} 
+                type='submit'
                 className={`modalButton ${!detailsConfirmed ? 'buttonDisabled' : ''}`}
                 disabled={!detailsConfirmed}
-              >
-                Sign Up
-              </button>
+              />
             </div>
           )}
         </div>
