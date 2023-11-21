@@ -71,12 +71,8 @@ const FileUpload = () => {
           formik.setFieldValue('file', file);
         }}
       />
-      {/* Handle validation errors here */}
-      {/* <ErrorMessage name="file" render={(msg) => console.log(msg)} /> */}
 
       <textarea onChange={(e) => formik.setFieldValue('bio',e.target.value)} style={{ resize: 'none' }} name="bio" />
-      {/* Handle validation errors here */}
-      {/* <ErrorMessage name="bio" render={(msg) => console.log(msg)} /> */}
 
       <button type="submit">Submit</button>
     </form>
