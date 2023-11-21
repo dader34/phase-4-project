@@ -4,25 +4,35 @@ import '../STYLING/Modal.css';
 const SignUpModal = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [phoneOrEmail, setPhoneOrEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [detailsConfirmed, setDetailsConfirmed] = useState(false);
+  const [error, setError] = useState('');
+
+  // Regular expression to validate phone number (basic validation for example purposes)
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+    return phoneRegex.test(phone);
+  };
 
   const handleSignUpDetails = (e) => {
     e.preventDefault();
-    // Validation logic can be added here
-    setStep(2);
+    if (!validatePhone(phone)) {
+      setError('Invalid phone number. Please enter a valid number.');
+      return;
+    }
+    // Clear any previous error messages
+    setError('');
+    setStep(2); // Transition to confirmation step
   };
 
-  const handleConfirmationChange = (e) => {
-    setDetailsConfirmed(e.target.checked);
-  };
-
+  // Placeholder for actual sign up function
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Actual sign-up logic will go here
-    // Placeholder for now
-    console.log('Sign Up confirmed with: ', { name, phoneOrEmail });
-    onClose(); // Close the modal after sign up
+    if (detailsConfirmed) {
+      // Here you will handle the actual sign-up logic
+      console.log('Sign Up confirmed with: ', { name, phone });
+      onClose(); // Close the modal after sign up
+    }
   };
 
   return (
@@ -43,17 +53,18 @@ const SignUpModal = ({ onClose }) => {
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="modalInput"
-                placeholder="Name"
+                placeholder="Username"
               />
               <input
-                id="phoneOrEmail"
-                type="text"
-                value={phoneOrEmail}
-                onChange={(e) => setPhoneOrEmail(e.target.value)}
+                id="phone"
+                type="tel" // Change to "tel" to signify telephone input
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
-                className="modalInput"
-                placeholder="Phone or email"
+                className={`modalInput ${error ? 'inputError' : ''}`}
+                placeholder="Phone Number"
               />
+              {error && <div className="errorText">{error}</div>}
               <button type="submit" className="modalButton">Next</button>
             </form>
           )}
@@ -63,13 +74,13 @@ const SignUpModal = ({ onClose }) => {
               <p>Please confirm your details and proceed to create your account.</p>
               <ul>
                 <li>Name: {name}</li>
-                <li>Phone or Email: {phoneOrEmail}</li>
+                <li>Phone: {phone}</li>
               </ul>
               <label>
                 <input
                   type="checkbox"
                   checked={detailsConfirmed}
-                  onChange={handleConfirmationChange}
+                  onChange={(e) => setDetailsConfirmed(e.target.checked)}
                 />
                 Confirm Details
               </label>
@@ -89,6 +100,3 @@ const SignUpModal = ({ onClose }) => {
 };
 
 export default SignUpModal;
-
-
-

@@ -89,3 +89,17 @@
   outline: none;
   box-shadow: 0 0 0 0.2rem rgba(29, 161, 242, 0.25);
 }
+
+.inputError {
+  border: 1px solid #ff0000; /* Red border for error */
+}
+
+.errorText {
+  color: #ff0000; /* Red text for error */
+  margin-top: 8px;
+}
+
+.buttonDisabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
