@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import SignInModal from './auth/SignInModal';
+import SignUpModal from './auth/SignUpModal';
+import Feed from './feed/FISFeed'; // Assuming Feed component is FISFeed.js
+import NavBar from './Common/NavBar';
+import HomePage from './pages/HomePage';
 
-function App() {
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+
+  const handleSignIn = () => {
+    setIsAuthenticated(true);
+    setShowSignInModal(false);
+  };
+
+  const handleSignOut = () => {
+    setIsAuthenticated(false);
+  };
+
+  const handleSignUp = () => {
+    setIsAuthenticated(true);
+    setShowSignUpModal(false);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar onSignOut={handleSignOut} />
+      {!isAuthenticated ? (
+        <HomePage
+          onSignIn={() => setShowSignInModal(true)} // This should trigger the modal
+          onCreateAccount={() => setShowSignUpModal(true)}
+        />
+      ) : (
+        <Feed />
+      )}
+
+      {/* Check if showSignInModal is true, then render the SignInModal */}
+      {showSignInModal && (
+        <SignInModal onClose={() => setShowSignInModal(false)} onSignIn={handleSignIn} />
+      )}
+
+      {showSignUpModal && (
+        <SignUpModal onClose={() => setShowSignUpModal(false)} onSignUp={handleSignUp} />
+      )}
     </div>
   );
-}
+};
 
 export default App;
