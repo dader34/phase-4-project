@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import '../STYLING/Modal.css';
 
 const SignUpModal = ({ onClose }) => {
@@ -6,6 +7,7 @@ const SignUpModal = ({ onClose }) => {
   const [name, setName] = useState('');
   const [phoneOrEmail, setPhoneOrEmail] = useState('');
   const [detailsConfirmed, setDetailsConfirmed] = useState(false);
+  const nav = useNavigate()
 
   const handleSignUpDetails = (e) => {
     e.preventDefault();
@@ -21,6 +23,7 @@ const SignUpModal = ({ onClose }) => {
     e.preventDefault();
     // Actual sign-up logic will go here
     // Placeholder for now
+    nav('/signup/complete')
     console.log('Sign Up confirmed with: ', { name, phoneOrEmail });
     onClose(); // Close the modal after sign up
   };
