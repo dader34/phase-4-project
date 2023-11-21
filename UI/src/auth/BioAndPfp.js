@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const FileUpload = () => {
+const BioAndPfp = () => {
   const handleSubmit = (e) =>{
     e.preventDefault()
     //Formik errors handle right here until further notice
@@ -79,4 +79,4 @@ const FileUpload = () => {
   );
 };
 
-export default FileUpload;
+export default BioAndPfp;
