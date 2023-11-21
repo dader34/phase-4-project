@@ -18,7 +18,10 @@ class User(db.Model, SerializerMixin):
     #! Max Lenth of password should be around 15 but bcrypt may make it longer
     #! Solution: Just check if password is greater than 15 on signup rooute, and have database max be higher so it account for bcrypt
     password = db.Column(db.String(75))
+    #* https://backend.danner.repl.co/ *#
+    #* Make post here on frontend signup then get response and send back to backend in post req to create user (signup) *#
     profile_picture = db.Column(db.String(500))
+    user_bio = db.Column(db.String(300), defailt="My bio")
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     #* Relationships *#
