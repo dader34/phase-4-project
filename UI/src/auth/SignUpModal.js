@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
 import '../STYLING/Modal.css';
 
 const SignUpModal = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [phoneOrEmail, setPhoneOrEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [detailsConfirmed, setDetailsConfirmed] = useState(false);
-  const nav = useNavigate()
+  const [error, setError] = useState('');
 
   const handleSignUpDetails = (e) => {
     e.preventDefault();
-    // Validation logic can be added here
+    if (password !== confirmPassword) {
+      setError('Passwords do not match. Please try again.');
+      return;
+    }
+    setError('');
     setStep(2);
-  };
-
-  const handleConfirmationChange = (e) => {
-    setDetailsConfirmed(e.target.checked);
   };
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Actual sign-up logic will go here
-    // Placeholder for now
-    nav('/signup/complete')
-    console.log('Sign Up confirmed with: ', { name, phoneOrEmail });
-    onClose(); // Close the modal after sign up
+    if (detailsConfirmed) {
+      // Implement sign-up logic to store user in the database
+      console.log('Sign Up confirmed with: ', { name, password });
+      // onClose(); // Uncomment this line to close the modal after sign up
+    }
   };
 
   return (
@@ -39,6 +39,7 @@ const SignUpModal = ({ onClose }) => {
           {step === 1 && (
             <form onSubmit={handleSignUpDetails}>
               <h2>Create your account</h2>
+              <label htmlFor="name" className="helperText">Username</label>
               <input
                 id="name"
                 type="text"
@@ -46,17 +47,26 @@ const SignUpModal = ({ onClose }) => {
                 onChange={(e) => setName(e.target.value)}
                 required
                 className="modalInput"
-                placeholder="Name"
               />
+              <label htmlFor="password" className="helperText">Password</label>
               <input
-                id="phoneOrEmail"
-                type="text"
-                value={phoneOrEmail}
-                onChange={(e) => setPhoneOrEmail(e.target.value)}
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 className="modalInput"
-                placeholder="Phone or email"
               />
+              <label htmlFor="confirmPassword" className="helperText">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className={`modalInput ${error ? 'inputError' : ''}`}
+              />
+              {error && <div className="errorText">{error}</div>}
               <button type="submit" className="modalButton">Next</button>
             </form>
           )}
@@ -65,14 +75,14 @@ const SignUpModal = ({ onClose }) => {
               <h2>Step 2 of 2</h2>
               <p>Please confirm your details and proceed to create your account.</p>
               <ul>
-                <li>Name: {name}</li>
-                <li>Phone or Email: {phoneOrEmail}</li>
+                <li>Username: {name}</li>
+                {/* Do not display passwords for security reasons */}
               </ul>
               <label>
                 <input
                   type="checkbox"
                   checked={detailsConfirmed}
-                  onChange={handleConfirmationChange}
+                  onChange={(e) => setDetailsConfirmed(e.target.checked)}
                 />
                 Confirm Details
               </label>
@@ -92,6 +102,3 @@ const SignUpModal = ({ onClose }) => {
 };
 
 export default SignUpModal;
-
-
-
