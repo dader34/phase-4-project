@@ -1,19 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import '../STYLING/BioAndPfp.css';
 
 const BioAndPfp = () => {
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    //Formik errors handle right here until further notice
-    console.log(formik.errors)
-    formik.handleSubmit()
-
-  }
+  const [imagePreview, setImagePreview] = useState(null);
 
   const formik = useFormik({
     initialValues: {
-      file: null,  // Updated to null to match the file type in the schema
+      file: null,
       bio: '',
     },
     validationSchema: Yup.object({
@@ -26,11 +21,9 @@ const BioAndPfp = () => {
             if (!value || !value[0]) {
               return true;
             }
-
             const allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'];
             const fileNameWithExtension = value.name;
             const fileExtension = fileNameWithExtension.split('.').pop().toLowerCase();
-            console.log(fileExtension);
             return allowedExtensions.includes(fileExtension);
           }
         ),
@@ -58,25 +51,61 @@ const BioAndPfp = () => {
     },
   });
 
+  const handleImageChange = event => {
+    const file = event.currentTarget.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      formik.setFieldValue('file', file);
+    }
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (formik.isValid) {
+      formik.handleSubmit();
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>File Upload Example</h2>
-      <input
-        type="file"
-        className="custom-file-input"
-        name="file"
-        accept=".png, .heif, .jpg, .jpeg, .webp, .heic"
-        onChange={(event) => {
-          const file = event.currentTarget.files[0];
-          formik.setFieldValue('file', file);
-        }}
-      />
-
-      <textarea onChange={(e) => formik.setFieldValue('bio',e.target.value)} style={{ resize: 'none' }} name="bio" />
-
-      <button type="submit">Submit</button>
-    </form>
-  );
+    <div className="page-container">
+      <div className="logo-container">
+        <img src="/Flatironschool.jpg" alt="Logo" className="logo" />
+      </div>
+      <div className="header">
+        <h1>Welcome to BirdNoise! Please Upload a Profile Picture to Get Started!</h1>
+      </div>
+      <div className="upload-section">
+        <form onSubmit={handleSubmit} className="upload-form">
+          <h2>Profile Photo Preview</h2>
+          {imagePreview && <img src={imagePreview} alt="Preview" className="image-preview" />}
+          <div className="file-input-container">
+            <input
+              type="file"
+              id="file"
+              className="custom-file-input"
+              name="file"
+              accept=".png, .heif, .jpg, .jpeg, .webp, .heic"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="file" className="file-input-label">Choose a file</label>
+            <label htmlFor="bio" className="bio-prompt">Please add a bio for your profile!</label>
+            <textarea 
+              onChange={formik.handleChange} 
+              onBlur={formik.handleBlur}
+              value={formik.values.bio}
+              name="bio" 
+              className="bio-textarea"
+            />
+          </div>
+          <button type="submit" className="submit-button">Submit</button>
+        </form>
+      </div>
+    </div>
+  );  
 };
 
 export default BioAndPfp;
