@@ -26,6 +26,7 @@ const SignUpModal = ({ onClose }) => {
     if (detailsConfirmed) {
       // Implement sign-up logic to store user in the database
       nav('/signup/complete')
+      //Make Post req to backend, store tokens, and on after signup make patch to db for pfp and bio
       console.log('Sign Up confirmed with: ', { name, password });
       // onClose(); // Uncomment this line to close the modal after sign up
     }

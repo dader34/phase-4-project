@@ -1,8 +1,8 @@
-import FileUpload from "./FileUpload";
+import BioAndPfp from "./BioAndPfp";
 
 const AfterSignup = () =>{
     return(
-        <FileUpload />
+        <BioAndPfp />
     )
 }
 export default AfterSignup;
