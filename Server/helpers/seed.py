@@ -4,13 +4,11 @@ import random
 from faker import Faker
 import sys
 sys.path.append('.')
-#! Make sure to run this file from one directory up, or move the file up one directory or else it wont work !#
-from models import db, User, Post, Comment, Follower, PostLike, CommentLike
+from models import db, User, Post, Follower, PostLike
 from main import app
 
 # Create a Flask application context
 with app.app_context():
-
 
     fake = Faker()
 
@@ -29,13 +27,16 @@ with app.app_context():
     random.shuffle(users)
 
     for i, user in enumerate(users):
-        post = Post(user_id=user.id, content=fake.text())
-        db.session.add(post)
-        db.session.commit()  # Commit the post to get the post.id
+        # Create a root post for each user
+        root_post = Post(user_id=user.id, content=fake.text())
+        db.session.add(root_post)
+        db.session.commit()  # Commit the root post to get the post.id
 
-        comment = Comment(user_id=user.id, post_id=post.id, content=fake.text())
-        db.session.add(comment)
-        db.session.commit()  # Commit the comment to get the comment.id
+        # Create comments (nested posts) for the root post
+        for _ in range(random.randint(1, 3)):
+            nested_post = Post(user_id=user.id, content=fake.text(), parent_post=root_post.id)
+            db.session.add(nested_post)
+            db.session.commit()  # Commit the nested post to get the post.id
 
         # Ensure that the follower and following are different users
         other_user = users[(i + 1) % len(users)]
@@ -43,11 +44,8 @@ with app.app_context():
         follower = Follower(follower_id=user.id, following_id=other_user.id, close_friend=random.choice([True, False]))
         db.session.add(follower)
 
-        post_like = PostLike(user_id=user.id, post_id=post.id)
+        post_like = PostLike(user_id=user.id, post_id=root_post.id)
         db.session.add(post_like)
-
-        comment_like = CommentLike(user_id=user.id, comment_id=comment.id)
-        db.session.add(comment_like)
 
     # Commit the changes
     db.session.commit()
