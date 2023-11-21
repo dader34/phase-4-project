@@ -40,10 +40,8 @@ const SignInModal = ({ onClose, onSignIn }) => {
         </div>
         <div className="modalBody">
           <h2>Sign in to BirdNoise</h2>
-          {/* Your forms for sign-in */}
           {step === 1 && (
             <form onSubmit={handleUsernameSubmit}>
-              <label htmlFor="username">Username</label>
               <input
                 id="username"
                 type="text"
@@ -52,13 +50,13 @@ const SignInModal = ({ onClose, onSignIn }) => {
                 required
                 autoComplete="username"
                 className="modalInput"
+                placeholder="Username" // Placeholder text
               />
               <button type="submit" className="modalButton">Next</button>
             </form>
           )}
           {step === 2 && (
             <form onSubmit={handleSignIn}>
-              <label htmlFor="password">Password</label>
               <input
                 id="password"
                 type="password"
@@ -67,6 +65,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
                 required
                 autoComplete="current-password"
                 className="modalInput"
+                placeholder="Password" // Placeholder text
               />
               <button type="submit" className="modalButton">Sign in</button>
             </form>

@@ -55,6 +55,13 @@
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 1rem;
+  color: #0139f3; /* Blue text color for input */
+}
+
+.modalInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #0139f3;
+  opacity: 1; /* Firefox */
+  font-size: 0.75rem; /* Smaller font size for placeholder */
 }
 
 .modalButton {
@@ -66,6 +73,11 @@
   color: white;
   cursor: pointer;
   margin-top: 20px;
+}
+
+.buttonDisabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .modalButton:hover {
