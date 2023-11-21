@@ -1,0 +1,126 @@
+.App {
+  text-align: center;
+}
+
+/* Remove the App-logo styles if you're not using the React logo */
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/* Update the App-header to match the Twitter login page style */
+.App-header {
+  background-color: #fff; /* Changed to white to match Twitter's background */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: black; /* Changed to black for better contrast */
+}
+
+/* You can remove the App-link style if it's not needed */
+.App-link {
+  color: #61dafb;
+}
+
+/* Add styles for the main content */
+.App-main {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Style for the page title */
+.App-main h1 {
+  font-size: 48px; /* Large font size for the main title */
+  margin-bottom: 20px; /* Space below the title */
+}
+
+/* Style for the subtitle */
+.App-main h2 {
+  font-size: 24px; /* Smaller font size for the subtitle */
+  margin-bottom: 32px; /* Space below the subtitle */
+}
+
+/* Generic button styles */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 20px;
+  background-color: #1DA1F2; /* Twitter's button color */
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Hover state for buttons */
+button:hover {
+  background-color: #1A91DA;
+}
+
+/* Keyframes for the App-logo animation, keep it if you're using the logo */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.App {
+  text-align: center;
+}
+
+.App-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.App-main {
+  flex: 1;
+  padding: 20px;
+  /* Add further styling here */
+}
+
+.App-logo-container {
+  flex: 1;
+  /* Adjust the size and layout of the image container */
+}
+
+.App-logo-image {
+  max-width: 100%;
+  height: auto;
+  /* This will ensure that the image is responsive and doesn't exceed its container's width */
+}
+
+.App-footer {
+  padding: 20px;
+  background-color: #fff; /* or any other color you prefer */
+  border-top: 1px solid #e6ecf0; /* Twitter uses a light border on the top of the footer */
+  text-align: center;
+}
+
+.footer-link {
+  color: #1da1f2; /* This is Twitter's link color */
+  margin: 0 10px; /* Add some horizontal space between links */
+  text-decoration: none; /* Removes the underline from links */
+  font-size: 14px;
+  transition: color 0.2s; /* Smooth color transition for hover effect */
+}
+
+.footer-link:hover {
+  text-decoration: underline; /* Underline on hover for better user indication */
+  color: #1a91da; /* Slightly darker blue on hover */
+}
+

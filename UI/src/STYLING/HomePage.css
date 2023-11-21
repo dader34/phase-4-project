@@ -1,0 +1,62 @@
+.HomePage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fff;
+    color: #000;
+    font-family: 'Arial', sans-serif;
+}
+
+.HomePage-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.HomePage-text {
+    width: 50%;
+    text-align: center;
+}
+
+.HomePage-logo {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.HomePage-logo img {
+    max-width: 100%;
+    height: auto;
+}
+
+.HomePage-create,
+.HomePage-signin {
+    padding: 1rem 2rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 9999px;
+    background-color: #1DA1F2;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.HomePage-signin {
+    background-color: transparent;
+    color: #1DA1F2;
+    border: 1px solid #1DA1F2;
+}
+
+.HomePage-create:hover,
+.HomePage-signin:hover {
+    background-color: #1A91DA;
+    color: white;
+}
+
+.HomePage-signin:hover {
+    border-color: #1A91DA;
+}
