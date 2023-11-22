@@ -73,17 +73,6 @@
 ### );
 
 
-###*Comments table schema
-### CREATE TABLE Comments (
-###     comment_id INT PRIMARY KEY,
-###     user_id INT,
-###     post_id INT,
-###     content TEXT,
-###     likes INT,
-###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
-###     FOREIGN KEY (post_id) REFERENCES Posts(post_id)
-### );
 
 ###*Followers table schema
 ### CREATE TABLE Followers (
@@ -98,7 +87,7 @@
 ### CREATE TABLE Likes (
 ###     like_id INT PRIMARY KEY,
 ###     user_id INT,
-###     post/comment id INT,
+###     post id INT,
 ###     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 ###     FOREIGN KEY (user_id) REFERENCES Users(user_id),
 ### );
@@ -127,9 +116,9 @@
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from flask_restful import Api
+from flask_restful import Api, Resource
 from flask_migrate import Migrate
-from models import db
+from models import db, Post, User, PostLike, Follower
 import bcrypt
 
 app = Flask(__name__)
@@ -137,12 +126,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
 db.init_app(app)
-
+api = Api(app)
 migrate = Migrate(app,db)
 
 @app.route('/')
 def landing():
     return '<h1>Hello World!</h1>'
+
+class GetAllPosts(Resource):
+    def get(self):
+        return [post.to_dict() for post in Post.query.all()]
+
+api.add_resource(GetAllPosts,'/posts')
 
 if(__name__=="__main__"):
     app.run(host='0.0.0.0',port=5555,debug=True)

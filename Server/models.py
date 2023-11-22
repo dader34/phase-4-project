@@ -20,7 +20,7 @@ class User(db.Model, SerializerMixin):
     password = db.Column(db.String(75))
     #* https://backend.danner.repl.co/ *#
     #* Make post here on frontend signup then get response and send back to backend in post req to create user (signup) *#
-    profile_picture = db.Column(db.String(500))
+    profile_picture = db.Column(db.String(500), default='https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg')
     user_bio = db.Column(db.String(300), default="My bio")
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
@@ -31,6 +31,7 @@ class User(db.Model, SerializerMixin):
     posts = db.relationship('Post', back_populates='user', cascade='all, delete-orphan')
     post_likes = db.relationship('PostLike', back_populates='user', cascade='all, delete-orphan')
     # comment_likes = db.relationship('CommentLike', back_populates='user', cascade='all, delete-orphan')
+
 
     # #* Instance methods *#
     # def has_liked_post(self,id):
@@ -68,6 +69,7 @@ class Post(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     content = db.Column(db.String(300))
+    #Stretch goal, upload images
     parent_post = db.Column(db.Integer, db.ForeignKey("posts.id"))
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
@@ -79,10 +81,8 @@ class Post(db.Model, SerializerMixin):
     post_likes = db.relationship('PostLike', back_populates='post', cascade='all, delete-orphan')
     likes = association_proxy("post_likes","user")
 
-    #* Class methods *#
-    @classmethod
-    def get_likes_from_post(cls,id):
-        return len([like for like in PostLike.query.all() if like.post.id == id])
+    #* Serialization Rules *#
+    serialize_only = ('id','user_id','content','parent_post','created_at','user.id','user.username','comments.id','likes.username')
     
     #* Validations *#
     @validates('user_id')
