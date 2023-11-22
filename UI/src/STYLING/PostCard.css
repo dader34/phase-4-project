@@ -1,0 +1,107 @@
+/* PostCard.css */
+.post-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-pfp img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .post-body {
+    margin: 10px 0;
+    flex-grow: 1; /* Allow post body to grow and take remaining space */
+  }
+  
+  .buttons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .like-button,
+  .comment-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  .likes-counter {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  
+  .like-button:hover,
+  .comment-button:hover {
+    color: #4CAF50; /* Change color on hover (you can customize this) */
+  }
+  .ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 200ms ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+  }
+  
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
+  }
+  
+  .ReactModal__Content {
+    position: absolute;
+    transform: translateX(100%); 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: white;
+    padding: 20px;
+    max-width: 350px; /* Set your desired max-width */
+    max-height: 200px; /* Set your desired max-height */
+    width: 100%;
+    outline: none;
+  }
+  
+  .textarea-container {
+    margin-bottom: 15px;
+  }
+  
+  /* Style the textarea */
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    height: 50%;
+    resize: none; /* Disable textarea resizing */
+    margin-bottom: 15px;
+  }
+  
+  /* Style the buttons */
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  button:last-child {
+    margin-right: 0;
+  }
