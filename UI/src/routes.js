@@ -2,6 +2,7 @@ import Feed from "./feed/Feed";
 import HomePage from "./pages/HomePage";
 import App from "./App";
 import BioAndPfp from "./pages/BioAndPfp";
+import ViewOnePost from "./pages/ViewOnePost";
 
 const routes = [
     {
@@ -21,6 +22,10 @@ const routes = [
         {
             path: '/home',
             element: <Feed />
+        },
+        {
+            path: '/post/:id',
+            element: <ViewOnePost/>
         }
         ]
     },

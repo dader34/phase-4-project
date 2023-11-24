@@ -38,7 +38,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
     <div className="modalOverlay">
       <div className="modalContainer">
         <div className="modalHeader">
-          <img src="/Flatironschool.jpg" alt="Flatiron School Logo" className="modalIcon" />
+          <img src="/birdnoise.png" alt="Flatiron School Logo" className="modalIcon" />
           <button onClick={onClose} className="closeButton">&times;</button>
         </div>
         <div className="modalBody">
