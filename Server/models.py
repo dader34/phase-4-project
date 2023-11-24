@@ -32,13 +32,6 @@ class User(db.Model, SerializerMixin):
     post_likes = db.relationship('PostLike', back_populates='user', cascade='all, delete-orphan')
     # comment_likes = db.relationship('CommentLike', back_populates='user', cascade='all, delete-orphan')
 
-
-    # #* Instance methods *#
-    # def has_liked_post(self,id):
-    #     return self.id in [like.user.id for like in db.session.get(Post, id).likes]
-
-    # def has_liked_comment(self,id):
-    #     return self.id in [like.user.id for like in db.session.get(Comment, id).likes]
     
     #* Validations *#
     @validates('username')
@@ -99,51 +92,6 @@ class Post(db.Model, SerializerMixin):
         else:
             raise ValueError('Content must be between 1 and 300 chars and not empty')
         
-    
-# class Comment(db.Model, SerializerMixin):
-#     #! One To Many Relationship Comment -> CommentLikes !#
-#     __tablename__ = 'comments'
-
-#     #* sql rows *#
-#     id = db.Column(db.Integer, primary_key=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-#     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-#     content = db.Column(db.String(300))
-#     created_at = db.Column(db.DateTime, server_default=db.func.now())
-
-#     #* Relationships *#
-#     user = db.relationship('User', back_populates='comments')
-#     post = db.relationship('Post', back_populates='comments')
-#     #! comment_likes represents all of the comment likes, and likes represents the respective users !#
-#     comment_likes = db.relationship('CommentLike', back_populates='comment', cascade='all, delete-orphan')
-#     likes = association_proxy("comment_likes","user")
-
-#     #* Class methods *#
-#     @classmethod
-#     def get_likes_from_comment(cls,id):
-#         return len([like for like in CommentLike.query.all() if like.comment.id == id])
-    
-#     #* Validations *#
-#     @validates('user_id')
-#     def user_id_validation(self, key, user_id):
-#         if user_id and db.session.get(User, user_id):
-#             return user_id
-#         else:
-#             raise ValueError('User id must be a valid user')
-        
-#     @validates('post_id')
-#     def post_id_validation(self, key, post_id):
-#         if post_id and db.session.get(Post, post_id):
-#             return post_id
-#         else:
-#             raise ValueError('Post id must be a valid post')
-        
-#     @validates('content')
-#     def content_validation(self, key, content):
-#         if content and (1 <= len(content) <= 300):
-#             return content
-#         else:
-#             raise ValueError('Content must be between 1 and 300 chars and not empty')
 
 class Follower(db.Model, SerializerMixin):
     #! Many to Many Relationship !#
@@ -181,33 +129,6 @@ class Follower(db.Model, SerializerMixin):
         else:
             raise ValueError('close_friend must be a boolean')
 
-# class CommentLike(db.Model, SerializerMixin):
-    # __tablename__ = 'comment_likes'
-
-    # #* sql rows *#
-    # id = db.Column(db.Integer, primary_key=True)
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    # comment_id = db.Column(db.Integer, db.ForeignKey('comments.id'))
-    # created_at = db.Column(db.DateTime, server_default=db.func.now())
-
-    # #* Relationships *#
-    # user = db.relationship('User', back_populates='comment_likes')
-    # comment = db.relationship('Comment', back_populates='comment_likes')
-
-    # #* Validations *#
-    # @validates('user_id')
-    # def user_id_validation(self, key, user_id):
-    #     if user_id and db.session.get(User, user_id):
-    #         return user_id
-    #     else:
-    #         raise ValueError('User id must be a valid user')
-        
-    # @validates('comment_id')
-    # def comment_id_validation(self, key, comment_id):
-    #     if comment_id and db.session.get(Comment, comment_id):
-    #         return comment_id
-    #     else:
-    #         raise ValueError('Comment id must be a valid comment')
 
 class PostLike(db.Model, SerializerMixin):
     __tablename__ = 'post_likes'

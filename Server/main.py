@@ -136,6 +136,18 @@ def landing():
 class GetAllPosts(Resource):
     def get(self):
         return [post.to_dict() for post in Post.query.all()]
+    
+class GetAllPostsFromPost(Resource):
+    def get(self,id):
+        if post := db.session.get(Post,id):
+            return{
+                'main':post.to_dict(rules=('-user.likes','-comments','-user_id')),
+                'comments':[
+                    comment.to_dict(rules=('-user_id',)) for comment in post.comments
+                ]
+            }
+        
+api.add_resource(GetAllPostsFromPost, '/posts/<int:id>')
 
 api.add_resource(GetAllPosts,'/posts')
 
