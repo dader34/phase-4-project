@@ -143,7 +143,7 @@ class PostById(Resource):
     def get(self,id):
         if post := db.session.get(Post,id):
             try:
-                post.views += 1
+                post.views += 0.5
                 db.session.commit()
             except Exception as e:
                 print("Could not update view count")
