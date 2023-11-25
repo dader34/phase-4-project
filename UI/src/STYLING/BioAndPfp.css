@@ -1,10 +1,14 @@
 /* Overall styling for the page container */
+.outlet{
+  height: 100vh;
+}
+
 .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #f5f8fa;
   font-family: sans-serif;
   color: #14171a;
