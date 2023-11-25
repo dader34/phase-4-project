@@ -3,6 +3,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useNavigate} from 'react-router-dom';
 import '../STYLING/BioAndPfp.css';
+import toast, { Toaster } from 'react-hot-toast';
+
 
 
 const BioAndPfp = () => {
@@ -25,18 +27,31 @@ const BioAndPfp = () => {
       console.log('Form values:', values);
       const formData = new FormData();
       formData.append('file', values.file);
-
+    
       try {
-        const response = await fetch('https://backend.danner.repl.co/upload', {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await response.json();
-        console.log(data);
+        // Wrap the asynchronous operation with toast.promise
+        await toast.promise(
+          fetch('https://backend.danner.repl.co/upload', {
+            method: 'POST',
+            body: formData,
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+            // Additional success logic if needed
+          }),
+          {
+            loading: 'Uploading...',
+            success: 'Success!',
+            error: 'Submission failed',
+          }
+        );
+    
+        // Navigate to '/home' after successful submission
+        nav('/home');
       } catch (error) {
         console.error(error);
       }
-      nav('/home')
     },
   });
 
@@ -52,10 +67,17 @@ const BioAndPfp = () => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (formik.isValid) {
-      formik.handleSubmit();
+    
+    await formik.submitForm();
+
+    const errors = await formik.validateForm();
+    
+    const errorKeys = Object.keys(errors)
+
+    if (Object.keys(errors).length > 0) {
+      toast.error(errors[errorKeys[0]])
     }
   };
 

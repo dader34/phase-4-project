@@ -136,8 +136,28 @@ def landing():
 class GetAllPosts(Resource):
     def get(self):
         return [post.to_dict() for post in Post.query.all()]
-
+    
 api.add_resource(GetAllPosts,'/posts')
+    
+class PostById(Resource):
+    def get(self,id):
+        if post := db.session.get(Post,id):
+            try:
+                post.views += 0.5
+                db.session.commit()
+            except Exception as e:
+                print("Could not update view count")
+                print(e)
+            return{
+                'main':post.to_dict(rules=('-user.likes','-comments','-user_id')),
+                'comments':[
+                    comment.to_dict(rules=('-user_id',)) for comment in post.comments
+                ]
+            }
+        
+api.add_resource(PostById, '/posts/<int:id>')
+
+
 
 if(__name__=="__main__"):
     app.run(host='0.0.0.0',port=5555,debug=True)

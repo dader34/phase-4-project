@@ -18,6 +18,11 @@
 //? /chat/<int:ChatId> // <-- Displays a chat session with a certain id
 //! End of views !//
 
+
+
+
+//Possibly add retweet? Find way to style it and have direct link
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './STYLING/index.css';

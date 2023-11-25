@@ -2,12 +2,14 @@ import Feed from "./feed/Feed";
 import HomePage from "./pages/HomePage";
 import App from "./App";
 import BioAndPfp from "./pages/BioAndPfp";
+import ViewOnePost from "./feed/ViewOnePost";
+import ErrorPage from "./pages/ErrorPage";
 
 const routes = [
     {
         path: "/",
         element: <App />,
-        // errorElement: <ErrorPage />,
+        errorElement: <ErrorPage />,
         children: [
         {
             path: "/",
@@ -21,6 +23,10 @@ const routes = [
         {
             path: '/home',
             element: <Feed />
+        },
+        {
+            path: '/home/post/:id',
+            element: <ViewOnePost/>
         }
         ]
     },
