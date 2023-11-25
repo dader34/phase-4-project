@@ -1,0 +1,64 @@
+/* ErrorPage.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f8fa;
+  }
+  
+  .error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .error-content {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .error-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo {
+    /* width: 50px; */
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #1da1f2;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .back-link {
+    display: inline-block;
+    background-color: #1da1f2;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-link:hover {
+    background-color: #177bb5;
+  }
+  

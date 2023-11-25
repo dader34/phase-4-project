@@ -11,7 +11,7 @@ const PostCard = ({ author, content, date, likes, id }) => {
     const nav = useNavigate()
     //  Set liked to true if self uid is in likes array
     const [likeAmt,setLikeAmt] = useState(likes.length)
-    const [liked, setLiked] = useState(likes.filter(like => like.id === UID))
+    const [liked, setLiked] = useState(likes.filter(like => like.id === UID).length>0)
 
   const openModal = (e) => {
     e.stopPropagation()
@@ -34,17 +34,24 @@ const PostCard = ({ author, content, date, likes, id }) => {
     e.stopPropagation()
     //Make post request to like/unlike
     //get back response # of likes
+    console.log(UID)
+    // console.log(likes)
+    // likes.forEach(like => console.log(like.id === UID))
+    console.log(!likes.filter(like => like.id === UID).length>0)
+    if(!likes.filter(like => like.id === UID).length>0){
+        console.log("Passed")
+    }
     if(liked){
-        setLiked(false)
         setLikeAmt(current => current - 1)
+        setLiked(false)
     }else{
-        setLiked(true)
         setLikeAmt(current => current + 1)
+        setLiked(true)
     }
   }
 
   return (
-    <div className="post-container" onClick={() => nav(`/post/${id}`)}>
+    <div className="post-container" onClick={() => nav(`/home/post/${id}`)}>
       <div className="user-pfp">
         <img src={author.profile_picture} alt={author.name} />
       </div>

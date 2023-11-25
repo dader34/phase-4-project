@@ -2,37 +2,29 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     flex-direction: column;
     width: 50%;
     transform: translateX(50%);
-}
-
-
-.comments {
-    height: auto;
+    margin-top: 70px;
+  }
+  
+  .comments {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Add styles for MainPost component */
-
-.main-post {
+  }
+  
+  .main-post {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* width: 60%; */
-    /* margin-right: 20px;
-    margin-left: 20px; */
     max-width: 400px;
-    margin-top: 175px;
-    /* margin-bottom: 20px; Add margin at the bottom for separation */
-}
+    margin-bottom: 20px;
+  }
 
 .user{
     background-color: #fff;

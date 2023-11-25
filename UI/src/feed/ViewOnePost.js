@@ -27,8 +27,10 @@ const ViewOnePost = () => {
             </div>
             <div className='comments'>
                 {/* Render child posts */}
-                {post.comments.forEach(comment => {console.log(comment);return(<h1></h1>)})}
-                {post.comments.map(comment => <PostCard key={comment.id} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} content={comment.content} likes={comment.likes} id={comment.id}/>)}
+                {post.comments.length?
+                post.comments.map(comment => <PostCard key={comment.id} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} content={comment.content} likes={comment.likes} id={comment.id}/>)
+                :
+                <h5>No comments</h5>}
             </div>
         </div>
     : <h1>Loading...</h1>)
