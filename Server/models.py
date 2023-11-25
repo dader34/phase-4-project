@@ -64,6 +64,7 @@ class Post(db.Model, SerializerMixin):
     content = db.Column(db.String(300))
     #Stretch goal, upload images
     parent_post = db.Column(db.Integer, db.ForeignKey("posts.id"))
+    views = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, server_default=db.func.now())
 
     #* Relationships *#
@@ -75,7 +76,7 @@ class Post(db.Model, SerializerMixin):
     likes = association_proxy("post_likes","user")
 
     #* Serialization Rules *#
-    serialize_only = ('id','user_id','content','parent_post','created_at','user.id','user.username','comments.id','likes.username')
+    serialize_only = ('id','user_id','content','parent_post','created_at','user.id','user.username','comments.id','likes.username','likes.id','user.profile_picture')
     
     #* Validations *#
     @validates('user_id')
