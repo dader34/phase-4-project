@@ -1,35 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../Common/NavBar';
 import PostCard from './PostCard';
+import '../STYLING/Feed.css'
 // Import other necessary components and hooks
 
 const Feed = ({ user }) => {
   // Fetch and list tweets logic
+  const [posts,setPosts] = useState([])
+  useEffect(()=>{
+    fetch('http://127.0.0.1:5555/posts')
+    .then(resp => resp.json())
+    .then(setPosts)
+  },[])
 
   return (
-    <>
-    <div className="feed">
-      {/* List of Tweet components */}
-      <PostCard 
-      author={
-        {name:"Danner",
-        profile_picture:"https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg"
-        
-        }}
-      content={"Test tweet"}
-      likes={10}
-        />
-        <PostCard 
-      author={
-        {name:"Danner",
-        profile_picture:"https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg"
-        
-        }}
-      content={"Test tweet"}
-      likes={10}
-        />
+    <div className='feed-container'>
+      <div className="feed">
+        {/* List of Tweet components */}
+        {posts.map(post => <PostCard key={post.id} author={{'name':post.user.username,'profile_picture':post.user.profile_picture}} content={post.content} likes={post.likes} id={post.id}/>)}
+      </div>
     </div>
-    </>
   );
 };
 

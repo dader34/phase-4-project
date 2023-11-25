@@ -5,6 +5,11 @@
     display: flex;
     justify-content: space-between; /* Align items horizontally with space between them */
     align-items: center; /* Center items vertically */
+    position: fixed;
+    width: 100%;
+    z-index: 10;
+    opacity: 0.9;
+    top: 0%;
   }
   
   .navbar a {

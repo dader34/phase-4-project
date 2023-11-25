@@ -1,9 +1,16 @@
-div.feed {
-    width: 50%;
-    /* margin: 0 auto; */
-    /* padding: 20px; */
+div.feed-container {
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    height: 100%;
+    margin: 0;
+    margin-top: 50px;
+  }
+  
+  div.feed {
     background-color: #f2f2f2;
     border: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* Add more styles as needed */
-}
+    padding: 20px; /* Add padding for better appearance */
+  }
+  

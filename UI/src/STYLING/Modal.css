@@ -96,7 +96,7 @@
 .modalInput:focus,
 .modalButton:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(104, 253, 246, 0.849));
+  box-shadow: 0 0 0 0.2rem rgba(104, 253, 246, 0.849);
 }
 
 .inputError {
