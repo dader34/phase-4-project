@@ -17,7 +17,8 @@ const Feed = ({ user }) => {
     <div className='feed-container'>
       <div className="feed">
         {/* List of Tweet components */}
-        {posts.map(post => <PostCard key={post.id} author={{'name':post.user.username,'profile_picture':post.user.profile_picture}} content={post.content} likes={post.likes} id={post.id}/>)}
+        {posts.forEach(post => console.log(post))}
+        {posts.map(post => <PostCard key={post.id} author={{'name':post.user.username,'profile_picture':post.user.profile_picture}} views={post.views} date={post.created_at} content={post.content} likes={post.likes} id={post.id}/>)}
       </div>
     </div>
   );

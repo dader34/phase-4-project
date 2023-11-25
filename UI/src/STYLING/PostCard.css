@@ -19,7 +19,12 @@
   
   .post-body {
     margin: 10px 0;
-    flex-grow: 1; /* Allow post body to grow and take remaining space */
+    flex-grow: 1; 
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
   }
   
   .buttons-container {
@@ -44,8 +49,18 @@
   
   .like-button:hover,
   .comment-button:hover {
-    color: #4CAF50; /* Change color on hover (you can customize this) */
+    color: #4CAF50; 
   }
+  
+  .views {
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  
+  .date {
+    font-size: 14px;
+  }
+  
   .ReactModal__Overlay {
     opacity: 0;
     transition: opacity 200ms ease-in-out;
@@ -64,13 +79,13 @@
   
   .ReactModal__Content {
     position: absolute;
-    transform: translateX(100%); 
+    transform: translateX(100%);
     border: 1px solid #ccc;
     border-radius: 8px;
     background: white;
     padding: 20px;
-    max-width: 350px; /* Set your desired max-width */
-    max-height: 200px; /* Set your desired max-height */
+    max-width: 350px;
+    max-height: 200px; 
     width: 100%;
     outline: none;
   }
@@ -79,7 +94,7 @@
     margin-bottom: 15px;
   }
   
-  /* Style the textarea */
+ 
   textarea {
     width: 100%;
     box-sizing: border-box;
@@ -87,11 +102,11 @@
     border-radius: 4px;
     padding: 10px;
     height: 50%;
-    resize: none; /* Disable textarea resizing */
+    resize: none;
     margin-bottom: 15px;
   }
   
-  /* Style the buttons */
+ 
   button {
     background-color: #4caf50;
     color: white;
@@ -105,3 +120,4 @@
   button:last-child {
     margin-right: 0;
   }
+  

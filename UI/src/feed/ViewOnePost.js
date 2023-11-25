@@ -23,12 +23,12 @@ const ViewOnePost = () => {
         <div className='container'>
             <div className='main-post'>
                 {/* Render main post */}
-                <MainPost author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} content={post.main.content} likes={post.main.likes.length}/>
+                <MainPost author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes.length}/>
             </div>
             <div className='comments'>
                 {/* Render child posts */}
                 {post.comments.length?
-                post.comments.map(comment => <PostCard key={comment.id} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} content={comment.content} likes={comment.likes} id={comment.id}/>)
+                post.comments.map(comment => <PostCard key={comment.id} views={comment.views} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} date={comment.created_at} content={comment.content} likes={comment.likes} id={comment.id}/>)
                 :
                 <h5>No comments</h5>}
             </div>

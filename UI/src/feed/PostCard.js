@@ -1,25 +1,26 @@
 // Import react-modal at the beginning of your file
 import Modal from 'react-modal';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import '../STYLING/PostCard.css';
 
-const PostCard = ({ author, content, date, likes, id }) => {
-    const UID = parseInt(localStorage.getItem("UID"))
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [commentText, setCommentText] = useState('');
-    const nav = useNavigate()
-    //  Set liked to true if self uid is in likes array
-    const [likeAmt,setLikeAmt] = useState(likes.length)
-    const [liked, setLiked] = useState(likes.filter(like => like.id === UID).length>0)
+const PostCard = ({ author, content, date, likes, id, views }) => {
+  const UID = parseInt(localStorage.getItem("UID"));
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [commentText, setCommentText] = useState('');
+  const nav = useNavigate();
+
+  // Set liked to true if self UID is in likes array
+  const [likeAmt, setLikeAmt] = useState(likes.length);
+  const [liked, setLiked] = useState(likes.some(like => like.id === UID));
 
   const openModal = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setIsModalOpen(true);
   };
 
   const closeModal = (e) => {
-    e.stopPropagation()
+    e.stopPropagation();
     setIsModalOpen(false);
   };
 
@@ -30,25 +31,29 @@ const PostCard = ({ author, content, date, likes, id }) => {
     closeModal();
   };
 
-  const handleLike = (e) =>{
-    e.stopPropagation()
-    //Make post request to like/unlike
-    //get back response # of likes
-    console.log(UID)
-    // console.log(likes)
-    // likes.forEach(like => console.log(like.id === UID))
-    console.log(!likes.filter(like => like.id === UID).length>0)
-    if(!likes.filter(like => like.id === UID).length>0){
-        console.log("Passed")
+  const handleLike = (e) => {
+    e.stopPropagation();
+    // Make post request to like/unlike
+    // Get back response # of likes
+    if (liked) {
+      setLikeAmt(current => current - 1);
+      setLiked(false);
+    } else {
+      setLikeAmt(current => current + 1);
+      setLiked(true);
     }
-    if(liked){
-        setLikeAmt(current => current - 1)
-        setLiked(false)
-    }else{
-        setLikeAmt(current => current + 1)
-        setLiked(true)
-    }
-  }
+  };
+  const tz = new Intl.DateTimeFormat().resolvedOptions().timeZone
+  const formattedDate = new Date(`${date} UTC`).toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    day: 'numeric',
+    year: 'numeric',
+    month: 'short',
+    hour12: true,
+    timeZone: tz 
+  });
+
 
   return (
     <div className="post-container" onClick={() => nav(`/home/post/${id}`)}>
@@ -56,14 +61,20 @@ const PostCard = ({ author, content, date, likes, id }) => {
         <img src={author.profile_picture} alt={author.name} />
       </div>
       <p className="post-body">{content}</p>
-      <div className="buttons-container">
-        <div>
-          <button className="like-button" onClick={handleLike}>👍</button>
-          <span className="likes-counter">{likeAmt}</span>
+      <div className="info-container">
+        <div className="buttons-container">
+          <div>
+            <button className="like-button" onClick={handleLike}>👍</button>
+            <span className="likes-counter">{likeAmt}</span>
+          </div>
+          <button className="comment-button" onClick={openModal}>
+            💬
+          </button>
         </div>
-        <button className="comment-button" onClick={openModal}>
-          💬
-        </button>
+        <div className="additional-info">
+          <span className="views">{Math.round(views)} views</span>
+          <span className="date">{formattedDate}</span>
+        </div>
       </div>
 
       {/* Modal */}
