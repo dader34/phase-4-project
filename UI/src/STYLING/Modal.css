@@ -36,11 +36,13 @@
   border-radius: 5px;
 }
 
-
-.closeButton {
+.close-button {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   background: none;
   border: none;
-  font-size: 25px;
+  font-size: 15px;
   cursor: pointer;
   color: #0139f3b4;
 }
@@ -50,14 +52,9 @@
   text-align: center;
 }
 
-.modalInput {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  font-size: 1rem;
-  color: #00020a; /* Blue text color for input */
+.click-div {
+  width: 100%;
+  height: 100%;
 }
 
 .helperText {
@@ -67,21 +64,26 @@
   font-size: 0.75rem;
 }
 
-.modalInput::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #5d82fd;
-  opacity: 1; /* Firefox */
-  font-size: 0.75rem; /* Smaller font size for placeholder */
+.modal-input {
+  font-family: Helvetica Neue;
+  /* width: calc(100% - 20px); */
+  padding-top: 10px;
+  /* margin-bottom: 10px; */
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #00020a; 
+  resize: none; 
 }
 
-.modalButton {
-  width: 100%;
+.post-button {
+  width: 30%;
   padding: 10px;
   border: none;
   border-radius: 9999px;
   background-color: #0139f3b4;
   color: white;
   cursor: pointer;
-  margin-top: 20px;
 }
 
 .buttonDisabled {
@@ -100,15 +102,32 @@
 }
 
 .inputError {
-  border: 1px solid #ff0000; /* Red border for error */
+  border: 1px solid #ff0000;
 }
 
 .errorText {
-  color: #ff0000; /* Red text for error */
+  color: #ff0000;
   margin-top: 8px;
 }
 
 .buttonDisabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.ReactModal__Content {
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 350px;
+  max-height: 200px;
+  width: 100%;
+  margin: auto;
+  padding-top: 30%; /* Adjust the padding-top value for the desired height */
+}
+
+.ReactModal__Content .ReactModal__Content--after-open {
+  border-radius: 15px;
 }

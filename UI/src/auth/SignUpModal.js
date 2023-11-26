@@ -3,17 +3,24 @@ import '../STYLING/Modal.css';
 import {useNavigate} from 'react-router-dom'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 const SignUpModal = ({ onClose }) => {
   const [step, setStep] = useState(1);
   const [detailsConfirmed, setDetailsConfirmed] = useState(false);
   const nav = useNavigate()
 
-  const handleSignUpDetails = (e) => {
+  const handleSignUpDetails = async(e) => {
     e.preventDefault();
-    console.log("submit")
-    console.log(formik.errors)
-    formik.handleSubmit()
+    await formik.submitForm()
+
+    const errors = await formik.validateForm();
+    
+    const errorKeys = Object.keys(errors)
+
+    if (Object.keys(errors).length > 0) {
+      toast.error(errors[errorKeys[0]])
+    }
   };
 
   const handleSignUp = (e) => {

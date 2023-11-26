@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../STYLING/PostCard.css';
+// import 'react-quill/dist/quill.snow.css';
 
 const PostCard = ({ author, content, date, likes, id, views }) => {
   const UID = parseInt(localStorage.getItem("UID"));
@@ -24,11 +25,11 @@ const PostCard = ({ author, content, date, likes, id, views }) => {
     setIsModalOpen(false);
   };
 
-  const handleComment = () => {
+  const handleComment = (e) => {
     // Handle comment submission logic
     console.log('Comment submitted:', commentText);
 
-    closeModal();
+    closeModal(e);
   };
 
   const handleLike = (e) => {
@@ -78,20 +79,23 @@ const PostCard = ({ author, content, date, likes, id, views }) => {
       </div>
 
       {/* Modal */}
-      <Modal
+      <div onClick={(e) => e.stopPropagation()} className='click-div'>
+      <Modal style={{content:{"borderRadius":"15px","padding":"30px","overflow":"hidden"}}}
         isOpen={isModalOpen}
         ariaHideApp={false}
         onRequestClose={closeModal}
         contentLabel="Comment Modal"
       >
-        <textarea
+        <textarea 
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
-          placeholder="Type your comment..."
+          placeholder="What is happening?!"
+          className='modal-input'
         />
-        <button onClick={handleComment}>Submit Comment</button>
-        <button onClick={closeModal}>Close</button>
+        <button onClick={handleComment} className='post-button'>Post</button>
+        <button onClick={closeModal} className='close-button'>X</button>
       </Modal>
+    </div>
     </div>
   );
 };

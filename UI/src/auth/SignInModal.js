@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { Formik, useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../STYLING/Modal.css';
+import toast from 'react-hot-toast';
 
 const SignInModal = ({ onClose, onSignIn }) => {
-  const [step, setStep] = useState(1);
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    formik.handleSubmit()
-    if (formik.errors) {
-      console.log(formik.errors)
+    await formik.submitForm()
+
+    const errors = await formik.validateForm();
+    
+    const errorKeys = Object.keys(errors)
+
+    if (Object.keys(errors).length > 0) {
+      toast.error(errors[errorKeys[0]])
     }
   };
-
 
   const formik = useFormik({
     initialValues:{
@@ -28,6 +31,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
     onSubmit: (values) =>{
       // TODO: Check if the user exists in your database
       console.log("Post to login")
+      toast.success("Logged in!")
       //Post to login then get auth and redirect to feed
       //If user doesnt exist send alert back
 
