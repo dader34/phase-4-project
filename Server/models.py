@@ -60,7 +60,8 @@ class User(db.Model, SerializerMixin):
         else:
             raise ValueError('Username must be between 5 and 12 characters')
         
-        
+    #* Serializations *#
+    serialize_rules = ('-_password_hash',)
             
 
 #TODO: Figure Out How To Serialize Posts. -(comments,parent,user,post_likes)
