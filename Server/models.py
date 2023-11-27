@@ -38,7 +38,11 @@ class User(db.Model, SerializerMixin):
 
     @password.setter
     def password(self, password):
-        self._password_hash = bcrypt.hashpw(password=password.encode('utf-8'),salt=bcrypt.gensalt())
+        if password and  5<= len(str(password)) <= 75:
+            self._password_hash = bcrypt.hashpw(password=password.encode('utf-8'),salt=bcrypt.gensalt())
+        else:
+            raise ValueError('Password must be longer than 5 characters and less than 75')
+       
 
     def authenticate(self,password):
         return bcrypt.checkpw(password.encode('utf-8'),self._password_hash)
@@ -56,12 +60,6 @@ class User(db.Model, SerializerMixin):
         else:
             raise ValueError('Username must be between 5 and 12 characters')
         
-    @validates('password')
-    def password_validation(self, key, password):
-        if password and  5<= len(str(password)) <= 75:
-            return password
-        else:
-            raise ValueError('Password must be longer than 5 characters and less than 75')
         
             
 
