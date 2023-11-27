@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.ext.hybrid import hybrid_property
+import bcrypt
 import re
 
 metadata = MetaData()
@@ -17,7 +19,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String(12), unique=True)
     #! Max Lenth of password should be around 15 but bcrypt may make it longer
     #! Solution: Just check if password is greater than 15 on signup rooute, and have database max be higher so it account for bcrypt
-    password = db.Column(db.String(75))
+    _password_hash = db.Column(db.String(75))
     #* https://backend.danner.repl.co/ *#
     #* Make post here on frontend signup then get response and send back to backend in post req to create user (signup) *#
     profile_picture = db.Column(db.String(500), default='https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg')
@@ -27,12 +29,22 @@ class User(db.Model, SerializerMixin):
     #* Relationships *#
     followers = db.relationship('Follower', back_populates='following', foreign_keys='Follower.following_id', cascade='all, delete-orphan')
     following = db.relationship('Follower', back_populates='follower', foreign_keys='Follower.follower_id', cascade='all, delete-orphan')
-    # comments = db.relationship('Comment', back_populates='user', cascade='all, delete-orphan')
     posts = db.relationship('Post', back_populates='user', cascade='all, delete-orphan')
     post_likes = db.relationship('PostLike', back_populates='user', cascade='all, delete-orphan')
-    # comment_likes = db.relationship('CommentLike', back_populates='user', cascade='all, delete-orphan')
-
     
+    @hybrid_property
+    def password(self):
+        raise AttributeError('No looking at the password')
+
+    @password.setter
+    def password(self, password):
+        self._password_hash = bcrypt.hashpw(password=password.encode('utf-8'),salt=bcrypt.gensalt())
+
+    def authenticate(self,password):
+        return bcrypt.checkpw(password.encode('utf-8'),self._password_hash)
+
+
+
     #* Validations *#
     @validates('username')
     def username_validation(self, key, username):
