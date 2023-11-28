@@ -17,8 +17,8 @@
   }
   
   .main-post {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+    background-color: #ffe2e2;
+    border: 5px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -57,13 +57,13 @@
     align-items: center;
 }
 
-.like-button,
+/* .like-button,
 .comment-button {
     background: none;
     border: none;
     font-size: 18px;
     cursor: pointer;
-}
+} */
 
 .likes-counter {
     margin-left: 5px;
