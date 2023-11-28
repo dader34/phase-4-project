@@ -116,7 +116,7 @@
 
 from flask import Flask, jsonify, request, make_response
 from datetime import timedelta
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from models import db, Post, User, PostLike, Follower
@@ -190,7 +190,6 @@ class Signup(Resource):
             return {"invalid data":"The server could not process your data"},400
         
     @jwt_required()
-    @cross_origin()
     def patch(self):
         jwt_id = get_jwt_identity()
         if (jwt_id) and (pfp := request.json.get("pfp")) and (bio := request.json.get("bio")):
@@ -240,6 +239,65 @@ class Authenticated(Resource):
 
 api.add_resource(Authenticated, '/auth')
 
+class MakePost(Resource):
+    @jwt_required()
+    def post(self):
+        id = get_jwt_identity()
+        parent_id = request.json.get('parent_id')
+        user_id = request.json.get('user_id')
+        content = request.json.get('content')
+        #!Add validations
+        if (user_id and content):
+            if(int(id) == int(user_id)):
+                try:
+                    post = Post(user_id=int(user_id),content=content,parent_post=parent_id)
+                    db.session.add(post)
+                    db.session.commit()
+                    return post.to_dict(),201
+                except Exception as e:
+                    db.session.rollback()
+                    return {"validation errors":e.args}
+            else:
+                return {"error","You are not authenticated"},401
+        else:
+            return {"invalid data":"The server could not process your data"},400
+        
+api.add_resource(MakePost,'/post')
+
+class AddLike(Resource):
+    @jwt_required()
+    def post(self):
+        id = get_jwt_identity()
+        user_id = request.json.get('user_id')
+        post_id = request.json.get('post_id')
+        if user_id and post_id:
+            if int(id) == int(user_id):
+                liked = False
+                post = db.session.get(Post,int(post_id))
+                user = db.session.get(User,int(user_id))
+                for like in post.to_dict()['likes']:
+                    if(like['username'] == user.username):
+                        liked = like
+                        break
+                try:
+                    if liked:
+                        db.session.delete(db.session.get(PostLike,liked['id']))
+                        db.session.commit()
+                        return {'likes':len(post.likes)}
+                    else:
+                        pl = PostLike(user_id=user_id,post_id=post_id)
+                        db.session.add(pl)
+                        db.session.commit()
+                        return {'likes':len(pl.post.likes)}
+                except Exception as e:
+                    db.session.rollback()
+                    return {"validation errors",e.args}
+            
+            else:
+                return 1
+            
+api.add_resource(AddLike,'/like')
+        
 
 if(__name__=="__main__"):
     app.run(host='0.0.0.0',port=5555,debug=True)
