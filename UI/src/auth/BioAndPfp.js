@@ -10,7 +10,8 @@ import toast from 'react-hot-toast';
 const BioAndPfp = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const nav = useNavigate()
-  
+  const UID = localStorage.getItem("UID")
+  const JWT = localStorage.getItem("JWT")
   const formik = useFormik({
     initialValues: {
       file: null,
@@ -32,14 +33,26 @@ const BioAndPfp = () => {
       try {
         // Wrap the asynchronous operation with toast.promise
         await toast.promise(
-          fetch('https://backend.danner.repl.co/', {
+          fetch('https://backend.danner.repl.co/upload', {
             method: 'POST',
             body: formData,
           })
           .then(response => response.json())
           .then(data => {
-            console.log(data);
-            // Additional success logic if needed
+              const imgurl = data
+              fetch(`http://127.0.0.1:5555/signup`,{
+              method:"PATCH",
+              headers:{
+                "Content-Type":"application/json",
+                "Authorization": `Bearer ${JWT}`
+              },
+              body:JSON.stringify({
+                "pfp":imgurl.blob_link,
+                "bio":formik.values.bio
+              })
+            })
+            .then(resp => resp.json())
+            .catch(e => {toast.error(e.message);nav('/home')})
           }),
           {
             loading: 'Uploading...',

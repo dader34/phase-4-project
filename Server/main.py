@@ -116,7 +116,7 @@
 
 from flask import Flask, jsonify, request, make_response
 from datetime import timedelta
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from models import db, Post, User, PostLike, Follower
@@ -188,11 +188,13 @@ class Signup(Resource):
                     return {"Validation Errors":e.args},400
         else:
             return {"invalid data":"The server could not process your data"},400
-api.add_resource(Signup, '/signup')
-class FinishSignup(Resource):
-    def patch(self,id):
-        if (id) and (pfp := request.json.get("pfp")) and (bio := request.json.get("bio")):
-            if user := db.session.get(User,id):
+        
+    @jwt_required()
+    @cross_origin()
+    def patch(self):
+        jwt_id = get_jwt_identity()
+        if (jwt_id) and (pfp := request.json.get("pfp")) and (bio := request.json.get("bio")):
+            if user := db.session.get(User,int(jwt_id)):
                 try:
                     user.user_bio = bio
                     user.profile_picture = pfp
@@ -205,8 +207,11 @@ class FinishSignup(Resource):
                 return {"error":"User not found"},404
         else:
             return {"invalid data":"The server could not process your data"},400
+        
 
-api.add_resource(FinishSignup, '/signup/<int:id>')
+api.add_resource(Signup, '/signup')
+
+
 
 class Login(Resource):
     def post(self):
