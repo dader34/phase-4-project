@@ -114,20 +114,25 @@
 ###     FOREIGN KEY (sender_id) REFERENCES Users(user_id)
 ### );
 
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask import Flask, jsonify, request, make_response
+from datetime import timedelta
+from flask_cors import CORS, cross_origin
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from models import db, Post, User, PostLike, Follower
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import bcrypt
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 CORS(app)
 db.init_app(app)
 api = Api(app)
 migrate = Migrate(app,db)
+jwt = JWTManager(app)
 
 @app.route('/')
 def landing():
@@ -157,6 +162,83 @@ class PostById(Resource):
         
 api.add_resource(PostById, '/posts/<int:id>')
 
+#Signup route
+#Get username and password
+#Validate username and pass > 4 characters < 15
+#Check if username is already in database
+#Create user in database
+#Commit changes
+#Send back authenticated jwt and user id
+
+class Signup(Resource):
+    def post(self):
+        if (username := request.json.get("username")) and (password := request.json.get("password")):
+            if(User.query.filter_by(username=username).first()):
+                return {"error":"Username already exists"},409
+            else:
+                try:
+                    user = User(username=username)
+                    user.password = password
+                    db.session.add(user)
+                    db.session.commit()
+                    token = create_access_token(identity=user.id)
+                    return {"UID":user.id,"JWT":token},201
+                except Exception as e:
+                    db.session.rollback()
+                    return {"Validation Errors":e.args},400
+        else:
+            return {"invalid data":"The server could not process your data"},400
+        
+    @jwt_required()
+    @cross_origin()
+    def patch(self):
+        jwt_id = get_jwt_identity()
+        if (jwt_id) and (pfp := request.json.get("pfp")) and (bio := request.json.get("bio")):
+            if user := db.session.get(User,int(jwt_id)):
+                try:
+                    user.user_bio = bio
+                    user.profile_picture = pfp
+                    db.session.commit()
+                    return user.to_dict()
+                except Exception as e:
+                    db.session.rollback()
+                    return {'Validation errors':e.args},400
+            else:
+                return {"error":"User not found"},404
+        else:
+            return {"invalid data":"The server could not process your data"},400
+        
+
+api.add_resource(Signup, '/signup')
+
+
+
+class Login(Resource):
+    def post(self):
+        if (username := request.json.get("username")) and (password := request.json.get("password")):
+            if user:= User.query.filter_by(username=username).first():
+                if user.authenticate(password=password):
+                    token = create_access_token(identity=user.id)
+                    return {"UID":user.id,"JWT":token},201
+                else:
+                    return {"error":"password is incorrect"},401
+            else:
+                return {"error":"User not found"},404
+        else:
+            return {"invalid data":"The server could not process your data"},400
+    
+api.add_resource(Login, '/login')
+
+class Authenticated(Resource):
+    @jwt_required()
+    def get(self):
+        id = get_jwt_identity()
+        if db.session.get(User,int(id)):
+            return {"success":True},200
+        else:
+            return {"error":"User not authenticated"},401
+
+api.add_resource(Authenticated, '/auth')
 
 
 if(__name__=="__main__"):
