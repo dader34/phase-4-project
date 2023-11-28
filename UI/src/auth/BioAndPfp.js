@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useNavigate} from 'react-router-dom';
@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 const BioAndPfp = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const nav = useNavigate()
+  
   const formik = useFormik({
     initialValues: {
       file: null,
@@ -31,7 +32,7 @@ const BioAndPfp = () => {
       try {
         // Wrap the asynchronous operation with toast.promise
         await toast.promise(
-          fetch('https://backend.danner.repl.co/upload', {
+          fetch('https://backend.danner.repl.co/', {
             method: 'POST',
             body: formData,
           })

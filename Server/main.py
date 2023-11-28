@@ -216,13 +216,24 @@ class Login(Resource):
                     token = create_access_token(identity=user.id)
                     return {"UID":user.id,"JWT":token},201
                 else:
-                    return {"error":"password is incorrect"}
+                    return {"error":"password is incorrect"},401
             else:
                 return {"error":"User not found"},404
         else:
             return {"invalid data":"The server could not process your data"},400
     
 api.add_resource(Login, '/login')
+
+class Authenticated(Resource):
+    @jwt_required()
+    def get(self):
+        id = get_jwt_identity()
+        if db.session.get(User,int(id)):
+            return {"success":True},200
+        else:
+            return {"error":"User not authenticated"},401
+
+api.add_resource(Authenticated, '/auth')
 
 
 if(__name__=="__main__"):

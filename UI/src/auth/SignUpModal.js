@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../STYLING/Modal.css';
 import {useNavigate} from 'react-router-dom'
 import { useFormik } from 'formik';
@@ -23,11 +23,45 @@ const SignUpModal = ({ onClose }) => {
     }
   };
 
+  useEffect(()=>{
+    
+  },[])
+
   const handleSignUp = (e) => {
     e.preventDefault();
     if (detailsConfirmed) {
       // Implement sign-up logic to store user in the database
-      nav('/signup/complete')
+      fetch("http://127.0.0.1:5555/signup",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          "username":formik.values.name,
+          "password":formik.values.password
+        })
+      })
+      .then(resp => {
+        if (resp.ok) {
+          resp.json()
+          .then(data => {if(data){
+            console.log(data);
+            localStorage.setItem("UID", data.UID);
+            localStorage.setItem("JWT", data.JWT);
+            toast.success("Welcome in!");
+            nav('/signup/complete')
+            // Redirect or perform other actions after successful login
+          }})
+        } else {
+          resp.json()
+          .then(data =>{throw new Error(data[Object.keys(data)[0]])})
+          .catch(error => {
+            setStep(1)
+            toast.error(error.message);
+          });
+        }
+      })
+      .catch(e => toast.error(e.message))
       //Make Post req to backend, store tokens, and on after signup make patch to db for pfp and bio
       // onClose(); // Uncomment this line to close the modal after sign up
     }
