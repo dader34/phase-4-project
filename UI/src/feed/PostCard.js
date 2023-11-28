@@ -57,7 +57,9 @@ const PostCard = ({ author, content, date, likes, id, views }) => {
 
 
   return (
-    <div className="post-container" onClick={() => nav(`/home/post/${id}`)}>
+    <div className="post-container" onClick={() => {
+      id && nav(`/home/post/${id}`) 
+    }}>
       <div className="user-pfp">
         <img src={author.profile_picture} alt={author.name} />
       </div>

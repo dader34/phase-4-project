@@ -23,7 +23,7 @@ const ViewOnePost = () => {
         <div className='container'>
             <div className='main-post'>
                 {/* Render main post */}
-                <MainPost author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes.length}/>
+                <PostCard author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes}/>
             </div>
             <div className='comments'>
                 {/* Render child posts */}

@@ -36,7 +36,15 @@ const App = () =>{
 
     return(
         <div>
-            <div><Toaster/></div>
+            <div><Toaster toastOptions={{
+            error: {
+                duration: 3000,
+                theme: {
+                    primary: 'green',
+                    secondary: 'black',
+                },
+            }
+            }}/></div>
             {location.pathname.startsWith('/home') && (<NavBar />)}
             <div className="outlet">
                 <Outlet />
