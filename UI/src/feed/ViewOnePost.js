@@ -14,7 +14,7 @@ const ViewOnePost = () => {
         .catch(alert)
     },[id])
     // console.log(post.main)
-    console.log(post + " posttt")
+    console.log(post)
     // console.log(id)
     //Make fetch to id of post clicked on. Pass through url?
     //Display main post, and render comments in div under main div

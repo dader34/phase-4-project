@@ -8,16 +8,17 @@ import '../STYLING/PostCard.css';
 import toast from 'react-hot-toast';
 // import 'react-quill/dist/quill.snow.css';
 
-const PostCard = ({ author, content, date, likes, id, views, comments }) => {
+const PostCard = ({ author, content, date, likes, id, views, comments, parent_id }) => {
   const UID = parseInt(localStorage.getItem("UID"));
+  const JWT = localStorage.getItem("JWT")
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [commentText, setCommentText] = useState('');
   const nav = useNavigate();
-  const [isCopied, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id ? id : undefined}`)
-
+  const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)
+  
   // Set liked to true if self UID is in likes array
   const [likeAmt, setLikeAmt] = useState(likes.length);
-  const [liked, setLiked] = useState(likes.some(like => like.id === UID));
+  // const [liked, setLiked] = useState(likes.some(like => like.id === UID));
 
   const openModal = (e) => {
     e.stopPropagation();
@@ -31,8 +32,21 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
 
   const handleComment = (e) => {
     // Handle comment submission logic
+    //Add formik and yup validation
     console.log('Comment submitted:', commentText);
-
+    fetch('http://127.0.0.1:5555/post',{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${JWT}`
+      },
+      body:JSON.stringify({
+        'user_id':UID,
+        parent_id: id,
+        content: commentText
+      })
+    }).then(resp => resp.json())
+    .then(data => nav(`/home/post/${data.id}`))
     closeModal(e);
   };
   // console.log(comments)
@@ -40,13 +54,18 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
     e.stopPropagation();
     // Make post request to like/unlike
     // Get back response # of likes
-    if (liked) {
-      setLikeAmt(current => current - 1);
-      setLiked(false);
-    } else {
-      setLikeAmt(current => current + 1);
-      setLiked(true);
-    }
+    fetch('http://127.0.0.1:5555/like',{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "Authorization":`Bearer ${JWT}`
+      },
+      body:JSON.stringify({
+        'user_id':UID,
+        'post_id': id
+      })
+    }).then(resp => resp.json())
+    .then(data => setLikeAmt(data.likes))
   };
 
   const handleShare = (e) => {
@@ -73,7 +92,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
       id && nav(`/home/post/${id}`) 
     }}>
       <div className="user-pfp">
-        <img src={author.profile_picture} alt={author.name} />
+        <img src={author.profile_picture} alt={author.name} onError={({currentTarget}) =>{(currentTarget.src='https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg')}}/>
       </div>
       <span className="username">@{author.name}</span>
       <p className="post-body">{content}</p>
