@@ -1,29 +1,43 @@
+/* Updated styles for the navbar */
 .navbar {
-    background-color: #333; /* Dark background color */
-    color: white; /* Text color */
-    padding: 15px; /* Padding for the content inside the navbar */
-    display: flex;
-    justify-content: space-between; /* Align items horizontally with space between them */
-    align-items: center; /* Center items vertically */
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-    opacity: 0.9;
-    top: 0%;
-  }
-  
-  .navbar a {
-    color: white; /* Link text color */
-    text-decoration: none; /* Remove underline from links */
-    margin: 0 15px; /* Add spacing between links */
-  }
-  
-  .navbar a:hover {
-    text-decoration: underline; /* Underline links on hover */
-  }
-  
-  /* Add additional styling for active link if needed */
-  .navbar a.active {
-    font-weight: bold; /* Make the active link bold or apply a different style */
-  }
-  
+  background-color: #333; /* Dark background color */
+  color: white; /* Text color */
+  padding: 15px; /* Padding for the content inside the navbar */
+  display: flex;
+  justify-content: space-between; /* Align items horizontally with space between them */
+  align-items: center; /* Center items vertically */
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+  opacity: 0.9;
+  top: 0%;
+  transition: background-color 0.5s ease, color 0.5s ease; /* Smooth transition for background color and text color changes */
+}
+
+/* Updated styles for navbar links */
+.navbar a {
+  color: white; /* Link text color in light mode */
+  text-decoration: none; /* Remove underline from links */
+  margin: 0 15px; /* Add spacing between links */
+}
+
+.navbar a:hover {
+  text-decoration: underline; /* Underline links on hover */
+}
+
+/* Add additional styling for active link if needed */
+.navbar a.active {
+  font-weight: bold; /* Make the active link bold or apply a different style */
+}
+
+/* Additional styles for dark mode */
+.dark-mode .navbar {
+  /* Updated styles for the navbar in dark mode */
+  background-color: #222; /* Dark background color in dark mode */
+  color: #fff; /* Text color in dark mode */
+}
+
+/* Updated styles for navbar links in dark mode */
+.dark-mode .navbar a {
+  color: #fff; /* Link text color in dark mode */
+}

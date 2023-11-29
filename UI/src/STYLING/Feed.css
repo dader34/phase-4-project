@@ -19,3 +19,7 @@ div.feed-container {
     height: 100%;
   }
   
+  .dark-mode .feed {
+    background-color: #00020a;
+    color: #fff;
+  }

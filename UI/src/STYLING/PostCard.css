@@ -1,4 +1,5 @@
 /* PostCard.css */
+
 .post-container {
   display: flex;
   flex-direction: column;
@@ -12,6 +13,11 @@
   min-width: 300px;
 }
 
+/* Dark mode styles */
+.post-container.dark-mode {
+  background-color: #00020a;
+  color: #fff;
+}
 /* .post-container:hover {
   background-color: rgba(255, 255, 255, 0.9); /* Fading in a darker shade of white */
 /* } */
