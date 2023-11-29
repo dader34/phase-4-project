@@ -3,7 +3,6 @@ import Modal from 'react-modal';
 import { useState } from 'react';
 import useClipboard from "react-use-clipboard";
 import { useNavigate } from 'react-router-dom';
-import { FaShare } from 'react-icons/fa';
 import '../STYLING/PostCard.css';
 import toast from 'react-hot-toast';
 // import 'react-quill/dist/quill.snow.css';

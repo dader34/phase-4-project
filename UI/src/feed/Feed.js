@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../Common/NavBar';
 import PostCard from './PostCard';
 import '../STYLING/Feed.css'
 // Import other necessary components and hooks
