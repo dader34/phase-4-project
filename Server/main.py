@@ -114,8 +114,8 @@
 ###     FOREIGN KEY (sender_id) REFERENCES Users(user_id)
 ### );
 
-from flask import Flask, jsonify, request, make_response
-from datetime import timedelta
+from flask import Flask, jsonify, request, make_response, render_template
+from datetime import timedelta, datetime
 from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
@@ -173,7 +173,7 @@ api.add_resource(PostById, '/posts/<int:id>')
 class Signup(Resource):
     def post(self):
         if (username := request.json.get("username")) and (password := request.json.get("password")):
-            if(User.query.filter_by(username=username).first()):
+            if(User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first()):
                 return {"error":"Username already exists"},409
             else:
                 try:
@@ -215,7 +215,7 @@ api.add_resource(Signup, '/signup')
 class Login(Resource):
     def post(self):
         if (username := request.json.get("username")) and (password := request.json.get("password")):
-            if user:= User.query.filter_by(username=username).first():
+            if user:= User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first():
                 if user.authenticate(password=password):
                     token = create_access_token(identity=user.id)
                     return {"UID":user.id,"JWT":token},201
@@ -297,7 +297,27 @@ class AddLike(Resource):
                 return 1
             
 api.add_resource(AddLike,'/like')
-        
+
+class Embed(Resource):
+    def get(self,id):
+        if id and (post := db.session.get(Post,int(id))):
+            headers = {'Content-Type': 'text/html'}
+            return make_response(render_template('embed.html',post=post.to_dict()),200,headers)
+        else:
+            return {"error":"invalid post"}
+
+
+api.add_resource(Embed,'/embed/<int:id>')
+
+@app.template_filter('format_date')
+def format_date(date_str):
+    # Convert the string to a datetime object
+    post_datetime = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    
+    # Format the datetime object as "Nov 28, 2023, 2:33 PM"
+    formatted_date = post_datetime.strftime("%b %d, %Y, %I:%M %p")
+    
+    return formatted_date
 
 if(__name__=="__main__"):
     app.run(host='0.0.0.0',port=5555,debug=True)
