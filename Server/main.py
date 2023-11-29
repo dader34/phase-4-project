@@ -307,7 +307,7 @@ class Embed(Resource):
     def get(self,id):
         if id and (post := db.session.get(Post,int(id))):
             headers = {'Content-Type': 'text/html'}
-            return make_response(render_template('embed.html',post=post.to_dict()),200,headers)
+            return make_response(render_template('embed.html',post=post.to_dict(rules=('-post_likes',))),200,headers)
         else:
             return {"error":"invalid post"}
 
