@@ -121,7 +121,7 @@ from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from models import db, Post, User, PostLike, Follower
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-import bcrypt
+from sqlalchemy import desc
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -140,8 +140,25 @@ def landing():
 
 class GetAllPosts(Resource):
     def get(self):
-        return [post.to_dict(rules=('-post_likes',)) for post in Post.query.all()]
-    
+        try:
+            page = request.args.get('page', default=1, type=int)
+            limit = request.args.get('limit', default=10, type=int)
+            start = (page - 1) * limit
+            end = start + limit + 1  # Fetch one more to see if more posts
+
+            posts = Post.query.order_by(desc(Post.created_at))[start:end]
+
+            more_posts = len(posts) > limit
+            if more_posts:
+                # Remove the extra post used for checking
+                posts = posts[:limit]
+
+            return {
+                'posts': [post.to_dict(rules=('-post_likes',)) for post in posts],
+                'more_posts': more_posts
+            }
+        except Exception as e:
+            return {"error": "Invalid pagination parameters"}, 400
 api.add_resource(GetAllPosts,'/posts')
     
 class PostById(Resource):
