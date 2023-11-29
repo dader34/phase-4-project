@@ -9,6 +9,7 @@
   max-width: 400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  min-width: 300px;
 }
 
 /* .post-container:hover {
