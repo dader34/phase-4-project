@@ -140,7 +140,7 @@ def landing():
 
 class GetAllPosts(Resource):
     def get(self):
-        return [post.to_dict() for post in Post.query.all()]
+        return [post.to_dict(rules=('-post_likes',)) for post in Post.query.all()]
     
 api.add_resource(GetAllPosts,'/posts')
     
@@ -154,9 +154,9 @@ class PostById(Resource):
                 print("Could not update view count")
                 print(e)
             return{
-                'main':post.to_dict(rules=('-user.likes','-comments','-user_id')),
+                'main':post.to_dict(rules=('-user.likes','-comments','-user_id','-post_likes',)),
                 'comments':[
-                    comment.to_dict(rules=('-user_id',)) for comment in post.comments
+                    comment.to_dict(rules=('-user_id','-post_likes',)) for comment in post.comments
                 ]
             }
         
@@ -275,26 +275,31 @@ class AddLike(Resource):
                 liked = False
                 post = db.session.get(Post,int(post_id))
                 user = db.session.get(User,int(user_id))
-                for like in post.to_dict()['likes']:
-                    if(like['username'] == user.username):
+                for like in post.to_dict(rules=('-post_likes.user','-post_likes.post',))['post_likes']:
+                    if(like['user_id'] == user.id):
                         liked = like
                         break
                 try:
                     if liked:
-                        db.session.delete(db.session.get(PostLike,liked['id']))
+                        #!!!!Erroring because liked['id'] is a userid and not postlike id
+                        pl = db.session.get(PostLike,liked['id'])
+                        print(liked)
+                        # print(pl.to_dict())
+                        db.session.delete(pl)
                         db.session.commit()
                         return {'likes':len(post.likes)}
                     else:
-                        pl = PostLike(user_id=user_id,post_id=post_id)
+                        pl = PostLike(user_id=int(user_id),post_id=int(post_id))
+                        # print(pl.to_dict())
                         db.session.add(pl)
                         db.session.commit()
                         return {'likes':len(pl.post.likes)}
                 except Exception as e:
                     db.session.rollback()
-                    return {"validation errors",e.args}
+                    return {"validation errors":e.args}
             
             else:
-                return 1
+                return {"error":1}
             
 api.add_resource(AddLike,'/like')
 

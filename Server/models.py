@@ -87,7 +87,7 @@ class Post(db.Model, SerializerMixin):
     likes = association_proxy("post_likes","user")
 
     #* Serialization Rules *#
-    serialize_only = ('id','user_id','content','parent_post','created_at','user.id','user.username','comments.id','likes.username','likes.id','user.profile_picture','views')
+    serialize_only = ('id','user_id','content','parent_post','created_at','user.id','user.username','comments.id','likes.username','likes.id','user.profile_picture','views','post_likes')
     
     #* Validations *#
     @validates('user_id')

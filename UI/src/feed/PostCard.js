@@ -20,22 +20,6 @@ const PostCard = ({ author, content, date, likes, id, views, comments, parent_id
   const nav = useNavigate();
   const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)
 
-  useEffect(()=>{
-    (UID || JWT)&& 
-      fetch("http://127.0.0.1:5555/auth",{
-          headers:{
-              "Authorization": `Bearer ${JWT}`
-          }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-          if(!(data && data.success)){
-              nav('/')
-              toast.error("Your session has expired, please log in again")
-          }
-      })
-  },[])
-
   const formik = useFormik({
     initialValues: {
       content: ''
