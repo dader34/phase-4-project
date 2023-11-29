@@ -10,6 +10,7 @@
   max-width: 400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  min-width: 300px;
 }
 
 /* Dark mode styles */
@@ -33,6 +34,7 @@
 .post-body {
   margin: 10px 0;
   flex-grow: 1; 
+  word-wrap: break-word;
 }
 
 .info-container {
@@ -223,7 +225,7 @@ button:last-child {
   width: 30%;
   padding: 10px;
   border: none;
-  border-radius: 9999px;
+  border-radius: 5px;
   background-color: #0139f3b4;
   color: white;
   cursor: pointer;
@@ -273,4 +275,10 @@ button:last-child {
 
 .ReactModal__Content .ReactModal__Content--after-open {
   border-radius: 15px;
+}
+
+form{
+  height: 100%;
+  width: 100%;
+  text-align: center;
 }

@@ -114,14 +114,14 @@
 ###     FOREIGN KEY (sender_id) REFERENCES Users(user_id)
 ### );
 
-from flask import Flask, jsonify, request, make_response
-from datetime import timedelta
+from flask import Flask, jsonify, request, make_response, render_template
+from datetime import timedelta, datetime
 from flask_cors import CORS
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from models import db, Post, User, PostLike, Follower
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-import bcrypt
+from sqlalchemy import desc
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -140,8 +140,25 @@ def landing():
 
 class GetAllPosts(Resource):
     def get(self):
-        return [post.to_dict() for post in Post.query.all()]
-    
+        try:
+            page = request.args.get('page', default=1, type=int)
+            limit = request.args.get('limit', default=10, type=int)
+            start = (page - 1) * limit
+            end = start + limit + 1  # Fetch one more to see if more posts
+
+            posts = Post.query.order_by(desc(Post.created_at))[start:end]
+
+            more_posts = len(posts) > limit
+            if more_posts:
+                # Remove the extra post used for checking
+                posts = posts[:limit]
+
+            return {
+                'posts': [post.to_dict(rules=('-post_likes',)) for post in posts],
+                'more_posts': more_posts
+            }
+        except Exception as e:
+            return {"error": "Invalid pagination parameters"}, 400
 api.add_resource(GetAllPosts,'/posts')
     
 class PostById(Resource):
@@ -154,9 +171,9 @@ class PostById(Resource):
                 print("Could not update view count")
                 print(e)
             return{
-                'main':post.to_dict(rules=('-user.likes','-comments','-user_id')),
+                'main':post.to_dict(rules=('-user.likes','-comments','-user_id','-post_likes',)),
                 'comments':[
-                    comment.to_dict(rules=('-user_id',)) for comment in post.comments
+                    comment.to_dict(rules=('-user_id','-post_likes',)) for comment in post.comments
                 ]
             }
         
@@ -173,7 +190,7 @@ api.add_resource(PostById, '/posts/<int:id>')
 class Signup(Resource):
     def post(self):
         if (username := request.json.get("username")) and (password := request.json.get("password")):
-            if(User.query.filter_by(username=username).first()):
+            if(User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first()):
                 return {"error":"Username already exists"},409
             else:
                 try:
@@ -215,7 +232,7 @@ api.add_resource(Signup, '/signup')
 class Login(Resource):
     def post(self):
         if (username := request.json.get("username")) and (password := request.json.get("password")):
-            if user:= User.query.filter_by(username=username).first():
+            if user:= User.query.filter(db.func.lower(User.username) == db.func.lower(username)).first():
                 if user.authenticate(password=password):
                     token = create_access_token(identity=user.id)
                     return {"UID":user.id,"JWT":token},201
@@ -275,29 +292,64 @@ class AddLike(Resource):
                 liked = False
                 post = db.session.get(Post,int(post_id))
                 user = db.session.get(User,int(user_id))
-                for like in post.to_dict()['likes']:
-                    if(like['username'] == user.username):
+                for like in post.to_dict(rules=('-post_likes.user','-post_likes.post',))['post_likes']:
+                    if(like['user_id'] == user.id):
                         liked = like
                         break
                 try:
                     if liked:
-                        db.session.delete(db.session.get(PostLike,liked['id']))
+                        #!!!!Erroring because liked['id'] is a userid and not postlike id
+                        pl = db.session.get(PostLike,liked['id'])
+                        print(liked)
+                        # print(pl.to_dict())
+                        db.session.delete(pl)
                         db.session.commit()
                         return {'likes':len(post.likes)}
                     else:
-                        pl = PostLike(user_id=user_id,post_id=post_id)
+                        pl = PostLike(user_id=int(user_id),post_id=int(post_id))
+                        # print(pl.to_dict())
                         db.session.add(pl)
                         db.session.commit()
                         return {'likes':len(pl.post.likes)}
                 except Exception as e:
                     db.session.rollback()
-                    return {"validation errors",e.args}
+                    return {"validation errors":e.args}
             
             else:
-                return 1
+                return {"error":1}
             
 api.add_resource(AddLike,'/like')
+
+class Embed(Resource):
+    def get(self,id):
+        if id and (post := db.session.get(Post,int(id))):
+            headers = {'Content-Type': 'text/html'}
+            return make_response(render_template('embed.html',post=post.to_dict(rules=('-post_likes',))),200,headers)
+        else:
+            return {"error":"invalid post"}
+
+
+api.add_resource(Embed,'/embed/<int:id>')
+
+class UserById(Resource):
+    @jwt_required()
+    def get(self,id):
+        if id and (user := db.session.get(User,id)):
+            return user.to_dict(only=('id','username','profile_picture','user_bio','created_at','posts','followers.follower.username','followers.follower.id','following.following.username','following.following.id'))
+        else:
+            return {"error":"invalid user id"},400
         
+api.add_resource(UserById,'/user/<int:id>')
+
+@app.template_filter('format_date')
+def format_date(date_str):
+    # Convert the string to a datetime object
+    post_datetime = datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S")
+    
+    # Format the datetime object as "Nov 28, 2023, 2:33 PM"
+    formatted_date = post_datetime.strftime("%b %d, %Y, %I:%M %p")
+    
+    return formatted_date
 
 if(__name__=="__main__"):
     app.run(host='0.0.0.0',port=5555,debug=True)

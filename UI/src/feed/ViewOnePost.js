@@ -1,9 +1,12 @@
-import {useParams} from 'react-router-dom'
+import {useParams,useNavigate} from 'react-router-dom'
 import PostCard from './PostCard'
-import MainPost from './MainPost'
 import '../STYLING/ViewOnePost.css';
 import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 const ViewOnePost = () => {
+    const UID = parseInt(localStorage.getItem("UID"));
+    const JWT = localStorage.getItem("JWT")
+    const nav = useNavigate()
     const {id} = useParams()
     const [post, setPost] = useState(false)
 
@@ -11,7 +14,21 @@ const ViewOnePost = () => {
         fetch(`http://127.0.0.1:5555/posts/${id}`)
         .then(resp => resp.json())
         .then(setPost)
-        .catch(alert)
+        .catch(alert);
+
+        (UID || JWT)&& 
+              fetch("http://127.0.0.1:5555/auth",{
+                  headers:{
+                      "Authorization": `Bearer ${JWT}`
+                  }
+              })
+              .then(resp => resp.json())
+              .then(data => {
+                  if(!(data && data.success)){
+                      nav('/')
+                      toast.error("Your session has expired, please log in again")
+                  }
+              })
     },[id])
     // console.log(post.main)
     console.log(post)
@@ -22,7 +39,7 @@ const ViewOnePost = () => {
         <div className='container'>
             <div className='main-post'>
                 {/* Render main post */}
-                {post.main.comments || post.comments &&
+                {(post.main.comments || post.comments) &&
                     <PostCard author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes} comments={post.main.comments || post.comments} id={post.main.id}/>
                 }
             </div>

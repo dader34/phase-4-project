@@ -30,11 +30,13 @@ const App = () =>{
     useEffect(()=>{
         const UID = localStorage.getItem("UID")
         const JWT = localStorage.getItem("JWT")
-        if(!(UID && JWT && !(location.pathname === '/'))){
+        if(!(UID || JWT) && !((location.pathname === '/') || (location.pathname.startsWith('/home/post')))){
+            toast.error("Please log in")
             nav('/')
             //Re route if not authenticated
         }else{
-            if(UID && JWT){
+            !((location.pathname.startsWith('/home/post')) || (location.pathname === ('/'))) ?
+            UID && JWT? 
                 fetch("http://127.0.0.1:5555/auth",{
                     headers:{
                         "Authorization": `Bearer ${JWT}`
@@ -47,7 +49,8 @@ const App = () =>{
                         toast.error("Your session has expired, please log in again")
                     }
                 })
-            }
+                : nav('/')
+            : console.log("1232113")
         }
     },[location.pathname])
 

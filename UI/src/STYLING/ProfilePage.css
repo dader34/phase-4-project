@@ -1,0 +1,108 @@
+/* Reset some default styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #e8f5ff;
+  padding-top: 100px; /* Ensures content starts below the navbar */
+}
+
+.profile-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile-container {
+  background-color: #ffffff;
+  border: 1px solid rgb(107, 151, 245)48);
+  border-radius: 4px;
+  width: 350px; /* Fixed width similar to Twitter's profile card */
+  margin-bottom: 10px;
+}
+
+.profile-header {
+  background-color: #66a4ca;
+  color: #fff;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  padding: 10px;
+  text-align: center;
+}
+
+.profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid white;
+  margin-top: -60px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.username {
+  font-weight: bold;
+  margin-top: 8px;
+  font-size: 20px;
+}
+
+.bio {
+  font-size: 14px;
+  color: #14171a;
+  padding: 15px;
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.edit-bio-button {
+  background-color: #ffad1f;
+  border: 1px solid #ffad1f;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 6px 12px;
+  margin: 10px;
+  cursor: pointer;
+  outline: none;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.edit-bio-button:hover {
+  background-color: #cc8c1a;
+}
+
+.tweets-container {
+  width: 350px; /* Keep the tweets container width consistent with profile */
+  margin-top: 10px;
+}
+
+.tweet {
+  background-color: #fff;
+  border: 1px solid #e1e8ed;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.follow-count {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px;
+  background-color: #f7f9fa;
+  font-size: 12px;
+  color: #657786;
+}
+
+.follow-count div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
