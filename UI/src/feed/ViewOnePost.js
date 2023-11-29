@@ -14,7 +14,7 @@ const ViewOnePost = () => {
         fetch(`http://127.0.0.1:5555/posts/${id}`)
         .then(resp => resp.json())
         .then(setPost)
-        .catch(alert)
+        .catch(alert);
 
         (UID || JWT)&& 
               fetch("http://127.0.0.1:5555/auth",{
