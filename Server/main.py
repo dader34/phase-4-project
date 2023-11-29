@@ -309,6 +309,16 @@ class Embed(Resource):
 
 api.add_resource(Embed,'/embed/<int:id>')
 
+class UserById(Resource):
+    @jwt_required()
+    def get(self,id):
+        if id and (user := db.session.get(User,id)):
+            return user.to_dict(only=('id','username','profile_picture','user_bio','created_at','followers.follower.username','followers.follower.id','following.following.username','following.following.id'))
+        else:
+            return {"error":"invalid user id"},400
+        
+api.add_resource(UserById,'/user/<int:id>')
+
 @app.template_filter('format_date')
 def format_date(date_str):
     # Convert the string to a datetime object
