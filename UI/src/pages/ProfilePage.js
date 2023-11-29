@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PostCard from '../feed/PostCard';
-
+import '../STYLING/ProfilePage.css';
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const jwt = localStorage.getItem("JWT"); // Retrieve the JWT token from local storage
