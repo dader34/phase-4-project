@@ -3,12 +3,29 @@ import { Outlet,useLocation } from 'react-router-dom'
 import NavBar from "./Common/NavBar";
 import {useNavigate} from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-
+import './STYLING/NavBar.css'
+import './STYLING/PostCard.css'
 
 const App = () =>{
-    const isDark = useState(false)
+    const [isDark, setIsDark] = useState(false)
     const location = useLocation()
     const nav = useNavigate()
+
+    // Check dark mode preference from localStorage on initial load
+    useEffect(() => {
+        const darkModePreference = localStorage.getItem('darkMode') === 'enabled';
+        setIsDark(darkModePreference);
+    }, []);
+
+    // Toggle dark mode
+    const toggleDarkMode = () => {
+        setIsDark(!isDark);
+    };
+
+    // Update localStorage when dark mode changes
+    useEffect(() => {
+        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+    }, [isDark]);
 
     useEffect(()=>{
         const UID = localStorage.getItem("UID")
@@ -35,7 +52,7 @@ const App = () =>{
     },[location.pathname])
 
     return(
-        <div>
+        <div className={`app-container ${isDark ? 'dark-mode' : ''}`}>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
             <div><Toaster toastOptions={{
             error: {
@@ -46,7 +63,7 @@ const App = () =>{
                 },
             }
             }}/></div>
-            {location.pathname.startsWith('/home') && (<NavBar />)}
+            {location.pathname.startsWith('/home') && (<NavBar toggleDarkMode={toggleDarkMode} />)}
             <div className="outlet">
                 <Outlet />
             </div>
