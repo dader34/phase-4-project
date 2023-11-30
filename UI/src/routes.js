@@ -31,7 +31,7 @@ const routes = [
         element: <ViewOnePost/>
       },
       {
-        path: '/home/profile', 
+        path: '/home/profile/:id', 
         element: <ProfilePage/>
       },
     ]
