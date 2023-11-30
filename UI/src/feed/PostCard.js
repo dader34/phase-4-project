@@ -136,7 +136,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
 
   return (
     <div className="post-container" onClick={() => {
-      id && !location.pathname.endsWith(`/${id}`) && nav(`/home/post/${id}`)
+      id && !location.pathname.endsWith(`/post/${id}`) && nav(`/home/post/${id}`)
     }}>
       <div className="user-pfp">
         <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => { (currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg') }} />
@@ -146,7 +146,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
       <div className="info-container">
         <div className="buttons-container">
           <div>
-            <button className="like-button" onClick={(e) => (UID && JWT)&&handleLike}>👍  {likeAmt}</button>
+            <button className="like-button" onClick={(e) => (UID && JWT)&&handleLike(e)}>👍  {likeAmt}</button>
             {/* <span className="likes-counter">{likeAmt}</span> */}
           </div>
           <button className="comment-button" onClick={e=> (UID && JWT)&&openModal(e)}>

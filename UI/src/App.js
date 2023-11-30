@@ -68,7 +68,7 @@ const App = () =>{
                 },
             }
             }}/></div>
-            {location.pathname.startsWith('/home') && (JWT && UID)&&(<NavBar toggleDarkMode={toggleDarkMode} />)}
+            {location.pathname.startsWith('/home') && (<NavBar toggleDarkMode={toggleDarkMode} />)}
             <div className="outlet">
                 <Outlet />
             </div>

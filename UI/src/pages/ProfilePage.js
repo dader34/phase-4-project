@@ -5,6 +5,8 @@ import '../STYLING/ProfilePage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import '../STYLING/Modal.css';
+import { ErrorMessage } from 'formik';
+import UserCards from '../Common/UserCards';
 
 
 const ProfilePage = () => {
@@ -36,12 +38,10 @@ const ProfilePage = () => {
       setEditedBio(data.user_bio); 
     })
     .catch(errorResponse => {
-      errorResponse.json().then(errorData => {
-        toast.error(errorData.message);
-        nav('/home');
-      });
+      toast.error(errorResponse.message)
+      // nav('/')
     });
-  }, [id, jwt, nav, UID]);
+  }, [id]);
 
   const handleEditBio = () => {
     setIsEditingBio(true);
@@ -101,11 +101,11 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
-
+        
       {!showingFollowing && !showingFollowers ? (
         <div className="profile-page">
           <div className="profile-container">
-            <div className="profile-header">
+            <div className="profile-header" >
               <img className="profile-picture" src={profileData.profile_picture} alt={`${profileData.username}'s profile`} />
               <div className="profile-info">
                 <h2 className="username">{profileData.username}</h2>
@@ -134,37 +134,8 @@ const ProfilePage = () => {
               ))}
           </div>
         </div>
-      ) : showingFollowing ? (
-        <div className="profile-page">
-          <h1>Following</h1>
-          <button className='back' onClick={() => setShowingFollowing(false)}>Back</button>
-          {profileData.following.map(f => (
-            <div key={f.following.id} className="follower-item">
-              <img className="follower-picture" src={f.following.profile_picture} alt={f.following.username} />
-              <div className="follower-info">
-                <h3 className="follower-username">{f.following.username}</h3>
-                <p className="follower-bio">{f.following.user_bio}</p>
-                <button className="follow-button">Unfollow</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="profile-page">
-          <h1>Followers</h1>
-          <button className='back' onClick={() => setShowingFollowers(false)}>Back</button> 
-          {profileData.followers.map(f => (
-            <div key={f.follower.id} className="follower-item">
-              <img className="follower-picture" src={f.follower.profile_picture} alt={f.follower.username} />
-              <div className="follower-info">
-                <h3 className="follower-username">{f.follower.username}</h3>
-                <p className="follower-bio">{f.follower.user_bio}</p>
-                <button className="follow-button">Follow</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+        
+      ) : <UserCards profileData={profileData} closeFollowers={() => setShowingFollowers(false)} closeFollowing={() => setShowingFollowing(false)} showingFollowing={showingFollowing} showingFollowers={showingFollowers} self={UID === id}/>}
     </>
   );
 };

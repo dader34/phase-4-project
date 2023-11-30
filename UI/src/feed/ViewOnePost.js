@@ -4,7 +4,7 @@ import '../STYLING/ViewOnePost.css';
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 const ViewOnePost = () => {
-    const UID = parseInt(localStorage.getItem("UID"));
+    const UID = localStorage.getItem("UID")
     const JWT = localStorage.getItem("JWT")
     const nav = useNavigate()
     const {id} = useParams()

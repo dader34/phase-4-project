@@ -3,6 +3,7 @@ import PostCard from './PostCard';
 import AddPost from './AddPost';
 import toast from 'react-hot-toast';
 import '../STYLING/Feed.css';
+import { useNavigate } from 'react-router-dom';
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -10,6 +11,7 @@ const Feed = ({ user }) => {
   const [isAuth,setIsAuth] = useState(false)
   const [morePosts, setMorePosts] = useState(true);
   const loadingRef = useRef(false);
+  const nav = useNavigate()
 
   useEffect(() => {
     // Fetch initial posts
@@ -44,7 +46,15 @@ const Feed = ({ user }) => {
       headers:{
         'Authorization':`Bearer ${localStorage.getItem("JWT")}`
       }
-    }).then(resp => resp.json()).then(data => {if(data['success']){setIsAuth(true)}}).catch(e => toast.error(e.message))
+    }).then(resp => resp.json()).then(data => {
+      if(data['success']){
+        setIsAuth(true)
+      }else{
+        toast.error(data['msg'])
+        nav('/')
+      }
+    })
+    .catch(e => toast.error(e.message))
   },[])
 
   // Get posts
@@ -62,6 +72,7 @@ const Feed = ({ user }) => {
         loadingRef.current = false;
       })
       .catch((e) => {
+        console.log(e)
         toast.error(e.message);
         loadingRef.current = false;
       });
@@ -99,7 +110,7 @@ const Feed = ({ user }) => {
           />
         ))}
         {loadingRef.current && <p>Loading...</p>}
-        {!morePosts && <p>No more posts</p>}
+        {!morePosts && <p style={{textAlign:"center"}}>No more posts</p>}
       </div>
     </div>
   );

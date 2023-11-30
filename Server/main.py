@@ -127,7 +127,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
 CORS(app)
 db.init_app(app)
 api = Api(app)
@@ -228,28 +228,26 @@ class Signup(Resource):
 api.add_resource(Signup, '/signup')
 
 
-@app.route('/user/update-bio', methods=['PATCH'])
-@jwt_required()  # Requires authentication
-def update_bio():
-    # Get the user ID from the JWT token
-    user_id = get_jwt_identity()
+class UpdateBio(Resource):
+    @jwt_required()
+    def patch(self):
+        user_id = get_jwt_identity()
 
-    # Get the new bio from the request data
-    new_bio = request.json.get('bio')
+        new_bio = request.json.get('bio')
 
-    # Validate and update the user's bio in the database
-    try:
-        user = db.session.query(User).filter_by(id=user_id).first()
-        if user:
-            user.user_bio = new_bio
-            db.session.commit()
-            return {'message': 'Bio updated successfully'}, 200
-        else:
-            return {'error': 'User not found'}, 404
-    except Exception as e:
-        db.session.rollback()
-        return {'error': 'Failed to update bio'}, 500
+        try:
+            user = db.session.query(User).filter_by(id=user_id).first()
+            if user:
+                user.user_bio = new_bio
+                db.session.commit()
+                return {'message': 'Bio updated successfully'}, 200
+            else:
+                return {'error': 'User not found'}, 404
+        except Exception as e:
+            db.session.rollback()
+            return {'error': 'Failed to update bio'}, 500
     
+api.add_resource(UpdateBio,'/user/update-bio')
     
 class Login(Resource):
     def post(self):
