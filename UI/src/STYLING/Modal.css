@@ -19,6 +19,11 @@
   position: relative;
 }
 
+.dark-mode .modalContainer {
+  background: #1a1d20;
+  color: white;
+}
+
 .modalHeader {
   display: flex;
   justify-content: space-between;
@@ -96,7 +101,7 @@
 .modalInput:focus,
 .modalButton:focus {
   outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(104, 253, 246, 0.849);
+  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.849);
 }
 
 .inputError {

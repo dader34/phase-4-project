@@ -227,6 +227,20 @@ class Signup(Resource):
 
 api.add_resource(Signup, '/signup')
 
+@app.route('/post/<int:post_id>', methods=['DELETE'])
+@jwt_required()  # Require authentication
+def delete_post(post_id):
+    user_id = get_jwt_identity()
+    
+    # Retrieve the post from the database
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Check if the authenticated user is the author of the post or an admin
+    if post.user_id != user_id: # Add your admin check logic here if necessary
+        return jsonify({'error': 'Unauthorized'}), 403
+
 
 class UpdateBio(Resource):
     @jwt_required()
@@ -245,7 +259,7 @@ class UpdateBio(Resource):
                 return {'error': 'User not found'}, 404
         except Exception as e:
             db.session.rollback()
-            return {'error': 'Failed to update bio'}, 500
+
     
 api.add_resource(UpdateBio,'/user/update-bio')
     

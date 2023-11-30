@@ -21,7 +21,9 @@ const App = () =>{
     }, []);
 
     // Toggle dark mode
-    const toggleDarkMode = () => {
+    const toggleDarkMode = () => { 
+        //find html tag and apply darkmode class
+        document.querySelector('html').classList.toggle('dark-mode');
         setIsDark(!isDark);
     };
 

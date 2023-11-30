@@ -1,19 +1,20 @@
 import React from 'react';
-import { Link,useNavigate, } from 'react-router-dom';
-import '../STYLING/NavBar.css'
-
+import { Link } from 'react-router-dom';
+import BackButton from './BackButton'; // Import the BackButton component
+import '../STYLING/NavBar.css';
 
 const NavBar = ({ toggleDarkMode }) => {
-  const UID = localStorage.getItem("UID")
+  const UID = localStorage.getItem("UID");
   return (
-  <div className='navbar'>
-    <nav>
-      <Link to='/home'>Home</Link>
-      <Link to='/logout'>Logout</Link>
-      <Link to={`/home/profile/${UID}`}>Profile</Link>
-      <button onClick={toggleDarkMode}>Dark Mode</button>
-    </nav>
-  </div>
+    <div className='navbar'>
+      <nav>
+        <BackButton /> {/* Add the BackButton here */}
+        <Link to='/home'>Home</Link>
+        <Link to='/logout'>Logout</Link>
+        <Link to={`/home/profile/${UID}`}>Profile</Link>
+        <button onClick={toggleDarkMode}>Dark Mode</button>
+      </nav>
+    </div>
   );
 };
 
