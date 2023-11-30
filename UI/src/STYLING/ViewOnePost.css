@@ -17,13 +17,18 @@
   }
   
   .main-post {
-    background-color: #ffe2e2;
-    border: 5px solid #ddd;
+    background-color: #ffffff;
+    border: 5px solid #979393;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     margin-bottom: 20px;
+  }
+
+  .dark-mode .main-post {
+    background-color: #1a1d20;
+    border: #ffffff;
   }
 
 .user{

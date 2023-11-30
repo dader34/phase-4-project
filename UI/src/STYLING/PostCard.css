@@ -15,7 +15,7 @@
 
 /* Dark mode styles */
 .post-container.dark-mode {
-  background-color: #00020a;
+  background-color: #000000;
   color: #fff;
 }
 /* .post-container:hover {
@@ -37,6 +37,10 @@
   word-wrap: break-word;
 }
 
+.dark-mode .post-body {
+  color: rgb(255, 255, 255);
+}
+
 .info-container {
   display: flex;
   flex-direction: column;
@@ -56,6 +60,10 @@
   cursor: pointer;
   color: black;
   font-size: 14px;
+}
+.dark-mode .like-button, 
+.dark-mode .comment-button {
+  color: #fff;
 }
 
 .likes-counter {
@@ -281,4 +289,9 @@ form{
   height: 100%;
   width: 100%;
   text-align: center;
+}
+
+.dark-mode .post-container {
+  background-color: #37383b;
+  color: #ffffff;
 }

@@ -3,8 +3,8 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #fff;
-    color: #000;
+    background-color: #222121;
+    color: #ffffff;
     font-family: 'Arial', sans-serif;
 }
 
@@ -48,13 +48,13 @@
 
 .HomePage-signin {
     background-color: transparent;
-    color: #1DA1F2;
+    color: #4cc0ff;
     border: 1px solid #1DA1F2;
 }
 
 .HomePage-create:hover,
 .HomePage-signin:hover {
-    background-color: #1A91DA;
+    background-color: #aed0e6;
     color: white;
 }
 
