@@ -1,17 +1,14 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const BackButton = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    history.goBack();
+  const goBack = () => {
+    navigate(-1); // Navigates back to the previous page
   };
 
   return (
-    <button className="back-button" onClick={handleGoBack}>
-      Back
-    </button>
+    <button onClick={goBack}>Back</button>
   );
 };
 

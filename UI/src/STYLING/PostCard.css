@@ -14,10 +14,10 @@
 }
 
 /* Dark mode styles */
-.post-container.dark-mode {
-  background-color: #000000;
+/* .post-container.dark-mode {
+  background-color: #ff0000;
   color: #fff;
-}
+} */
 /* .post-container:hover {
   background-color: rgba(255, 255, 255, 0.9); /* Fading in a darker shade of white */
 /* } */
@@ -131,6 +131,10 @@ textarea {
   margin-bottom: 15px;
 }
 
+.dark-mode textarea {
+  border: #000000;
+}
+
 
 button {
   background-color: #4caf50;
@@ -222,12 +226,14 @@ button:last-child {
   /* width: calc(100% - 20px); */
   padding-top: 10px;
   /* margin-bottom: 10px; */
-  border: 1px solid #ced4da;
+  border: 1px solid #ffffff;
   border-radius: 4px;
   font-size: 1rem;
   color: #00020a; 
   resize: none; 
 }
+
+
 
 .post-button {
   width: 30%;
