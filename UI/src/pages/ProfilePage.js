@@ -4,6 +4,8 @@ import Modal from '../Common/Modal';
 import '../STYLING/ProfilePage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import '../STYLING/Modal.css';
+
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
@@ -86,14 +88,18 @@ const ProfilePage = () => {
   return (
     <>
       {isEditingBio && (
-        <Modal onClose={() => setIsEditingBio(false)}>
-          <h2>Edit Bio</h2>
-          <textarea value={editedBio} onChange={handleBioChange}></textarea>
-          <div>
-            <button onClick={handleSaveBio}>Save Changes</button>
-            <button onClick={() => setIsEditingBio(false)}>Cancel</button>
+        <div className="modalOverlay"> 
+          <div className="modalContainer"> 
+            <div className="modalHeader"> 
+              <h2>Edit Bio</h2>
+              <button className="closeButton" onClick={() => setIsEditingBio(false)}>X</button> 
+            </div>
+            <div className="modalBody"> 
+              <textarea className="modalInput" value={editedBio} onChange={handleBioChange}></textarea> 
+              <button className="modalButton" onClick={handleSaveBio}>Save Changes</button> 
+            </div>
           </div>
-        </Modal>
+        </div>
       )}
 
       {!showingFollowing && !showingFollowers ? (
