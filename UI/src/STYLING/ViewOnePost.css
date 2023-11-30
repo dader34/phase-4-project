@@ -7,6 +7,27 @@
     transform: translateX(50%);
     margin-top: 70px;
   }
+
+  html.dark-mode {
+    background-color: #1a1d20;
+  }
+
+  html {
+    font-family: sans-serif;
+    font-size: 16px;
+    height: 100%;
+    background-color: #ffffff;
+  }
+
+  div.outlet {
+    height: 100%;
+    background-color: #ffffff;
+  }
+
+  .dark-mode div.outlet {
+    background-color: #1a1d20;
+  }
+
   
   .comments {
     background-color: #f9f9f9;
@@ -14,6 +35,11 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark-mode .comments {
+    background-color: #494f55;
+    border: #ffffff;
   }
   
   .main-post {
@@ -27,7 +53,7 @@
   }
 
   .dark-mode .main-post {
-    background-color: #1a1d20;
+    background-color: #494f55;
     border: #ffffff;
   }
 

@@ -20,6 +20,11 @@
     text-align: center;
 }
 
+.dark-mode textarea {
+    background-color: #3c4146;
+    color: #ffffff;
+}
+
 .HomePage-logo {
     width: 50%;
     display: flex;

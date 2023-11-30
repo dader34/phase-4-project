@@ -2,7 +2,7 @@
 .navbar {
   background-color: #333; /* Dark background color */
   color: white; /* Text color */
-  padding: 15px; /* Padding for the content inside the navbar */
+  padding: 7.5px; /* Padding for the content inside the navbar */
   display: flex;
   justify-content: space-between; /* Align items horizontally with space between them */
   align-items: center; /* Center items vertically */

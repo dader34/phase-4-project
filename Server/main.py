@@ -227,17 +227,35 @@ class Signup(Resource):
 
 api.add_resource(Signup, '/signup')
 
+@app.route('/post/<int:post_id>', methods=['DELETE'])
+@jwt_required()  # Require authentication
+def delete_post(post_id):
+    user_id = get_jwt_identity()
+    
+    # Retrieve the post from the database
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
 
+    # Check if the authenticated user is the author of the post or an admin
+    if post.user_id != user_id: # Add your admin check logic here if necessary
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    # Delete the post
+    try:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'message': 'Post deleted successfully'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Failed to delete post'}), 500
 @app.route('/user/update-bio', methods=['PATCH'])
 @jwt_required()  # Requires authentication
 def update_bio():
-    # Get the user ID from the JWT token
     user_id = get_jwt_identity()
 
-    # Get the new bio from the request data
     new_bio = request.json.get('bio')
 
-    # Validate and update the user's bio in the database
     try:
         user = db.session.query(User).filter_by(id=user_id).first()
         if user:
