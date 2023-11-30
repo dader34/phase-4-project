@@ -3,6 +3,7 @@ import PostCard from './PostCard';
 import AddPost from './AddPost';
 import toast from 'react-hot-toast';
 import '../STYLING/Feed.css';
+import { useNavigate } from 'react-router-dom';
 
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -10,6 +11,7 @@ const Feed = ({ user }) => {
   const [isAuth,setIsAuth] = useState(false)
   const [morePosts, setMorePosts] = useState(true);
   const loadingRef = useRef(false);
+  const nav = useNavigate()
 
   useEffect(() => {
     // Fetch initial posts
@@ -40,11 +42,19 @@ const Feed = ({ user }) => {
 
   useEffect(()=>{
     if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
-    fetch('http://127.0.0.1:5555/auth',{
+    fetch('/auth',{
       headers:{
         'Authorization':`Bearer ${localStorage.getItem("JWT")}`
       }
-    }).then(resp => resp.json()).then(data => {if(data['success']){setIsAuth(true)}}).catch(e => toast.error(e.message))
+    }).then(resp => resp.json()).then(data => {
+      if(data['success']){
+        setIsAuth(true)
+      }else{
+        toast.error(data['msg'])
+        nav('/')
+      }
+    })
+    .catch(e => toast.error(e.message))
   },[])
 
   // Get posts
@@ -54,7 +64,7 @@ const Feed = ({ user }) => {
 
     loadingRef.current = true;
 
-    fetch(`http://127.0.0.1:5555/posts?page=${p}&limit=10`)
+    fetch(`/posts?page=${p}&limit=10`)
       .then((resp) => resp.json())
       .then((data) => {
         setPosts((prevPosts) => [...prevPosts,...data.posts]);
@@ -62,6 +72,7 @@ const Feed = ({ user }) => {
         loadingRef.current = false;
       })
       .catch((e) => {
+        console.log(e)
         toast.error(e.message);
         loadingRef.current = false;
       });
@@ -77,6 +88,7 @@ const Feed = ({ user }) => {
       }, delay);
     };
   }
+  console.log(posts)
 
   return (
     <div className="feed-container">
@@ -96,10 +108,11 @@ const Feed = ({ user }) => {
             likes={post.likes}
             id={post.id}
             comments={post.comments}
+            user_id={post.user_id}
           />
         ))}
         {loadingRef.current && <p>Loading...</p>}
-        {!morePosts && <p>No more posts</p>}
+        {!morePosts && <p style={{textAlign:"center"}}>No more posts</p>}
       </div>
     </div>
   );
