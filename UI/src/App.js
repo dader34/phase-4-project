@@ -8,6 +8,7 @@ import './STYLING/PostCard.css'
 
 const App = () =>{
     const [isDark, setIsDark] = useState(false)
+    const [isAuth,setIsAuth] = useState(false)
     const location = useLocation()
     const UID = localStorage.getItem("UID")
     const JWT = localStorage.getItem("JWT")
@@ -29,31 +30,31 @@ const App = () =>{
         localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
     }, [isDark]);
 
-    useEffect(()=>{
-        if(!(UID || JWT) && !((location.pathname === '/') || (location.pathname.startsWith('/home/post')))){
-            console.log(location.pathname)
-            toast.error("Please log in")
-            nav('/')
-            //Re route if not authenticated
-        }else{
-            !((location.pathname.startsWith('/home/post')) || (location.pathname === ('/'))) ?
-            UID && JWT? 
-                fetch("http://127.0.0.1:5555/auth",{
-                    headers:{
-                        "Authorization": `Bearer ${JWT}`
-                    }
-                })
-                .then(resp => resp.json())
-                .then(data => {
-                    if(!(data && data.success)){
-                        nav('/')
-                        toast.error("Your session has expired, please log in again")
-                    }
-                })
-                : nav('/')
-            : console.log("1232113")
-        }
-    },[location.pathname,JWT,UID,nav])
+    // useEffect(()=>{
+    //     if(!(UID || JWT) && !((location.pathname === '/') || (location.pathname.startsWith('/home/post')))){
+    //         console.log(location.pathname)
+    //         toast.error("Please log in")
+    //         nav('/')
+    //         //Re route if not authenticated
+    //     }else{
+    //         !((location.pathname.startsWith('/home/post')) || (location.pathname === ('/'))) ?
+    //         UID && JWT? 
+    //             fetch("http://127.0.0.1:5555/auth",{
+    //                 headers:{
+    //                     "Authorization": `Bearer ${JWT}`
+    //                 }
+    //             })
+    //             .then(resp => resp.json())
+    //             .then(data => {
+    //                 if(!(data && data.success)){
+    //                     nav('/')
+    //                     toast.error("Your session has expired, please log in again")
+    //                 }
+    //             })
+    //             : nav('/')
+    //         : console.log("1232113")
+    //     }
+    // },[location.pathname,JWT,UID,nav])
 
     return(
         <div className={`app-container ${isDark ? 'dark-mode' : ''}`}>

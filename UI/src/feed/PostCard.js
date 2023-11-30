@@ -2,19 +2,20 @@
 import Modal from 'react-modal';
 import { useEffect, useState } from 'react';
 import useClipboard from "react-use-clipboard";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../STYLING/PostCard.css';
 import toast from 'react-hot-toast';
 // import 'react-quill/dist/quill.snow.css';
 
-const PostCard = ({ author, content, date, likes, id, views, comments, parent_id }) => {
+const PostCard = ({ author, content, date, likes, id, views, comments }) => {
   const UID = parseInt(localStorage.getItem("UID"));
   const JWT = localStorage.getItem("JWT")
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [likeAmt, setLikeAmt] = useState(likes.length);
+  const location = useLocation()
   // Set liked to true if self UID is in likes array
   // const [liked, setLiked] = useState(likes.some(like => like.id === UID));
   const nav = useNavigate();
@@ -135,7 +136,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments, parent_id
 
   return (
     <div className="post-container" onClick={() => {
-      id && nav(`/home/post/${id}`)
+      id && !location.pathname.endsWith(`/${id}`) && nav(`/home/post/${id}`)
     }}>
       <div className="user-pfp">
         <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => { (currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg') }} />
@@ -143,18 +144,18 @@ const PostCard = ({ author, content, date, likes, id, views, comments, parent_id
       <span className="username">@{author.name}</span>
       <p className="post-body">{content}</p>
       <div className="info-container">
-        {(UID && JWT) ? <div className="buttons-container">
+        <div className="buttons-container">
           <div>
-            <button className="like-button" onClick={handleLike}>👍  {likeAmt}</button>
+            <button className="like-button" onClick={(e) => (UID && JWT)&&handleLike}>👍  {likeAmt}</button>
             {/* <span className="likes-counter">{likeAmt}</span> */}
           </div>
-          <button className="comment-button" onClick={openModal}>
+          <button className="comment-button" onClick={e=> (UID && JWT)&&openModal(e)}>
             💬 {comments && comments.length}
           </button>
           <span className="material-symbols-outlined" onClick={handleShare}>
             ios_share
           </span>
-        </div> : ""}
+        </div>
         <div className="additional-info">
           <span className="views">{Math.round(views)} views</span>
           <span className="date">{formattedDate}</span>

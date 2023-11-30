@@ -7,6 +7,7 @@ import '../STYLING/Feed.css';
 const Feed = ({ user }) => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
+  const [isAuth,setIsAuth] = useState(false)
   const [morePosts, setMorePosts] = useState(true);
   const loadingRef = useRef(false);
 
@@ -36,6 +37,15 @@ const Feed = ({ user }) => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [page]); // Add morePosts to the dependency array
+
+  useEffect(()=>{
+    if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
+    fetch('http://127.0.0.1:5555/auth',{
+      headers:{
+        'Authorization':`Bearer ${localStorage.getItem("JWT")}`
+      }
+    }).then(resp => resp.json()).then(data => {if(data['success']){setIsAuth(true)}}).catch(e => toast.error(e.message))
+  },[])
 
   // Get posts
   const fetchPosts = (p) => {
@@ -72,7 +82,7 @@ const Feed = ({ user }) => {
     <div className="feed-container">
       <div className="feed">
         {/* List of Tweet components */}
-        <AddPost />
+        {isAuth ? <AddPost /> : <h1 style={{textAlign:'center'}}>Please sign in to post</h1>}
         {posts.map((post) => (
           <PostCard
             key={`${post.id}-${post.content.slice(0, 5)}`}
