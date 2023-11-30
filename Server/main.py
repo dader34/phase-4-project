@@ -335,7 +335,7 @@ class UserById(Resource):
     @jwt_required()
     def get(self,id):
         if id and (user := db.session.get(User,id)):
-            return user.to_dict(only=('id','username','profile_picture','user_bio','created_at','posts','followers.follower.username','followers.follower.id','following.following.username','following.following.id'))
+            return user.to_dict(only=('id','username','profile_picture','user_bio','created_at','posts.user.username','posts.user.profile_picture','followers.follower.username','followers.follower.id','followers.follower.user_bio','followers.follower.profile_picture','following.following.username','following.following.user_bio','following.following.profile_picture','following.following.id','posts.views','posts.created_at','posts.likes','posts.id','posts.content'))
         else:
             return {"error":"invalid user id"},400
         

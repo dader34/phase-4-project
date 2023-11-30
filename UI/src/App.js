@@ -9,6 +9,8 @@ import './STYLING/PostCard.css'
 const App = () =>{
     const [isDark, setIsDark] = useState(false)
     const location = useLocation()
+    const UID = localStorage.getItem("UID")
+    const JWT = localStorage.getItem("JWT")
     const nav = useNavigate()
 
     // Check dark mode preference from localStorage on initial load
@@ -28,9 +30,8 @@ const App = () =>{
     }, [isDark]);
 
     useEffect(()=>{
-        const UID = localStorage.getItem("UID")
-        const JWT = localStorage.getItem("JWT")
         if(!(UID || JWT) && !((location.pathname === '/') || (location.pathname.startsWith('/home/post')))){
+            console.log(location.pathname)
             toast.error("Please log in")
             nav('/')
             //Re route if not authenticated
@@ -52,7 +53,7 @@ const App = () =>{
                 : nav('/')
             : console.log("1232113")
         }
-    },[location.pathname])
+    },[location.pathname,JWT,UID,nav])
 
     return(
         <div className={`app-container ${isDark ? 'dark-mode' : ''}`}>
@@ -66,7 +67,7 @@ const App = () =>{
                 },
             }
             }}/></div>
-            {location.pathname.startsWith('/home') && (<NavBar toggleDarkMode={toggleDarkMode} />)}
+            {location.pathname.startsWith('/home') && (JWT && UID)&&(<NavBar toggleDarkMode={toggleDarkMode} />)}
             <div className="outlet">
                 <Outlet />
             </div>
