@@ -177,7 +177,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
               placeholder="What is happening?!"
               className='modal-input'
             />
-            <p>Characters: {commentText.length}</p>
+            <p>Characters: {formik.values.length}</p>
             <input type='submit' value='post' className='post-button' />
             <button onClick={closeModal} className='close-button'>X</button>
           </form>

@@ -16,7 +16,7 @@
 
 /* Update the App-header to match the Twitter login page style */
 .App-header {
-  background-color: #fff; /* Changed to white to match Twitter's background */
+  background-color: #ffffff; /* Changed to white to match Twitter's background */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -55,7 +55,7 @@ button {
   margin: 5px;
   border: none;
   border-radius: 20px;
-  background-color: #1DA1F2; /* Twitter's button color */
+  background-color: #70b0f8; /* Twitter's button color */
   color: white;
   font-size: 16px;
   cursor: pointer;

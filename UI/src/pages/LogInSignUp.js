@@ -14,7 +14,7 @@ const LogInSignUp = ({ onSignIn, onCreateAccount }) => {
           <button onClick={onCreateAccount} className="HomePage-create">
             Create account
           </button>
-          <p>Already have an account?</p>
+          <p style={{ color: 'white' }}>Already have an account?</p>
           <button onClick={onSignIn} className="HomePage-signin">
             Sign in
           </button>

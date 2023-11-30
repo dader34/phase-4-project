@@ -6,6 +6,7 @@ div.feed-container {
     display: flex;
     justify-content: center;
     /* align-items: center; */
+    background-color: rgb(255, 255, 255);
     height: 100%;
     margin: 0;
     margin-top: 50px;
@@ -20,6 +21,11 @@ div.feed-container {
   }
   
   .dark-mode .feed {
-    background-color: #00020a;
-    color: #fff;
+    background-color: #1a1d20;
+    color: #ffffff;
   }
+  
+  .dark-mode .feed-container {
+    background-color: #0c0d0f;
+  }
+  

@@ -33,7 +33,7 @@
 /* Additional styles for dark mode */
 .dark-mode .navbar {
   /* Updated styles for the navbar in dark mode */
-  background-color: #222; /* Dark background color in dark mode */
+  background-color: #000000; /* Dark background color in dark mode */
   color: #fff; /* Text color in dark mode */
 }
 

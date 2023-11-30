@@ -50,31 +50,33 @@ const ProfilePage = () => {
   };
 
   const handleSaveBio = () => {
-    fetch(`http://127.0.0.1:5555/signup`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`
-      },
-      body: JSON.stringify({
-        pfp: profileData.profile_picture, 
-        bio: editedBio
-      })
-    })
-    .then(response => {
-      if (!response.ok) {
-        return response.text().then(text => { throw new Error(text) });
-      }
-      return response.json();
-    })
-    .then(data => {
-      setProfileData({ ...profileData, user_bio: editedBio }); 
-      toast.success('Bio updated successfully');
-      setIsEditingBio(false); 
-    })
-    .catch(error => {
-      toast.error(`Error: ${error.message || error}`);
-    });
+    fetch(`http://127.0.0.1:5555/user/update-bio`, {
+  method: 'PATCH',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${jwt}`,
+  },
+  body: JSON.stringify({
+    bio: editedBio,
+  }),
+})
+  .then((response) => {
+    if (!response.ok) {
+      return response.text().then((text) => {
+        throw new Error(text);
+      });
+    }
+    return response.json();
+  })
+  .then((data) => {
+    setProfileData({ ...profileData, user_bio: editedBio });
+    toast.success('Bio updated successfully');
+    setIsEditingBio(false);
+  })
+  .catch((error) => {
+    toast.error(`Error: ${error.message || error}`);
+  });
+
   };
 
   if (!profileData) {

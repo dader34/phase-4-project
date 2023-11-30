@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
-  background-color: #e8f5ff;
+  background-color: #ffffff;
 }
 
 .profile-page {
@@ -17,7 +17,6 @@ body {
   margin-top: 120px;
   height: 100%;
 }
-
 
 .profile-container {
   background-color: #ffffff;
