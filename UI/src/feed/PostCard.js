@@ -9,7 +9,7 @@ import '../STYLING/PostCard.css';
 import toast from 'react-hot-toast';
 // import 'react-quill/dist/quill.snow.css';
 
-const PostCard = ({ author, content, date, likes, id, views, comments }) => {
+const PostCard = ({ author, content, date, likes, id, views, comments,user_id }) => {
   const UID = parseInt(localStorage.getItem("UID"));
   const JWT = localStorage.getItem("JWT")
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +29,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
       content: Yup.string().min(2, "Post must be at least 2 characters").max(300, "Post can't be more than 300 characters").required("Post must have text")
     }),
     onSubmit: async values => {
-      fetch('http://127.0.0.1:5555/post', {
+      fetch('/post', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,8 +77,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
   
       closeModal(e);
     } catch (error) {
-      // Handle other errors, if needed
-      console.error('Error submitting post:', error);
+      toast.error(e.message)
     }
   };
 
@@ -101,7 +100,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
     e.stopPropagation();
     // Make post request to like/unlike
     // Get back response # of likes
-    fetch('http://127.0.0.1:5555/like', {
+    fetch('/like', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -133,13 +132,12 @@ const PostCard = ({ author, content, date, likes, id, views, comments }) => {
     timeZone: tz
   });
 
-
   return (
     <div className="post-container" onClick={() => {
       id && !location.pathname.endsWith(`/post/${id}`) && nav(`/home/post/${id}`)
     }}>
-      <div className="user-pfp">
-        <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => { (currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg') }} />
+      <div className="user-pfp" onClick={(e)=>{e.stopPropagation();nav(`/home/profile/${user_id}`)}}>
+        <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => { (currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg') }}/>
       </div>
       <span className="username">@{author.name}</span>
       <p className="post-body">{content}</p>

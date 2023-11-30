@@ -135,6 +135,7 @@ body {
   border-radius: 5px;
   display: flex;
   align-items: center;
+  min-width: 200px
 }
 
 .follower-picture {
@@ -156,5 +157,4 @@ body {
   font-size: 14px;
   color: #555;
 }
-
 

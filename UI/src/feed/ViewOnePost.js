@@ -11,13 +11,12 @@ const ViewOnePost = () => {
     const [post, setPost] = useState(false)
 
     useEffect(()=>{
-        fetch(`http://127.0.0.1:5555/posts/${id}`)
+        fetch(`/posts/${id}`)
         .then(resp => resp.json())
         .then(setPost)
-        .catch(alert);
-
+        .catch(e => toast.error(e.message));
         (UID || JWT)&& 
-              fetch("http://127.0.0.1:5555/auth",{
+              fetch("/auth",{
                   headers:{
                       "Authorization": `Bearer ${JWT}`
                   }
@@ -31,7 +30,7 @@ const ViewOnePost = () => {
               })
     },[id])
     // console.log(post.main)
-    console.log(post)
+    console.log(post.comments)
     // console.log(id)
     //Make fetch to id of post clicked on. Pass through url?
     //Display main post, and render comments in div under main div
@@ -40,13 +39,13 @@ const ViewOnePost = () => {
             <div className='main-post'>
                 {/* Render main post */}
                 {(post.main.comments || post.comments) &&
-                    <PostCard author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes} comments={post.main.comments || post.comments} id={post.main.id}/>
+                    <PostCard author={{'name':post.main.user.username,'profile_picture':post.main.user.profile_picture}} date={post.main.created_at} views={post.main.views} content={post.main.content} likes={post.main.likes} comments={post.main.comments || post.comments} id={post.main.id} user_id={post.main.user.id}/>
                 }
             </div>
             <div className='comments'>
                 {/* Render child posts */}
                 {post.comments.length?
-                post.comments.map(comment => <PostCard key={comment.id} views={comment.views} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} date={comment.created_at} content={comment.content} likes={comment.likes} id={comment.id} comments={comment.comments}/>)
+                post.comments.map(comment => <PostCard key={comment.id} views={comment.views} author={{'name':comment.user.username,'profile_picture':comment.user.profile_picture}} date={comment.created_at} content={comment.content} likes={comment.likes} id={comment.id} comments={comment.comments} user_id={comment.user.id}/>)
                 :
                 <h5>No comments</h5>}
             </div>

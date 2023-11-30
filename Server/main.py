@@ -361,6 +361,36 @@ class UserById(Resource):
         
 api.add_resource(UserById,'/user/<int:id>')
 
+class FollowUser(Resource):
+    @jwt_required()
+    def post(self,id):
+        account = False
+        identity = get_jwt_identity()
+        if id and (user:=db.session.get(User,identity)):
+            for follower in user.following:
+                if follower.following_id == id:
+                    account = follower
+                    break
+            try:
+                if account:
+                    follow = Follower.query.filter_by(follower_id=identity,following_id=account.following_id).first()
+                    db.session.delete(follow)
+                    db.session.commit()
+                    return {"status":"Follow"}
+                else:
+                    follow = Follower(follower_id=identity,following_id=id)
+                    db.session.add(follow)
+                    db.session.commit()
+                    return {"status":"Unfollow"}
+            except Exception as e:
+                db.session.rollback()
+                return {"error":e.args}
+                    
+        else:
+            return {"error":"user not found"},404
+
+api.add_resource(FollowUser,'/follow/<int:id>')
+
 @app.template_filter('format_date')
 def format_date(date_str):
     # Convert the string to a datetime object

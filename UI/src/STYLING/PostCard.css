@@ -31,6 +31,10 @@
   margin-right: 10px;
 }
 
+.user-pfp{
+  width: fit-content;
+}
+
 .post-body {
   margin: 10px 0;
   flex-grow: 1; 

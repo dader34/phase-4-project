@@ -31,7 +31,7 @@ const SignUpModal = ({ onClose }) => {
     e.preventDefault();
     if (detailsConfirmed) {
       // Implement sign-up logic to store user in the database
-      fetch("http://127.0.0.1:5555/signup",{
+      fetch("/signup",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"

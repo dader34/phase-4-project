@@ -42,7 +42,7 @@ const Feed = ({ user }) => {
 
   useEffect(()=>{
     if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
-    fetch('http://127.0.0.1:5555/auth',{
+    fetch('/auth',{
       headers:{
         'Authorization':`Bearer ${localStorage.getItem("JWT")}`
       }
@@ -64,7 +64,7 @@ const Feed = ({ user }) => {
 
     loadingRef.current = true;
 
-    fetch(`http://127.0.0.1:5555/posts?page=${p}&limit=10`)
+    fetch(`/posts?page=${p}&limit=10`)
       .then((resp) => resp.json())
       .then((data) => {
         setPosts((prevPosts) => [...prevPosts,...data.posts]);
@@ -88,6 +88,7 @@ const Feed = ({ user }) => {
       }, delay);
     };
   }
+  console.log(posts)
 
   return (
     <div className="feed-container">
@@ -107,6 +108,7 @@ const Feed = ({ user }) => {
             likes={post.likes}
             id={post.id}
             comments={post.comments}
+            user_id={post.user_id}
           />
         ))}
         {loadingRef.current && <p>Loading...</p>}
