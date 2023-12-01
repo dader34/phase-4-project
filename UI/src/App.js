@@ -39,7 +39,7 @@ const App = () => {
             </div>
             {location.pathname.startsWith('/home') && (<NavBar toggleDarkMode={toggleDarkMode} />)}
             <div className="outlet">
-                <Outlet />
+                <Outlet context={[isDark]}/>
             </div>
         </div>
     );

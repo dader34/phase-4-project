@@ -293,8 +293,14 @@ button:last-child {
 }
 
 
-.ReactModal__Content .ReactModal__Content--after-open {
-  border-radius: 15px;
+dark-mode.ReactModal__Content .ReactModal__Content--after-open {
+ background-color: black;
+}
+.ReactModalPortal{
+  background-color: red;
+}
+.ReactModal__Content.ReactModal__Content--after-open{
+  background-color: red;
 }
 
 form{
@@ -306,4 +312,17 @@ form{
 .dark-mode .post-container {
   background-color: #37383b;
   color: #ffffff;
+}
+
+.dark-mode form p{
+  color: white;
+}
+
+.dark-mode .close-button{
+  color: white;
+}
+
+.dark-mode .post-button{
+  background-color: white;
+  color: black
 }

@@ -2,7 +2,7 @@
 import Modal from 'react-modal';
 import { useState } from 'react';
 import useClipboard from "react-use-clipboard";
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import '../STYLING/PostCard.css';
@@ -15,6 +15,8 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [likeAmt, setLikeAmt] = useState(likes.length);
   const location = useLocation()
+  const [isDark] = useOutletContext()
+  console.log(isDark)
   // Set liked to true if self UID is in likes array
   // const [liked, setLiked] = useState(likes.some(like => like.id === UID));
   const nav = useNavigate();
@@ -161,7 +163,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
 
       {/* Modal */}
       <div onClick={(e) => e.stopPropagation()} className='click-div'>
-        <Modal style={{ content: { "borderRadius": "15px", "padding": "30px", "overflow": "hidden" } }}
+        <Modal style={{ content: { "borderRadius": "15px", "padding": "30px", "overflow": "hidden", "background" : isDark? "#494f55" : 'white', 'color' : isDark ? "white" : 'black'} }}
           isOpen={isModalOpen}
           ariaHideApp={false}
           onRequestClose={closeModal}
