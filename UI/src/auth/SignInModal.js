@@ -31,41 +31,38 @@ const SignInModal = ({ onClose }) => {
       password: Yup.string().min(5, "Password must be at least 5 characters").max(15, "Password has to be 15 characters or less").required("Password is required")
     }),
     onSubmit: async (values) => {
-      try {
-        const resp = await fetch("/login", {
+      // Use toast.promise to wrap the asynchronous operation
+      await toast.promise(
+        fetch("/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            "username": formik.values.name,
-            "password": formik.values.password
+            "username": values.name,
+            "password": values.password
           })
-        });
-  
-        if (!resp.ok) {
-          const data = await resp.json();
-          throw new Error(data[Object.keys(data)[0]]);
-        }
-  
-        const data = await resp.json();
-        localStorage.setItem("UID", data.UID);
-        localStorage.setItem("JWT", data.JWT);
-  
-        await toast.promise(
-          Promise.resolve("Logged in!"),
-          {
-            pending: "Logging in...",
-            success: "Successfully logged in!",
-            error: "Login failed"
+        })
+        .then(resp => {
+          if (!resp.ok) {
+            return resp.json().then(data => Promise.reject(new Error(data[Object.keys(data)[0]])));
           }
-        );
+          return resp.json();
+        })
+        .then(data => {
+          localStorage.setItem("UID", data.UID);
+          localStorage.setItem("JWT", data.JWT);
+          return "Logged in!";
+        }),
+        {
+          pending: "Logging in...",
+          success: "Successfully logged in!",
+          error: "Login failed"
+        }
+      );
   
-        nav('/home');
-      } catch (error) {
-        // Use toast.promise for errors
-        toast.error(error)
-      }
+      // Navigate to '/home' after successful submission
+      nav('/home');
     }
   });
 
