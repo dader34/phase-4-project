@@ -11,7 +11,7 @@
 }
 
 .modalContainer {
-  /* background: #fff; */
+  background: #fff;
   width: 400px;
   border-radius: 15px;
   overflow: hidden;
@@ -70,6 +70,7 @@ div.dark-mode.modalBody {
   width: calc(100% - 20px);
   padding: 10px;
   margin-bottom: 10px;
+  background-color: #35383b;
   /* border: 1px solid #ced4da; */
   border-radius: 4px;
   font-size: 1rem;
