@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import '../STYLING/Modal.css';
 import toast from 'react-hot-toast';
 
-const SignInModal = ({ onClose, onSignIn }) => {
+const SignInModal = ({ onClose }) => {
   const nav = useNavigate()
 
   const handleSubmit = async(e) => {
@@ -22,7 +22,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
   };
 
   const formik = useFormik({
-    initialValues:{
+    initialValues: {
       name: '',
       password: ''
     },
@@ -30,44 +30,44 @@ const SignInModal = ({ onClose, onSignIn }) => {
       name: Yup.string().min(5, "Username must be at least 5 characters").max(15, "Username has to be 15 characters or less").required("Username is required"),
       password: Yup.string().min(5, "Password must be at least 5 characters").max(15, "Password has to be 15 characters or less").required("Password is required")
     }),
-    onSubmit: (values) =>{
-      // TODO: Check if the user exists in your database
-      console.log("Post to login")
-      fetch("/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({"username":formik.values.name,"password":formik.values.password})
-      })
-      .then(resp => {
-        if (resp.ok) {
-          resp.json()
-          .then(data => {if(data){
-            console.log(data);
-            localStorage.setItem("UID", data.UID);
-            localStorage.setItem("JWT", data.JWT);
-            toast.success("Logged in!");
-            nav('/home')
-            // Redirect or perform other actions after successful login
-          }})
-        } else {
-          resp.json()
-          .then(data =>{throw new Error(data[Object.keys(data)[0]])})
-          .catch(error => {
-            toast.error(error.message);
-          });
+    onSubmit: async (values) => {
+      try {
+        const resp = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            "username": formik.values.name,
+            "password": formik.values.password
+          })
+        });
+  
+        if (!resp.ok) {
+          const data = await resp.json();
+          throw new Error(data[Object.keys(data)[0]]);
         }
-      })
-      .catch(e => toast.error(e.message))
-     
-      // .then(() => nav('/home'))
-      // toast.success("Logged in!")
-      //Post to login then get auth and redirect to feed
-      //If user doesnt exist send alert back
-
+  
+        const data = await resp.json();
+        localStorage.setItem("UID", data.UID);
+        localStorage.setItem("JWT", data.JWT);
+  
+        await toast.promise(
+          Promise.resolve("Logged in!"),
+          {
+            pending: "Logging in...",
+            success: "Successfully logged in!",
+            error: "Login failed"
+          }
+        );
+  
+        nav('/home');
+      } catch (error) {
+        // Use toast.promise for errors
+        toast.error(error)
+      }
     }
-  })
+  });
 
   return (
     <div className="modalOverlay">

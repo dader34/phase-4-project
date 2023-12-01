@@ -167,27 +167,35 @@ class PostById(Resource):
             try:
                 post.views += 0.5
                 db.session.commit()
-            except Exception as e:
-                print("Could not update view count")
-                print(e)
-            return{
+                return{
                 'main':post.to_dict(rules=('-user.likes','-comments','-user_id','-post_likes',)),
                 'comments':[
                     comment.to_dict(rules=('-user_id','-post_likes',)) for comment in post.comments
                 ]
             }
+            except Exception as e:
+                db.session.rollback()
+                return {'error':'Could not update views'}
+            
+    @jwt_required()  
+    def delete(self,id):
+        user_id = get_jwt_identity()  
+        
+        
+        post = db.session.get(Post,id)
+        if not post:
+            return {'error': 'Post not found'}, 404
+
+        
+        if post.user_id == user_id:
+            db.session.delete(post)
+            db.session.commit()
+            return {'message': 'Post deleted successfully'}, 200
+        else:
+            return {'error': 'Unauthorized'}, 403
+
         
 api.add_resource(PostById, '/posts/<int:id>')
-
-
-
-#Signup route
-#Get username and password
-#Validate username and pass > 4 characters < 15
-#Check if username is already in database
-#Create user in database
-#Commit changes
-#Send back authenticated jwt and user id
 
 class Signup(Resource):
     def post(self):
@@ -360,6 +368,19 @@ class UserById(Resource):
         else:
             return {"error":"invalid user id"},400
         
+    @jwt_required()
+    def delete(self,id):
+        current_user_id = get_jwt_identity()
+        if current_user_id != id:
+            return {'error': 'Unauthorized'}, 403
+
+        user = User.query.get(id)
+        if not user:
+            return {'error': 'User not found'}, 404
+        db.session.delete(user)
+        db.session.commit()
+        return {'message': 'User account deleted successfully'}, 200
+        
 api.add_resource(UserById,'/user/<int:id>')
 
 class FollowUser(Resource):
@@ -391,39 +412,6 @@ class FollowUser(Resource):
             return {"error":"user not found"},404
 
 api.add_resource(FollowUser,'/follow/<int:id>')
-
-@app.route('/user/<int:user_id>', methods=['DELETE'])
-@jwt_required()
-def delete_account(user_id):
-    current_user_id = get_jwt_identity()
-    if current_user_id != user_id:
-        return jsonify({'error': 'Unauthorized'}), 403
-
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({'message': 'User account deleted successfully'}), 200
-
-
-@app.route('/post/<int:post_id>', methods=['DELETE'])
-@jwt_required()  
-def delete_post(post_id):
-    user_id = get_jwt_identity()  
-    
-    
-    post = Post.query.get(post_id)
-    if not post:
-        return jsonify({'error': 'Post not found'}), 404
-
-    
-    if post.user_id == user_id:
-        db.session.delete(post)
-        db.session.commit()
-        return jsonify({'message': 'Post deleted successfully'}), 200
-    else:
-        return jsonify({'error': 'Unauthorized'}), 403
 
 @app.template_filter('format_date')
 def format_date(date_str):

@@ -29,9 +29,6 @@ const ViewOnePost = () => {
                   }
               })
     },[id, JWT, UID, nav])
-    // console.log(post.main)
-    console.log(post.comments)
-    // console.log(id)
     //Make fetch to id of post clicked on. Pass through url?
     //Display main post, and render comments in div under main div
     return(post.main ?

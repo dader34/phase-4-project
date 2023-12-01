@@ -45,7 +45,6 @@ const SignUpModal = ({ onClose }) => {
         if (resp.ok) {
           resp.json()
           .then(data => {if(data){
-            console.log(data);
             localStorage.setItem("UID", data.UID);
             localStorage.setItem("JWT", data.JWT);
             toast.success("Welcome in!");

@@ -9,22 +9,20 @@ import '../STYLING/PostCard.css';
 import toast from 'react-hot-toast';
 // import 'react-quill/dist/quill.snow.css';
 
-const PostCard = ({ author, content, date, likes, id, views, comments,user_id }) => {
+const PostCard = ({ author, content, date, likes, id, views, comments,user_id, remove }) => {
   const UID = parseInt(localStorage.getItem("UID"));
   const JWT = localStorage.getItem("JWT")
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [likeAmt, setLikeAmt] = useState(likes.length);
   const location = useLocation()
   const [isDark] = useOutletContext()
-  console.log(isDark)
-  ;
   const nav = useNavigate();
   const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)// eslint-disable-line
 
   const handleDelete = (event) => {
     event.stopPropagation();
     if (window.confirm('Are you sure you want to delete this post?')) {
-      fetch(`/post/${id}`, {
+      fetch(`/posts/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${JWT}`
@@ -38,7 +36,9 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
       })
       .then(() => {
         toast.success('Post deleted successfully');
-        // Optionally navigate away or update the state to remove the post from the view
+        if(remove){
+          remove(id)
+        }
         nav('/home');
       })
       .catch(error => {
@@ -121,7 +121,6 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
   };
 
 
-  // console.log(comments)
   const handleLike = (e) => {
     e.stopPropagation();
     // Make post request to like/unlike

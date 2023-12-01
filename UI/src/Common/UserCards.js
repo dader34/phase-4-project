@@ -18,7 +18,6 @@ useEffect(()=>{
                 resp.json().then(data =>{
                     if(data.following[0]){
                         data.following.forEach(f =>{
-                            console.log(f.following)
                             if(!(following.includes(f.following.username))){
                                 setFollowing(current => [f.following.username ,...current])
                             }
@@ -29,7 +28,6 @@ useEffect(()=>{
                 toast.error(resp.message)
             }
         }).catch(e => toast.error(e))
-            console.log(self)
     },[JWT,UID,self,following])
 
 

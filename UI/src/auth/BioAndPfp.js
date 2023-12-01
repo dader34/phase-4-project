@@ -63,7 +63,7 @@ const BioAndPfp = () => {
         // Navigate to '/home' after successful submission
         nav('/home');
       } catch (error) {
-        console.error(error);
+        toast.error(error)
       }
     },
   });

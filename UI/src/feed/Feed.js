@@ -73,7 +73,6 @@ const Feed = () => {
         loadingRef.current = false;
       })
       .catch((e) => {
-        console.log(e)
         toast.error(e.message);
         loadingRef.current = false;
       });
@@ -89,7 +88,10 @@ const Feed = () => {
       }, delay);
     };
   }
-  console.log(posts)
+  
+  const removePost = (postId) =>{
+    setPosts(current => current.filter(post => post.id !== postId))
+  }
 
   return (
     <div className="feed-container">
@@ -110,6 +112,7 @@ const Feed = () => {
             id={post.id}
             comments={post.comments}
             user_id={post.user_id}
+            remove={removePost}
           />
         ))}
         {loadingRef.current && <p>Loading...</p>}
