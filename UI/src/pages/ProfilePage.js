@@ -22,7 +22,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (!jwt || !UID) return nav('/');
 
-    fetch(`/user/${id}`, { headers: { Authorization: `Bearer ${jwt}` } })
+    fetch(`https://birdnoise.danner.repl.co/user/${id}`, { headers: { Authorization: `Bearer ${jwt}` } })
       .then(response => response.ok ? response.json() : Promise.reject(response))
       .then(data => {
         setProfileData(data);
@@ -35,7 +35,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (profileData && profileData.username) {
-      fetch(`/user/${UID}`, { headers: { Authorization: `Bearer ${jwt}` } })
+      fetch(`https://birdnoise.danner.repl.co/user/${UID}`, { headers: { Authorization: `Bearer ${jwt}` } })
         .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
         .then(data => {
           const followingUsernames = data.following.map(f => f.following.username);
@@ -51,7 +51,7 @@ const ProfilePage = () => {
   const handleBioChange = (event) => setEditedBio(event.target.value);
 
   const handleSaveBio = () => {
-    fetch(`/user/update-bio`, {
+    fetch(`https://birdnoise.danner.repl.co/user/update-bio`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt}` },
       body: JSON.stringify({ bio: editedBio }),
@@ -67,7 +67,7 @@ const ProfilePage = () => {
   };
 
   const handleFollow = () => {
-    fetch(`/follow/${id}`, { method: "POST", headers: { "Authorization": `Bearer ${jwt}` } })
+    fetch(`https://birdnoise.danner.repl.co/follow/${id}`, { method: "POST", headers: { "Authorization": `Bearer ${jwt}` } })
       .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
       .then(data => setIsFollowing(data.status === "Unfollow"))
       .catch(error => toast.error(`Error: ${error.message || error}`));

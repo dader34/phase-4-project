@@ -33,7 +33,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
     onSubmit: (values) =>{
       // TODO: Check if the user exists in your database
       console.log("Post to login")
-      fetch("/login",{
+      fetch("https://birdnoise.danner.repl.co/login",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"

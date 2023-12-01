@@ -9,7 +9,7 @@ const [following,setFollowing] = useState([])
 const UID = parseInt(localStorage.getItem("UID")) 
 const JWT = localStorage.getItem("JWT")
 useEffect(()=>{
-        fetch(`/user/${UID}`,{
+        fetch(`https://birdnoise.danner.repl.co/user/${UID}`,{
             headers: {
                 "Authorization":`Bearer ${JWT}`
             }

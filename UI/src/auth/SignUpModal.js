@@ -31,7 +31,7 @@ const SignUpModal = ({ onClose }) => {
     e.preventDefault();
     if (detailsConfirmed) {
       // Implement sign-up logic to store user in the database
-      fetch("/signup",{
+      fetch("https://birdnoise.danner.repl.co/signup",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
