@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 
 const AddPost = () => {
-    const [content, setContent] = useState('');
     const UID = parseInt(localStorage.getItem("UID"));
     const JWT = localStorage.getItem("JWT")
     const nav = useNavigate()

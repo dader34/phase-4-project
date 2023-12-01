@@ -7,6 +7,7 @@
 
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  height: 100%;
 }
 
 .profile-page {
@@ -66,7 +67,7 @@ body {
   font-size: 14px;
   color: #14171a;
   padding: 15px;
-  border-bottom: 1px solid #e1e8ed;
+  border-bottom: 1px solid #000000;
 }
 
 .edit-bio-button {
@@ -135,6 +136,45 @@ body {
 .followers-list {
   display: flex;
   flex-wrap: wrap;
+}
+.app-container{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
+
+.dark-mode body{
+  background: black;
+}
+
+.dark-mode .profile-header , .dark-mode .profile-container{
+  background: #293053;
+  color: white;
+  border: none;
+}
+
+.dark-mode .profile-picture{
+  border: 4px solid #14171a;
+}
+
+.dark-mode .bio{
+  color: white;
+}
+
+.dark-mode .follow{
+  background: #293053;
+  border: none;
+}
+
+.dark-mode .follow-count{
+  color: white;
+  background: #14171a;
+}
+
+.dark-mode .follower-username{
+  color: white;
 }
 
 .follower-item {

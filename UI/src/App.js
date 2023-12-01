@@ -1,80 +1,48 @@
-import { useState,useEffect } from "react";
-import { Outlet,useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Outlet, useLocation } from 'react-router-dom';
 import NavBar from "./Common/NavBar";
-import {useNavigate} from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
-import './STYLING/NavBar.css'
-import './STYLING/PostCard.css'
+import { Toaster } from 'react-hot-toast';
+import './STYLING/NavBar.css';
+import './STYLING/PostCard.css';
 
-const App = () =>{
-    const [isDark, setIsDark] = useState(false)
-    const [isAuth,setIsAuth] = useState(false)
-    const location = useLocation()
-    const UID = localStorage.getItem("UID")
-    const JWT = localStorage.getItem("JWT")
-    const nav = useNavigate()
-
-    // Check dark mode preference from localStorage on initial load
-    useEffect(() => {
+const App = () => {
+    const [isDark, setIsDark] = useState(() => {
         const darkModePreference = localStorage.getItem('darkMode') === 'enabled';
-        setIsDark(darkModePreference);
-    }, []);
+        return darkModePreference;
+    });
+    const location = useLocation();
 
-    // Toggle dark mode
-    const toggleDarkMode = () => { 
-        //find html tag and apply darkmode class
-        document.querySelector('html').classList.toggle('dark-mode');
-        setIsDark(!isDark);
-    };
-
-    // Update localStorage when dark mode changes
+    // Apply dark mode class to HTML element based on initial state
     useEffect(() => {
-        localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        document.querySelector('html').classList.toggle('dark-mode', isDark);
     }, [isDark]);
 
-    // useEffect(()=>{
-    //     if(!(UID || JWT) && !((location.pathname === '/') || (location.pathname.startsWith('/home/post')))){
-    //         console.log(location.pathname)
-    //         toast.error("Please log in")
-    //         nav('/')
-    //         //Re route if not authenticated
-    //     }else{
-    //         !((location.pathname.startsWith('/home/post')) || (location.pathname === ('/'))) ?
-    //         UID && JWT? 
-    //             fetch("http://127.0.0.1:5555/auth",{
-    //                 headers:{
-    //                     "Authorization": `Bearer ${JWT}`
-    //                 }
-    //             })
-    //             .then(resp => resp.json())
-    //             .then(data => {
-    //                 if(!(data && data.success)){
-    //                     nav('/')
-    //                     toast.error("Your session has expired, please log in again")
-    //                 }
-    //             })
-    //             : nav('/')
-    //         : console.log("1232113")
-    //     }
-    // },[location.pathname,JWT,UID,nav])
+    const toggleDarkMode = () => {
+        const newDarkModeValue = !isDark;
+        setIsDark(newDarkModeValue);
+        localStorage.setItem('darkMode', newDarkModeValue ? 'enabled' : 'disabled');
+    };
 
-    return(
+    return (
         <div className={`app-container ${isDark ? 'dark-mode' : ''}`}>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-            <div><Toaster toastOptions={{
-            error: {
-                duration: 3000,
-                theme: {
-                    primary: 'green',
-                    secondary: 'black',
-                },
-            }
-            }}/></div>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+            <div>
+                <Toaster toastOptions={{
+                    error: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black',
+                        },
+                    }
+                }} />
+            </div>
             {location.pathname.startsWith('/home') && (<NavBar toggleDarkMode={toggleDarkMode} />)}
             <div className="outlet">
-                <Outlet />
+                <Outlet context={[isDark]}/>
             </div>
         </div>
-    )
-}
+    );
+};
+
 export default App;
