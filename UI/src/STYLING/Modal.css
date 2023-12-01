@@ -11,7 +11,7 @@
 }
 
 .modalContainer {
-  /* background: #fff; */
+  background: #fff;
   width: 400px;
   border-radius: 15px;
   overflow: hidden;
@@ -71,12 +71,13 @@ div.dark-mode.modalBody {
   padding: 10px;
   margin-bottom: 10px;
   /* border: 1px solid #ced4da; */
+  background-color: white;
   border-radius: 4px;
   font-size: 1rem;
   color: #00020a; /* Blue text color for input */
 }
 
-.dark-mode.modalInput{
+.dark-mode .modalInput{
   background: #2b2d32b4;
   border: none;
   color: white;
