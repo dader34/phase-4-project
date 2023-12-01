@@ -40,7 +40,7 @@ const BioAndPfp = () => {
           .then(response => response.json())
           .then(data => {
               const imgurl = data
-              fetch(`http://127.0.0.1:5555/signup`,{
+              fetch(`/signup`,{
               method:"PATCH",
               headers:{
                 "Content-Type":"application/json",

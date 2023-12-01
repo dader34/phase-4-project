@@ -127,7 +127,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
 CORS(app)
 db.init_app(app)
 api = Api(app)
@@ -241,33 +241,27 @@ def delete_post(post_id):
     if post.user_id != user_id: # Add your admin check logic here if necessary
         return jsonify({'error': 'Unauthorized'}), 403
 
-    # Delete the post
-    try:
-        db.session.delete(post)
-        db.session.commit()
-        return jsonify({'message': 'Post deleted successfully'}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': 'Failed to delete post'}), 500
-@app.route('/user/update-bio', methods=['PATCH'])
-@jwt_required()  # Requires authentication
-def update_bio():
-    user_id = get_jwt_identity()
 
-    new_bio = request.json.get('bio')
+class UpdateBio(Resource):
+    @jwt_required()
+    def patch(self):
+        user_id = get_jwt_identity()
 
-    try:
-        user = db.session.query(User).filter_by(id=user_id).first()
-        if user:
-            user.user_bio = new_bio
-            db.session.commit()
-            return {'message': 'Bio updated successfully'}, 200
-        else:
-            return {'error': 'User not found'}, 404
-    except Exception as e:
-        db.session.rollback()
-        return {'error': 'Failed to update bio'}, 500
+        new_bio = request.json.get('bio')
+
+        try:
+            user = db.session.query(User).filter_by(id=user_id).first()
+            if user:
+                user.user_bio = new_bio
+                db.session.commit()
+                return {'message': 'Bio updated successfully'}, 200
+            else:
+                return {'error': 'User not found'}, 404
+        except Exception as e:
+            db.session.rollback()
+
     
+api.add_resource(UpdateBio,'/user/update-bio')
     
 class Login(Resource):
     def post(self):
@@ -380,6 +374,36 @@ class UserById(Resource):
             return {"error":"invalid user id"},400
         
 api.add_resource(UserById,'/user/<int:id>')
+
+class FollowUser(Resource):
+    @jwt_required()
+    def post(self,id):
+        account = False
+        identity = get_jwt_identity()
+        if id and (user:=db.session.get(User,identity)):
+            for follower in user.following:
+                if follower.following_id == id:
+                    account = follower
+                    break
+            try:
+                if account:
+                    follow = Follower.query.filter_by(follower_id=identity,following_id=account.following_id).first()
+                    db.session.delete(follow)
+                    db.session.commit()
+                    return {"status":"Follow"}
+                else:
+                    follow = Follower(follower_id=identity,following_id=id)
+                    db.session.add(follow)
+                    db.session.commit()
+                    return {"status":"Unfollow"}
+            except Exception as e:
+                db.session.rollback()
+                return {"error":e.args}
+                    
+        else:
+            return {"error":"user not found"},404
+
+api.add_resource(FollowUser,'/follow/<int:id>')
 
 @app.template_filter('format_date')
 def format_date(date_str):

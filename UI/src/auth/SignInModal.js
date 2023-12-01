@@ -33,7 +33,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
     onSubmit: (values) =>{
       // TODO: Check if the user exists in your database
       console.log("Post to login")
-      fetch("http://127.0.0.1:5555/login",{
+      fetch("/login",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
