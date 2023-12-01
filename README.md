@@ -40,7 +40,9 @@ Tired of constrained conversations? With **BirdNoise**, you can nest your posts 
 2. Subsequently, execute these commands: `flask db init`, `flask db migrate -m "initial migration"`, `flask db upgrade head`
 3. After that, your database should be set up correctly
 4. To seed data, make sure you are in the server directory and run `python helpers/seed.py`
-5. Now you are ready to open the apps frontend and get to posting!
+5. If you are preparing to deploy this app, make sure that the JWT_SECRET_KEY in main.py is in a secret .env file
+6. Now you are ready to open the apps frontend and get to posting!
+   
 
 
 ## Contributors
