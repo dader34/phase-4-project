@@ -1,139 +1,60 @@
-# BirdNoise
 
-!["Bird"Noise"](UI/public/birdnoise.png)
+# BirdNoise: A Symphony of Tweets 🐦🎵
 
-   ## Overview
+Welcome to BirdNoise, where the birds chirp, and so do you! 🐦 Unleash your inner raven, crow, bluejay, or even hawk in this social platform that's definitely not Twitter, but, you know, with a bit of taste, and less features (You have to pay for that)
 
-BirdNoise is a social media platform designed to connect users and facilitate meaningful conversations through posts and comments. This document provides an overview of the project structure, detailing each file's purpose and the key components they contribute to the BirdNoise application.
+## Table of Contents
 
-## Project Structure
+- [Features](#features)
+  - [Infinite Scroll](#infinite-scroll)
+  - [Dark Mode](#dark-mode)
+  - [Unlimited Nesting of Posts](#unlimited-nesting-of-posts)
+- [Installation](#installation)
+- [Database Setup](#database-setup)
+- [License](#license)
 
-### src Directory
+## Features
 
-The src directory contains the source code for the BirdNoise application. Here's an overview of the key files and their functionalities:
+### Infinite Scroll
 
-#### App.js
+Say goodbye to mundane scrolling! **BirdNoise** features an infinite scroll that keeps the posts flowing endlessly. Dive into the endless stream of birdy banter without the need for tedious page navigation.
 
--   Dependencies:
-    
+### Dark Mode
 
--   react, useState, useEffect: Core React libraries and hooks.
-    
--   react-router-dom: Library for handling navigation in a React application.
-    
--   NavBar: Component responsible for rendering the navigation bar.
-    
--   toast and Toaster: Libraries for displaying toast notifications.
-    
--   STYLING/NavBar.css and STYLING/PostCard.css: CSS files for styling the navigation bar and post cards.
-    
+Night owl or just prefer a darker aesthetic? Flip the switch and transform **BirdNoise** into a nocturnal haven. Whether you're tweeting at dawn or dusk, our dark mode provides a comfortable and stylish browsing experience. We cant promise that it looks that good though!
 
-Component Description:
+### Unlimited Nesting of Posts
 
--   The App component manages the overall structure of the application. It includes the navigation bar (NavBar), which is conditionally rendered based on the user's authentication status. The dark mode toggle and the Outlet component from react-router-dom are also integrated.
-    
+Tired of constrained conversations? With **BirdNoise**, you can nest your tweets as deep as you want. Respond to replies, reply to responses, and watch the conversation take flight with unlimited nesting. It's a chirpy conversation tree!
 
-#### ProfilePage.js
+## Installation
 
--   Dependencies:
-    
+1. Clone `https://github.com/dader34/phase-4-project.git` and cd into the new folder
+2. To install the requirements run the command `pip install -r requirements.txt` in the root directory.
+3. Following that, run `npm i` in the UI directory
+4. Lastly, run npm start to run the frontend server. You may need to change the `proxy` in package.json depending on what port and ip your flask server is running on
 
--   react, useState, useEffect: Core React libraries and hooks.
-    
--   useNavigate, useParams: React Router hooks for navigation and URL parameter access.
-    
--   react-hot-toast: Library for displaying toast notifications.
-    
--   STYLING/ProfilePage.css and STYLING/Modal.css: CSS files for styling the profile page and modals.
-    
--   PostCard: Component for rendering individual posts.
-    
+## Database Setup
 
-Component Description:
+1. To initialize the database, cd to the server folder and run `export FLASK_APP=main.py`
+2. Subsequently, execute these commands: `flask db init`, `flask db migrate -m "initial migration"`, `flask db upgrade head`
+3. After that, your database should be set up correctly
+4. To seed data, make sure you are in the server directory and run `python helpers/seed.py`
+5. Now you are ready to open the apps frontend and get to posting!
 
--   The ProfilePage component fetches user data based on the user ID from the URL parameters. It displays the user's profile information, posts, and followers/following lists. Users can edit their bio information through a modal.
-    
-
-#### HomePage.js
-
--   Dependencies:
-    
-
--   react, useState, useEffect: Core React libraries and hooks.
-    
--   SignInModal and SignUpModal: Components for rendering sign-in and sign-up modals.
-    
--   react-router-dom: Library for handling navigation in a React application.
-    
--   LogInSignUp: Component for rendering the login/signup interface.
-    
--   STYLING/HomePage.css: CSS file for styling the homepage.
-    
-
-Component Description:
-
--   The HomePage component displays the main content of the landing page, offering options to sign in or create an account. Depending on the user's actions, modals (SignInModal and SignUpModal) may be triggered for sign-in or sign-up processes.
-    
-
-#### ErrorPage.js
-
--   Dependencies:
-    
-
--   react: Core React library.
-    
--   react-router-dom: Library for handling navigation in a React application.
-    
--   STYLING/ErrorPage.css: CSS file for styling the error page.
-    
-
-Component Description:
-
--   The ErrorPage component is displayed when an error occurs in the application. It provides an error message and a link to return to the main BirdNoise page.
-    
-
-### STYLING Directory
-
-The STYLING directory contains CSS files for styling different components of the BirdNoise application.
-
--   NavBar.css: Styles for the navigation bar.
-    
--   PostCard.css: Styles for rendering post cards.
-    
--   ProfilePage.css: Styles for the user profile page.
-    
--   Modal.css: Styles for modal components.
-    
--   HomePage.css: Styles for the landing page.
-    
--   ErrorPage.css: Styles for the error page.
-    
-
-## Usage
-
-To integrate BirdNoise into your project, follow these steps:
-
--   Copy the contents of the src directory into your project's source code directory.
-    
--   Adjust the CSS files in the STYLING directory to match your application's styling preferences.
-    
--   Make sure to install any additional dependencies used in the components (e.g., react-router-dom, react-hot-toast) if not already installed.
-    
--   Customize the components as needed for your application.
-    
 
 ## Contributors
 
--   [Michael Phan]
-    
--   [Danner Baumgartner]
-    
--  [Landon Cramer]]
-    
+This project was brought to you by the hard working team over here at birdnoise. we hope you enjoy our app!
+
+- **Danner**
+- **Michael**
+- **Landon**
 
 ## License
 
-The MIT License(MIT)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Permission is herby granted, free of charge, to any person obtaining a copy of this software and associated document files ("'BirdNoise"). You are free to bend it, twist it, or even throw it into the spirit portal (though we don't recommend that). Remember, with great power comes great responsibility. Enjoy exploring our world of BirdNoise!
+---
 
+**BirdNoise** - Because sometimes social media needs a little more flair! 🎶🐦
