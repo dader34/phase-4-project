@@ -11,7 +11,7 @@
 }
 
 .modalContainer {
-  background: #fff;
+  /* background: #fff; */
   width: 400px;
   border-radius: 15px;
   overflow: hidden;
@@ -29,6 +29,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+}
+
+.dark-mode.modalHeader {
+  background-color: #1a1d20;
 }
 
 .modalIcon {
@@ -55,14 +59,26 @@
   text-align: center;
 }
 
+div.dark-mode.modalBody {
+  padding: 20px;
+  text-align: center;
+  background-color: #1a1d20 ;
+  color: white;
+}
+
 .modalInput {
   width: calc(100% - 20px);
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ced4da;
+  /* border: 1px solid #ced4da; */
   border-radius: 4px;
   font-size: 1rem;
   color: #00020a; /* Blue text color for input */
+}
+
+.dark-mode.modalInput{
+  background: #2b2d32b4;
+  border: none;
 }
 
 .helperText {
@@ -77,6 +93,8 @@
   opacity: 1; /* Firefox */
   font-size: 0.75rem; /* Smaller font size for placeholder */
 }
+
+
 
 .modalButton {
   width: 100%;

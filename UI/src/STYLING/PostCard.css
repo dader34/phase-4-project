@@ -172,7 +172,7 @@ button:last-child {
 }
 
 .modalContainer {
-  background: #fff;
+  /* background: #fff; */
   width: 400px;
   border-radius: 15px;
   overflow: hidden;
@@ -230,7 +230,7 @@ button:last-child {
   /* width: calc(100% - 20px); */
   padding-top: 10px;
   /* margin-bottom: 10px; */
-  border: 1px solid #ffffff;
+  border: 1px solid #000000;
   border-radius: 4px;
   font-size: 1rem;
   color: #00020a; 
@@ -289,6 +289,11 @@ button:last-child {
   width: 100%;
   margin: auto;
   padding-top: 30%; /* Adjust the padding-top value for the desired height */
+  color: black;
+}
+
+.dark-mode.ReactModal__Content{
+  background: black;
 }
 
 .ReactModal__Content .ReactModal__Content--after-open {

@@ -38,7 +38,7 @@ const Feed = ({ user }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [page]); // Add morePosts to the dependency array
+  }, [page,morePosts]);// eslint-disable-line
 
   useEffect(()=>{
     if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
@@ -55,7 +55,7 @@ const Feed = ({ user }) => {
       }
     })
     .catch(e => toast.error(e.message))
-  },[])
+  },[nav])
 
   // Get posts
   const fetchPosts = (p) => {

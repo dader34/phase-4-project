@@ -16,7 +16,7 @@ const UserCard = ({ f, UID, JWT, following,self,close,choice }) => {
     }
     useEffect(()=>{
         setIsFollowing(following.includes(f[choice].username))
-    },[following])
+    },[following,choice,f])
 
     return(
         <div key={f[choice].id} className="follower-item" >

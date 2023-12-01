@@ -1,6 +1,6 @@
 // Import react-modal at the beginning of your file
 import Modal from 'react-modal';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useClipboard from "react-use-clipboard";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
@@ -13,13 +13,12 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
   const UID = parseInt(localStorage.getItem("UID"));
   const JWT = localStorage.getItem("JWT")
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [commentText, setCommentText] = useState('');
   const [likeAmt, setLikeAmt] = useState(likes.length);
   const location = useLocation()
   // Set liked to true if self UID is in likes array
   // const [liked, setLiked] = useState(likes.some(like => like.id === UID));
   const nav = useNavigate();
-  const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)
+  const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)// eslint-disable-line
 
   const formik = useFormik({
     initialValues: {
@@ -175,7 +174,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
               placeholder="What is happening?!"
               className='modal-input'
             />
-            <p>Characters: {formik.values.length}</p>
+            <p>Characters: {formik.values.content.length}</p>
             <input type='submit' value='post' className='post-button' />
             <button onClick={closeModal} className='close-button'>X</button>
           </form>

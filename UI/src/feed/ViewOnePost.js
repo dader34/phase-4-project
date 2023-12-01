@@ -28,7 +28,7 @@ const ViewOnePost = () => {
                       toast.error("Your session has expired, please log in again")
                   }
               })
-    },[id])
+    },[id, JWT, UID, nav])
     // console.log(post.main)
     console.log(post.comments)
     // console.log(id)

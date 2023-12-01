@@ -7,6 +7,7 @@
 
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
+  height: 100%;
 }
 
 .profile-page {
@@ -135,6 +136,17 @@ body {
 .followers-list {
   display: flex;
   flex-wrap: wrap;
+}
+.app-container{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
+
+.dark-mode body{
+  background: black;
 }
 
 .follower-item {
