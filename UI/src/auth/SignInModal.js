@@ -30,7 +30,7 @@ const SignInModal = ({ onClose }) => {
       name: Yup.string().min(5, "Username must be at least 5 characters").max(15, "Username has to be 15 characters or less").required("Username is required"),
       password: Yup.string().min(5, "Password must be at least 5 characters").max(15, "Password has to be 15 characters or less").required("Password is required")
     }),
-    onSubmit: (values) =>{
+    onSubmit: async (values) =>{
       // TODO: Check if the user exists in your database
       console.log("Post to login")
       fetch("https://birdnoise.danner.repl.co/login",{
