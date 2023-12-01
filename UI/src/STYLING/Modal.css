@@ -10,8 +10,17 @@
   justify-content: center;
 }
 
-.modalContainer {
+.modalContainers {
   background: #1a1d20;
+  width: 400px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modalContainer {
+  background: white;
   width: 400px;
   border-radius: 15px;
   overflow: hidden;
@@ -54,9 +63,10 @@
   color: #0139f3b4;
 }
 
-.modalBody {
+.modalBody > div > p {
   padding: 20px;
   text-align: center;
+  color: white;
 }
 
 div.dark-mode.modalBody {
@@ -66,7 +76,7 @@ div.dark-mode.modalBody {
   color: white;
 }
 
-.modalInput {
+.modalInputs {
   width: calc(100% - 20px);
   padding: 10px;
   margin-bottom: 10px;
@@ -75,6 +85,19 @@ div.dark-mode.modalBody {
   border-radius: 4px;
   font-size: 1rem;
   color: #00020a; /* Blue text color for input */
+}
+
+.modalInput{
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 10px;
+  /* border: 1px solid #ced4da; */
+  background-color: white;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: white; /* Blue text color for input */
+  background-color: #2b2d32b4;
+  border: none
 }
 
 .dark-mode .modalInput{

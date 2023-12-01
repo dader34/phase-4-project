@@ -85,7 +85,7 @@ const ProfilePage = () => {
               <button className="closeButton" onClick={() => setIsEditingBio(false)}>X</button>
             </div>
             <div className="modalBody">
-              <textarea className="modalInput" value={editedBio} onChange={handleBioChange}></textarea>
+              <textarea className="modalInputs" value={editedBio} onChange={handleBioChange}></textarea>
               <button className="modalButton" onClick={handleSaveBio}>Save Changes</button>
             </div>
           </div>
