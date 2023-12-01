@@ -25,7 +25,7 @@ Night owl or just prefer a darker aesthetic? Flip the switch and transform **Bir
 
 ### Unlimited Nesting of Posts
 
-Tired of constrained conversations? With **BirdNoise**, you can nest your tweets as deep as you want. Respond to replies, reply to responses, and watch the conversation take flight with unlimited nesting. It's a chirpy conversation tree!
+Tired of constrained conversations? With **BirdNoise**, you can nest your posts as deep as you want. Respond to replies, reply to responses, and watch the conversation take flight with unlimited nesting. It's a chirpy conversation tree!
 
 ## Installation
 
