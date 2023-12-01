@@ -18,9 +18,6 @@ const HomePage = () =>{
         nav('/signup/complete')
         setShowSignUpModal(false);
     };
-    useEffect(()=>{
-        //Handle redirect if authenticated
-    })
 
     return (
         <div className="HomePage">

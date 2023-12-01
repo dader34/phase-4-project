@@ -31,7 +31,7 @@ const SignUpModal = ({ onClose }) => {
     e.preventDefault();
     if (detailsConfirmed) {
       // Implement sign-up logic to store user in the database
-      fetch("/signup",{
+      fetch("https://birdnoise.danner.repl.co/signup",{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
@@ -84,7 +84,7 @@ const SignUpModal = ({ onClose }) => {
 
   return (
     <div className="modalOverlay">
-      <div className="modalContainer">
+      <div className="modalContainers">
         <div className="modalHeader">
           <img src="/birdnoise.png" alt="Flatiron School Logo" className="modalIcon" />
           <button onClick={onClose} className="closeButton">&times;</button>
