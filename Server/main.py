@@ -126,6 +126,7 @@ from sqlalchemy import desc
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#! Change to env secret if deploying !#
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
 CORS(app)
