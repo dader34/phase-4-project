@@ -43,7 +43,7 @@ const Feed = () => {
 
   useEffect(()=>{
     if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
-    fetch('/auth',{
+    fetch('https://birdnoise.danner.repl.co/auth',{
       headers:{
         'Authorization':`Bearer ${localStorage.getItem("JWT")}`
       }
@@ -65,7 +65,7 @@ const Feed = () => {
 
     loadingRef.current = true;
 
-    fetch(`/posts?page=${p}&limit=5`)
+    fetch(`https://birdnoise.danner.repl.co/posts?page=${p}&limit=5`)
       .then((resp) => resp.json())
       .then((data) => {
         setPosts((prevPosts) => [...prevPosts,...data.posts]);
