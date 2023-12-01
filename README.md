@@ -1,3 +1,4 @@
+
 # BirdNoise: A Symphony of Tweets 🐦🎵
 
 Welcome to BirdNoise, where the birds chirp, and so do you! 🐦 Unleash your inner raven, crow, bluejay, or even hawk in this social platform that's definitely not Twitter, but, you know, with a bit of taste, and less features (You have to pay for that)
