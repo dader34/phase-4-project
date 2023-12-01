@@ -5,11 +5,12 @@ import toast from 'react-hot-toast';
 import '../STYLING/Feed.css';
 import { useNavigate } from 'react-router-dom';
 
-const Feed = ({ user }) => {
+const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [isAuth,setIsAuth] = useState(false)
   const [morePosts, setMorePosts] = useState(true);
+  //the workhorse     vvvvvvv
   const loadingRef = useRef(false);
   const nav = useNavigate()
 
@@ -38,7 +39,7 @@ const Feed = ({ user }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [page]); // Add morePosts to the dependency array
+  }, [page,morePosts]);// eslint-disable-line
 
   useEffect(()=>{
     if(localStorage.getItem("UID") && localStorage.getItem("JWT"))
@@ -55,7 +56,7 @@ const Feed = ({ user }) => {
       }
     })
     .catch(e => toast.error(e.message))
-  },[])
+  },[nav])
 
   // Get posts
   const fetchPosts = (p) => {
@@ -64,7 +65,7 @@ const Feed = ({ user }) => {
 
     loadingRef.current = true;
 
-    fetch(`/posts?page=${p}&limit=10`)
+    fetch(`/posts?page=${p}&limit=5`)
       .then((resp) => resp.json())
       .then((data) => {
         setPosts((prevPosts) => [...prevPosts,...data.posts]);

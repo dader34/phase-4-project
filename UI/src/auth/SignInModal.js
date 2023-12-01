@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup';
@@ -72,11 +72,11 @@ const SignInModal = ({ onClose, onSignIn }) => {
   return (
     <div className="modalOverlay">
       <div className="modalContainer">
-        <div className="modalHeader">
+        <div className="dark-mode modalHeader">
           <img src="/birdnoise.png" alt="Flatiron School Logo" className="modalIcon" />
           <button onClick={onClose} className="closeButton">&times;</button>
         </div>
-        <div className="modalBody">
+        <div className="dark-mode modalBody">
           <form onSubmit={handleSubmit}>
             <h2>Sign in to BirdNoise</h2>
             <label htmlFor="username" className="helperText">Username</label>
@@ -86,7 +86,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
               onChange={(e) => formik.setFieldValue('name',e.target.value)}
               required
               autoComplete="username"
-              className={`modalInput`}
+              className={`dark-mode modalInput`}
             />
             <label htmlFor="password" className="helperText">Password</label>
             <input
@@ -95,7 +95,7 @@ const SignInModal = ({ onClose, onSignIn }) => {
               onChange={(e) => formik.setFieldValue('password',e.target.value)}
               required
               autoComplete="current-password"
-              className={`modalInput`}
+              className={`dark-mode modalInput`}
             />
             <input type="submit" className="modalButton"/>
           </form>

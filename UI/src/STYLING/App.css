@@ -2,6 +2,7 @@
   text-align: center;
 }
 
+
 /* Remove the App-logo styles if you're not using the React logo */
 .App-logo {
   height: 40vmin;
@@ -85,6 +86,7 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   min-height: 100vh;
+  height: 100%;
 }
 
 .App-main {

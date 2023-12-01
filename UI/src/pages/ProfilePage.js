@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PostCard from '../feed/PostCard';
-import Modal from '../Common/Modal';
 import '../STYLING/ProfilePage.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import '../STYLING/Modal.css';
-import { ErrorMessage } from 'formik';
 import UserCards from '../Common/UserCards';
-
 
 const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
@@ -17,107 +14,67 @@ const ProfilePage = () => {
   const UID = localStorage.getItem("UID");
   const [showingFollowers, setShowingFollowers] = useState(false);
   const [showingFollowing, setShowingFollowing] = useState(false);
-  const [following,setFollowing] = useState([])
-  const { id } = useParams()
+  const [following, setFollowing] = useState([]);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const { id } = useParams();
   const nav = useNavigate();
 
   useEffect(() => {
-    if (!jwt || !UID) {
-      console.error('No JWT token or user ID found');
-      nav('/');
-      return;
-    }
+    if (!jwt || !UID) return nav('/');
 
-    fetch(`/user/${id}`, {
-      headers: {
-        Authorization: `Bearer ${jwt}`
-      }
-    })
+    fetch(`/user/${id}`, { headers: { Authorization: `Bearer ${jwt}` } })
       .then(response => response.ok ? response.json() : Promise.reject(response))
       .then(data => {
         setProfileData(data);
         setEditedBio(data.user_bio);
       })
-      .catch(() => {
-        toast.error("Invalid profile")
-        nav(`/home/profile/${UID}`)
-      });
-    setShowingFollowers(false)
-    setShowingFollowing(false)
-  }, [id]);
+      .catch(() => toast.error("Invalid profile"))
+      .finally(() => setShowingFollowers(false) && setShowingFollowing(false));
 
-  useEffect(()=>{
-    fetch(`/user/${UID}`,{
-        headers: {
-            "Authorization":`Bearer ${jwt}`
-        }
-    }).then(resp => {
-        if (resp.ok){
-            resp.json().then(data =>{
-                if(data.following[0]){
-                    data.following.forEach(f =>{
-                        console.log(f.following)
-                        if(!(following.includes(f.following.username))){
-                            setFollowing(current => [f.following.username ,...current])
-                        }
-                    })
-                }
-            })
-        }else{
-            toast.error(resp.message)
-        }
-    }).catch(e => toast.error(e))
-},[])
+  }, [id, jwt, nav, UID]);
 
-  const handleEditBio = () => {
-    setIsEditingBio(true);
-  };
+  useEffect(() => {
+    if (profileData && profileData.username) {
+      fetch(`/user/${UID}`, { headers: { Authorization: `Bearer ${jwt}` } })
+        .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
+        .then(data => {
+          const followingUsernames = data.following.map(f => f.following.username);
+          setFollowing(followingUsernames);
+          setIsFollowing(followingUsernames.includes(profileData.username));
+        })
+        .catch(e => toast.error(e));
+    }
 
-  const handleBioChange = (event) => {
-    setEditedBio(event.target.value);
-  };
+  }, [UID, jwt, profileData]);
+
+  const handleEditBio = () => setIsEditingBio(true);
+  const handleBioChange = (event) => setEditedBio(event.target.value);
 
   const handleSaveBio = () => {
     fetch(`/user/update-bio`, {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${jwt}`,
-      },
-      body: JSON.stringify({
-        bio: editedBio,
-      }),
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${jwt}` },
+      body: JSON.stringify({ bio: editedBio }),
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.text().then((text) => {
-            throw new Error(text);
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
+      .then(response => response.ok ? response.json() : Promise.reject(response))
+      .then(data => {
         setProfileData({ ...profileData, user_bio: editedBio });
         toast.success('Bio updated successfully');
         setIsEditingBio(false);
       })
-      .catch((error) => {
-        toast.error(`Error: ${error.message || error}`);
-      });
+      .catch(error => toast.error(`Error: ${error.message || error}`));
 
   };
-  const handleFollow = () =>{
-    fetch(`/follow/${id}`,{
-      method:"POST",
-      headers:{
-        "Authorization":`Bearer ${jwt}`
-      }
-    })
+
+  const handleFollow = () => {
+    fetch(`/follow/${id}`, { method: "POST", headers: { "Authorization": `Bearer ${jwt}` } })
+      .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
+      .then(data => setIsFollowing(data.status === "Unfollow"))
+      .catch(error => toast.error(`Error: ${error.message || error}`));
   }
 
-  if (!profileData) {
-    return <div>Loading...</div>;
-  }
+  if (!profileData) return <div>Loading...</div>;
+
   return (
     <>
       {isEditingBio && (
@@ -138,14 +95,14 @@ const ProfilePage = () => {
       {!showingFollowing && !showingFollowers ? (
         <div className="profile-page">
           <div className="profile-container">
-            <div className="profile-header" >
+            <div className="profile-header">
               <img className="profile-picture" src={profileData.profile_picture} alt={`${profileData.username}'s profile`} />
               <div className="profile-info">
                 <h2 className="username">{profileData.username}</h2>
                 <p className="bio">{profileData.user_bio}</p>
                 {UID === id ?
                   <button className="edit-bio-button" onClick={handleEditBio}>Edit Bio</button> :
-                  <button className="edit-bio-button" onClick={handleFollow}>Follow</button>
+                  <button className="edit-bio-button" onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</button>
                 }
               </div>
             </div>
@@ -169,8 +126,7 @@ const ProfilePage = () => {
               ))}
           </div>
         </div>
-
-      ) : <UserCards profileData={profileData} closeFollowers={() => setShowingFollowers(false)} closeFollowing={() => setShowingFollowing(false)} showingFollowing={showingFollowing} showingFollowers={showingFollowers} self={UID === id} following={following}/>}
+      ) : <UserCards profileData={profileData} closeFollowers={() => setShowingFollowers(false)} closeFollowing={() => setShowingFollowing(false)} showingFollowing={showingFollowing} showingFollowers={showingFollowers} self={UID === id} following={following} />}
     </>
   );
 };

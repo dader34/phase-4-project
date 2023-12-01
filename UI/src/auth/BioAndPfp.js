@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {useNavigate} from 'react-router-dom';
@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 const BioAndPfp = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const nav = useNavigate()
-  const UID = localStorage.getItem("UID")
   const JWT = localStorage.getItem("JWT")
   const formik = useFormik({
     initialValues: {

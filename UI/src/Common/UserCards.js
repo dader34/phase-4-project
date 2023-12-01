@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import toast from 'react-hot-toast';
-import { useNavigate } from "react-router-dom";
 import UserCard from "./UserCard";
 
 const UserCards = ({showingFollowing,showingFollowers,closeFollowing,closeFollowers,profileData, self}) =>{
@@ -9,7 +8,6 @@ const UserCards = ({showingFollowing,showingFollowers,closeFollowing,closeFollow
 const [following,setFollowing] = useState([])
 const UID = parseInt(localStorage.getItem("UID")) 
 const JWT = localStorage.getItem("JWT")
-const nav = useNavigate()
 useEffect(()=>{
         fetch(`/user/${UID}`,{
             headers: {
@@ -32,7 +30,7 @@ useEffect(()=>{
             }
         }).catch(e => toast.error(e))
             console.log(self)
-    },[])
+    },[JWT,UID,self,following])
 
 
     if (showingFollowing){
