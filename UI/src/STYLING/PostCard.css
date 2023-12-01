@@ -292,9 +292,6 @@ button:last-child {
   color: black;
 }
 
-.dark-mode.ReactModal__Content{
-  background: black;
-}
 
 .ReactModal__Content .ReactModal__Content--after-open {
   border-radius: 15px;
