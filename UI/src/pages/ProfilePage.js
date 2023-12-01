@@ -10,12 +10,12 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [editedBio, setEditedBio] = useState("");
   const [isEditingBio, setIsEditingBio] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false); // Corrected here
+  const [following, setFollowing] = useState([]); // Corrected here
   const jwt = localStorage.getItem("JWT");
   const UID = localStorage.getItem("UID");
   const [showingFollowers, setShowingFollowers] = useState(false);
   const [showingFollowing, setShowingFollowing] = useState(false);
-  const [following, setFollowing] = useState([]);
-  const [isFollowing, setIsFollowing] = useState(false);
   const { id } = useParams();
   const nav = useNavigate();
 
@@ -33,20 +33,6 @@ const ProfilePage = () => {
 
   }, [id, jwt, nav, UID]);
 
-  useEffect(() => {
-    if (profileData && profileData.username) {
-      fetch(`/user/${UID}`, { headers: { Authorization: `Bearer ${jwt}` } })
-        .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
-        .then(data => {
-          const followingUsernames = data.following.map(f => f.following.username);
-          setFollowing(followingUsernames);
-          setIsFollowing(followingUsernames.includes(profileData.username));
-        })
-        .catch(e => toast.error(e));
-    }
-
-  }, [UID, jwt, profileData]);
-
   const handleEditBio = () => setIsEditingBio(true);
   const handleBioChange = (event) => setEditedBio(event.target.value);
 
@@ -63,7 +49,6 @@ const ProfilePage = () => {
         setIsEditingBio(false);
       })
       .catch(error => toast.error(`Error: ${error.message || error}`));
-
   };
 
   const handleFollow = () => {
@@ -71,7 +56,29 @@ const ProfilePage = () => {
       .then(resp => resp.ok ? resp.json() : Promise.reject(resp))
       .then(data => setIsFollowing(data.status === "Unfollow"))
       .catch(error => toast.error(`Error: ${error.message || error}`));
-  }
+  };
+
+  const handleDeleteAccount = () => {
+    if (window.confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+      fetch(`/user/${UID}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${jwt}` },
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('Problem deleting account');
+        return response.json();
+      })
+      .then(() => {
+        toast.success('Account deleted successfully');
+        localStorage.removeItem("JWT"); // Clear user session
+        localStorage.removeItem("UID");
+        nav('/'); // Redirect to home or login page
+      })
+      .catch(error => {
+        toast.error(`Failed to delete account: ${error.message}`);
+      });
+    }
+  };
 
   if (!profileData) return <div>Loading...</div>;
 
@@ -100,10 +107,18 @@ const ProfilePage = () => {
               <div className="profile-info">
                 <h2 className="username">{profileData.username}</h2>
                 <p className="bio">{profileData.user_bio}</p>
-                {UID === id ?
-                  <button className="edit-bio-button" onClick={handleEditBio}>Edit Bio</button> :
-                  <button className="edit-bio-button" onClick={handleFollow}>{isFollowing ? "Unfollow" : "Follow"}</button>
-                }
+                {UID === id ? (
+                  <>
+                    <button className="edit-bio-button" onClick={handleEditBio}>Edit Bio</button>
+                    <button className="delete-account-button" onClick={handleDeleteAccount}>
+                      Delete Account
+                    </button>
+                  </>
+                ) : (
+                  <button className="edit-bio-button" onClick={handleFollow}>
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -126,7 +141,9 @@ const ProfilePage = () => {
               ))}
           </div>
         </div>
-      ) : <UserCards profileData={profileData} closeFollowers={() => setShowingFollowers(false)} closeFollowing={() => setShowingFollowing(false)} showingFollowing={showingFollowing} showingFollowers={showingFollowers} self={UID === id} following={following} />}
+      ) : (
+        <UserCards profileData={profileData} closeFollowers={() => setShowingFollowers(false)} closeFollowing={() => setShowingFollowing(false)} showingFollowing={showingFollowing} showingFollowers={showingFollowers} self={UID === id} following={following} />
+      )}
     </>
   );
 };

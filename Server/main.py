@@ -179,6 +179,8 @@ class PostById(Resource):
         
 api.add_resource(PostById, '/posts/<int:id>')
 
+
+
 #Signup route
 #Get username and password
 #Validate username and pass > 4 characters < 15
@@ -226,21 +228,6 @@ class Signup(Resource):
         
 
 api.add_resource(Signup, '/signup')
-
-@app.route('/post/<int:post_id>', methods=['DELETE'])
-@jwt_required()  # Require authentication
-def delete_post(post_id):
-    user_id = get_jwt_identity()
-    
-    # Retrieve the post from the database
-    post = Post.query.get(post_id)
-    if not post:
-        return jsonify({'error': 'Post not found'}), 404
-
-    # Check if the authenticated user is the author of the post or an admin
-    if post.user_id != user_id: # Add your admin check logic here if necessary
-        return jsonify({'error': 'Unauthorized'}), 403
-
 
 class UpdateBio(Resource):
     @jwt_required()
@@ -405,6 +392,43 @@ class FollowUser(Resource):
 
 api.add_resource(FollowUser,'/follow/<int:id>')
 
+@app.route('/user/<int:user_id>', methods=['DELETE'])
+@jwt_required()
+def delete_account(user_id):
+    current_user_id = get_jwt_identity()
+    if current_user_id != user_id:
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    
+    # Here you would include any additional cleanup logic, like deleting user posts, etc.
+    # ...
+    
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({'message': 'User account deleted successfully'}), 200
+
+
+@app.route('/post/<int:post_id>', methods=['DELETE'])
+@jwt_required()  # Require authentication
+def delete_post(post_id):
+    user_id = get_jwt_identity()  # Get the user's identity from the JWT
+    
+    # Retrieve the post from the database
+    post = Post.query.get(post_id)
+    if not post:
+        return jsonify({'error': 'Post not found'}), 404
+
+    # Check if the authenticated user is the author of the post
+    if post.user_id == user_id:
+        db.session.delete(post)
+        db.session.commit()
+        return jsonify({'message': 'Post deleted successfully'}), 200
+    else:
+        return jsonify({'error': 'Unauthorized'}), 403
+
 @app.template_filter('format_date')
 def format_date(date_str):
     # Convert the string to a datetime object
@@ -415,5 +439,5 @@ def format_date(date_str):
     
     return formatted_date
 
-if(__name__=="__main__"):
-    app.run(host='0.0.0.0',port=5555,debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5555, debug=True)

@@ -22,6 +22,32 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
   const nav = useNavigate();
   const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)// eslint-disable-line
 
+  const handleDelete = (event) => {
+    event.stopPropagation();
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      fetch(`/post/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${JWT}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete the post.');
+        }
+        return response.json();
+      })
+      .then(() => {
+        toast.success('Post deleted successfully');
+        // Optionally navigate away or update the state to remove the post from the view
+        nav('/home'); // Uncomment if you want to navigate away
+      })
+      .catch(error => {
+        toast.error(error.message);
+      });
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       content: ''
@@ -137,21 +163,31 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
     <div className="post-container" onClick={() => {
       id && !location.pathname.endsWith(`/post/${id}`) && nav(`/home/post/${id}`)
     }}>
-      <div className="user-pfp" onClick={(e)=>{e.stopPropagation();nav(`/home/profile/${user_id}`)}}>
-        <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => { (currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg') }}/>
+      <div className="user-pfp" onClick={(e) => { e.stopPropagation(); nav(`/home/profile/${user_id}`) }}>
+        <img src={author.profile_picture} alt={author.name} onError={({ currentTarget }) => {
+          currentTarget.src = 'https://merriam-webster.com/assets/mw/images/article/art-wap-landing-mp-lg/egg-3442-4c317615ec1fd800728672f2c168aca5@1x.jpg';
+        }} />
       </div>
       <span className="username">@{author.name}</span>
       <p className="post-body">{content}</p>
       <div className="info-container">
         <div className="buttons-container">
           <div>
-            <button className="like-button" onClick={(e) => (UID && JWT)&&handleLike(e)}>👍  {likeAmt}</button>
-            {/* <span className="likes-counter">{likeAmt}</span> */}
+            <button className="like-button" onClick={(e) => {
+              e.stopPropagation();
+              (UID && JWT) && handleLike(e);
+            }}>👍 {likeAmt}</button>
           </div>
-          <button className="comment-button" onClick={e=> (UID && JWT)&&openModal(e)}>
+          <button className="comment-button" onClick={(e) => {
+            e.stopPropagation();
+            (UID && JWT) && openModal(e);
+          }}>
             💬 {comments && comments.length}
           </button>
-          <span className="material-symbols-outlined" onClick={handleShare}>
+          <span className="material-symbols-outlined" onClick={(e) => {
+            e.stopPropagation();
+            handleShare();
+          }}>
             ios_share
           </span>
         </div>
@@ -160,14 +196,33 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
           <span className="date">{formattedDate}</span>
         </div>
       </div>
-
+      {/* Conditionally render the delete button */}
+      {UID === user_id && (
+        <button className="delete-post-button" onClick={(e) => {
+          e.stopPropagation();
+          handleDelete(e);
+        }}>
+          Delete Post
+        </button>
+      )}
       {/* Modal */}
       <div onClick={(e) => e.stopPropagation()} className='click-div'>
-        <Modal style={{ content: { "borderRadius": "15px", "padding": "30px", "overflow": "hidden", "background" : isDark? "#494f55" : 'white', 'color' : isDark ? "white" : 'black'} }}
-          isOpen={isModalOpen}
+        <Modal isOpen={isModalOpen}
           ariaHideApp={false}
-          onRequestClose={closeModal}
+          onRequestClose={(e) => {
+            e.stopPropagation();
+            closeModal();
+          }}
           contentLabel="Comment Modal"
+          style={{
+            content: {
+              borderRadius: "15px",
+              padding: "30px",
+              overflow: "hidden",
+              background: isDark ? "#494f55" : 'white',
+              color: isDark ? "white" : 'black'
+            }
+          }}
         >
           <form onSubmit={handlePostSubmit}>
             <textarea
@@ -178,7 +233,10 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
             />
             <p>Characters: {formik.values.content.length}</p>
             <input type='submit' value='post' className='post-button' />
-            <button onClick={closeModal} className='close-button'>X</button>
+            <button onClick={(e) => {
+              e.stopPropagation();
+              closeModal(e);
+            }} className='close-button'>X</button>
           </form>
         </Modal>
       </div>
