@@ -5,7 +5,7 @@ const UserCard = ({ f, UID, JWT, following,self,close,choice }) => {
     const nav = useNavigate()
 
     const handleFollow = (id) =>{
-        fetch(`/follow/${id}`,{
+        fetch(`https://birdnoise.danner.repl.co/follow/${id}`,{
             method:"POST",
             headers:{
                 "Authorization":`Bearer ${JWT}`

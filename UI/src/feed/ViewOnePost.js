@@ -11,12 +11,12 @@ const ViewOnePost = () => {
     const [post, setPost] = useState(false)
 
     useEffect(()=>{
-        fetch(`/posts/${id}`)
+        fetch(`https://birdnoise.danner.repl.co/posts/${id}`)
         .then(resp => resp.json())
         .then(setPost)
         .catch(e => toast.error(e.message));
         (UID || JWT)&& 
-              fetch("/auth",{
+              fetch("https://birdnoise.danner.repl.co/auth",{
                   headers:{
                       "Authorization": `Bearer ${JWT}`
                   }

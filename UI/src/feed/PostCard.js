@@ -55,7 +55,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id, r
       content: Yup.string().min(2, "Post must be at least 2 characters").max(300, "Post can't be more than 300 characters").required("Post must have text")
     }),
     onSubmit: async values => {
-      fetch('/post', {
+      fetch('https://birdnoise.danner.repl.co/post', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +125,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id, r
     e.stopPropagation();
     // Make post request to like/unlike
     // Get back response # of likes
-    fetch('/like', {
+    fetch('https://birdnoise.danner.repl.co/like', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
