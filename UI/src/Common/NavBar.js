@@ -10,7 +10,7 @@ const NavBar = ({ toggleDarkMode }) => {
       <nav>
         <BackButton /> {/* Add the BackButton here */}
         <Link to='/home'>Home</Link>
-        <Link to='/logout'>Logout</Link>
+        <Link to='/'>Logout</Link>
         <Link to={`/home/profile/${UID}`}>Profile</Link>
         <button onClick={toggleDarkMode}>Dark Mode</button>
       </nav>
