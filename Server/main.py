@@ -402,26 +402,22 @@ def delete_account(user_id):
     user = User.query.get(user_id)
     if not user:
         return jsonify({'error': 'User not found'}), 404
-    
-    # Here you would include any additional cleanup logic, like deleting user posts, etc.
-    # ...
-    
     db.session.delete(user)
     db.session.commit()
     return jsonify({'message': 'User account deleted successfully'}), 200
 
 
 @app.route('/post/<int:post_id>', methods=['DELETE'])
-@jwt_required()  # Require authentication
+@jwt_required()  
 def delete_post(post_id):
-    user_id = get_jwt_identity()  # Get the user's identity from the JWT
+    user_id = get_jwt_identity()  
     
-    # Retrieve the post from the database
+    
     post = Post.query.get(post_id)
     if not post:
         return jsonify({'error': 'Post not found'}), 404
 
-    # Check if the authenticated user is the author of the post
+    
     if post.user_id == user_id:
         db.session.delete(post)
         db.session.commit()

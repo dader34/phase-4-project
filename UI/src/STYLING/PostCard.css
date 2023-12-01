@@ -155,20 +155,20 @@ button:last-child {
 }
 
 .delete-post-button {
-  padding: 5px 10px; /* Smaller padding */
-  font-size: 0.8rem; /* Smaller font size */
-  margin-top: 10px; /* Space from the content above */
-  background-color: #ff4444; /* A red color to indicate deletion */
-  color: white; /* White text color */
-  border: none; /* No border */
-  border-radius: 4px; /* Rounded corners */
-  cursor: pointer; /* Cursor indicates it's clickable */
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  padding: 5px 10px; 
+  font-size: 0.8rem; 
+  margin-top: 10px; 
+  background-color: #ff4444; 
+  color: white; 
+  border: none; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
 }
 
-/* Hover effect for delete post button */
+
 .delete-post-button:hover {
-  background-color: #cc0000; /* Darker shade of red on hover */
+  background-color: #cc0000; 
 }
 
 

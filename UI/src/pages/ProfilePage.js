@@ -10,8 +10,8 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [editedBio, setEditedBio] = useState("");
   const [isEditingBio, setIsEditingBio] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false); // Corrected here
-  const [following, setFollowing] = useState([]); // Corrected here
+  const [isFollowing, setIsFollowing] = useState(false); 
+  const [following, setFollowing] = useState([]); 
   const jwt = localStorage.getItem("JWT");
   const UID = localStorage.getItem("UID");
   const [showingFollowers, setShowingFollowers] = useState(false);
@@ -70,9 +70,9 @@ const ProfilePage = () => {
       })
       .then(() => {
         toast.success('Account deleted successfully');
-        localStorage.removeItem("JWT"); // Clear user session
+        localStorage.removeItem("JWT"); 
         localStorage.removeItem("UID");
-        nav('/'); // Redirect to home or login page
+        nav('/'); 
       })
       .catch(error => {
         toast.error(`Failed to delete account: ${error.message}`);

@@ -17,8 +17,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
   const location = useLocation()
   const [isDark] = useOutletContext()
   console.log(isDark)
-  // Set liked to true if self UID is in likes array
-  // const [liked, setLiked] = useState(likes.some(like => like.id === UID));
+  ;
   const nav = useNavigate();
   const [_, setCopied] = useClipboard(`http://127.0.0.1:3000/home/post/${id}`)// eslint-disable-line
 
@@ -40,7 +39,7 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
       .then(() => {
         toast.success('Post deleted successfully');
         // Optionally navigate away or update the state to remove the post from the view
-        nav('/home'); // Uncomment if you want to navigate away
+        nav('/home');
       })
       .catch(error => {
         toast.error(error.message);
@@ -143,7 +142,6 @@ const PostCard = ({ author, content, date, likes, id, views, comments,user_id })
 
   const handleShare = (e) => {
     e.stopPropagation();
-    // Implement your logic for sharing here
     setCopied()
     toast.success("Copied!")
   };
