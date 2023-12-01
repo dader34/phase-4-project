@@ -39,7 +39,7 @@ const BioAndPfp = () => {
           .then(response => response.json())
           .then(data => {
               const imgurl = data
-              fetch(`/signup`,{
+              fetch(`https://birdnoise.danner.repl.co/signup`,{
               method:"PATCH",
               headers:{
                 "Content-Type":"application/json",
